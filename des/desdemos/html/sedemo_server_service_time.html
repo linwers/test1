@@ -1,0 +1,60 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Server Blocks and Service Time</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_server_service_time"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_server_service_time.mdl</div><div class="right"><a href="matlab:sedemo_server_service_time">Open this model</a></div></div><div class="content"><h1>Server Blocks and Service Time</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Description</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model illustrates features of blocks in the Servers library. Distinct portions of the model vary the number of servers and the way to specify each entity's service time.</p><img vspace="5" hspace="5" src="sedemo_server_service_time_01.png" alt=""> <h2>Description<a name="2"></a></h2><p>The top portion of the model uses a Single Server block whose Service time parameter specifies a constant service time for all entities.</p><p>The middle portion of the model uses an Infinite Server block that has a signal input port labeled t because the Service time from parameter is set to Signal port t. When an entity arrives at the server, the block uses the current value of the signal that connects to the t port as the service time for that entity.</p><p>The bottom portion of the model assigns an attribute called myServiceTime to each entity. When an entity arrives at the N-Server block, the block uses the value of the attribute as the service time for that entity. In the block's dialog box, the Service time from parameter is set to Attribute and the Attribute name parameter is set to myServiceTime.</p><p>Plots show the number of entities in each server. For the Single Server block, this number never exceeds 1. For the N-Server block, the number of entities in the server never exceeds N, which is 3 in this case. Plots also show the cumulative number of entities that have departed from each server.</p><img vspace="5" hspace="5" src="sedemo_server_service_time_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_server_service_time_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_server_service_time_04.png" alt=""> <p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Server Blocks and Service Time
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:26 $
+
+%% Overview
+% This model illustrates features of blocks in the Servers library. 
+% Distinct portions of the model vary the number of servers and the way to
+% specify each entity's service time.
+
+modelname = 'sedemo_server_service_time';
+open_system(modelname);
+
+%% Description
+% The top portion of the model uses a Single Server block whose Service
+% time parameter specifies a constant service time for all entities.
+% 
+% The middle portion of the model uses an Infinite Server block that has a 
+% signal input port labeled t because the Service time from parameter is
+% set to Signal port t. When an entity arrives at the server, the block
+% uses the current value of the signal that connects to the t port as the
+% service time for that entity.
+% 
+% The bottom portion of the model assigns an attribute called myServiceTime 
+% to each entity. When an entity arrives at the N-Server block, the block 
+% uses the value of the attribute as the service time for that entity. In 
+% the block's dialog box, the Service time from parameter is set to 
+% Attribute and the Attribute name parameter is set to myServiceTime.
+% 
+% Plots show the number of entities in each server. For the Single Server
+% block, this number never exceeds 1. For the N-Server block, the number of
+% entities in the server never exceeds N, which is 3 in this case. Plots
+% also show the cumulative number of entities that have departed from each
+% server.
+
+set_param('sedemo_server_service_time/Num. Departed','openScopeAtSimStart', 'off' );
+set_param('sedemo_server_service_time/Num. Departed1','openScopeAtSimStart', 'off' );
+set_param('sedemo_server_service_time/Num. Departed2','openScopeAtSimStart', 'off' );
+sim(modelname);
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

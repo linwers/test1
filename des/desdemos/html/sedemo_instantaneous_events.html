@@ -1,0 +1,42 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Counting Instantaneous Events</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_instantaneous_events"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_instantaneous_events.mdl</div><div class="right"><a href="matlab:sedemo_instantaneous_events">Open this model</a></div></div><div class="content"><h1>Counting Instantaneous Events</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates the difference between Instantaneous Event Counting Scope block and the Instantaneous Entity Counting Scope block.</p><img vspace="5" hspace="5" src="sedemo_instantaneous_events_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>In this model, the Instantaneous Event Counting Scope block counts instantaneous signal-based events in a statistical output signal from a gate block, while the Instantaneous Entity Counting Scope block counts instantaneous entity departures from a server block.</p><h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_instantentity');"> Example: Counting Simultaneous Departures from a Server</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_sync');"> Example: Synchronizing Service Start Times with the Clock</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_counting_events');"> Example: Plotting Event Counts to Check for Simultaneity</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Counting Instantaneous Events
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:34 $
+
+%% Overview
+% This model demonstrates the difference between Instantaneous Event
+% Counting Scope block and the Instantaneous Entity Counting Scope block.
+
+modelname = 'sedemo_instantaneous_events';
+open_system(modelname);
+
+%% Structure
+% In this model, the Instantaneous Event Counting Scope block counts
+% instantaneous signal-based events in a statistical output signal from a
+% gate block, while the Instantaneous Entity Counting Scope block counts
+% instantaneous entity departures from a server block.
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_instantentity');  Example: Counting Simultaneous Departures from a Server>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_sync');  Example: Synchronizing Service Start Times with the Clock>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_counting_events');  Example: Plotting Event Counts to Check for Simultaneity>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

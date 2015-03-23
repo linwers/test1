@@ -1,0 +1,45 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Single Server Versus N-Server</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_single_v_multi_server"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_single_v_multi_server.mdl</div><div class="right"><a href="matlab:sedemo_single_v_multi_server">Open this model</a></div></div><div class="content"><h1>Single Server Versus N-Server</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview of Single Server Versus N-Server</a></li><li><a href="#2">Structure of Single Server Versus N-Server</a></li><li><a href="#3">Related Demos</a></li></ul></div><h2>Overview of Single Server Versus N-Server<a name="1"></a></h2><p>This model compares a single-server queuing system with an N-server system.</p><img vspace="5" hspace="5" src="sedemo_single_v_multi_server_01.png" alt=""> <h2>Structure of Single Server Versus N-Server<a name="2"></a></h2><p>In this model, the single server can serve three times as fast as each of the three servers in the N-Server block. The displays show that the faster single server achieves smaller delays than the set of three slower servers. The throughput of both systems is the same.</p><h2>Related Demos<a name="3"></a></h2><div><ul><li><a href="matlab:simeventsdocex('doc_outputswitch_firstnotblocked');">Single server example</a></li><li><a href="matlab:simeventsdocex('doc_preemptiveserver');">Single server in preemptive mode</a></li><li><a href="matlab:simeventsdocex('doc_mm5');">N server example M/M/5 Queuing System (Markovian)</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Single Server Versus N-Server
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:30 $
+
+%% Overview of Single Server Versus N-Server
+% This model compares a single-server queuing system with an N-server
+% system.
+
+  modelname = 'sedemo_single_v_multi_server';
+  open_system(modelname);
+
+%% Structure of Single Server Versus N-Server
+% In this model, the single server can serve three times as fast as each of
+% the three servers in the N-Server block. The displays show that the
+% faster single server achieves smaller delays than the set of three slower
+% servers. The throughput of both systems is the same.
+
+%% Related Demos
+% * <matlab:simeventsdocex('doc_outputswitch_firstnotblocked'); Single
+% server example>
+% * <matlab:simeventsdocex('doc_preemptiveserver'); Single server in
+% preemptive mode>
+% * <matlab:simeventsdocex('doc_mm5'); N server example M/M/5 Queuing 
+% System (Markovian)>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

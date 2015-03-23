@@ -1,0 +1,244 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Avoiding Identical Seeds for Random Number Generators</title>
+      <meta name="generator" content="MATLAB 7.6">
+      <meta name="date" content="2007-11-29">
+      <meta name="m-file" content="sedemo_identicalseeds_m">
+      <link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css">
+   </head>
+   <body>
+      <div class="header">
+         <div class="left"><a href="matlab:edit sedemo_identicalseeds_m">Open sedemo_identicalseeds_m.m in the Editor</a></div>
+         <div class="right"><a href="matlab:echodemo sedemo_identicalseeds_m">Run in the Command Window</a></div>
+      </div>
+      <div class="content">
+         <h1>Avoiding Identical Seeds for Random Number Generators</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Overview</a></li>
+               <li><a href="#2">Queuing Example</a></li>
+               <li><a href="#3">Model Characteristics</a></li>
+               <li><a href="#4">Expected Theoretical Results</a></li>
+               <li><a href="#5">Simulating with Identical Seeds</a></li>
+               <li><a href="#8">Randomizing Seeds</a></li>
+               <li><a href="#10">Simulating with Unique Seeds</a></li>
+               <li><a href="#13">Related Demos</a></li>
+               <li><a href="#14">Reference</a></li>
+            </ul>
+         </div>
+         <h2>Overview<a name="1"></a></h2>
+         <p>Random number generator algorithms permit user-specified initial seed values for the generation of random numbers. If two
+            random number generators use the same seed, then they may generate correlated sequences of "random" numbers even if the parameters
+            of their distributions are different.
+         </p>
+         <p>For a stochastic simulation, this can lead to undesirable correlation in the system, and perhaps even incorrect results.</p>
+         <p>This demo uses an M/M/1 queuing system to show that non-unique seeds can lead to incorrect results. It also describes how
+            to avoid such effects. Refer to M/M/1 Queuing Demo for more information about M/M/1 queuing systems.
+         </p>
+         <h2>Queuing Example<a name="2"></a></h2>
+         <p>This model shows a single-queue single-server system having a single source of traffic from the Time-Based Entity Generator.</p><pre class="codeinput">oldFormat = get(0, <span class="string">'format'</span>);
+format <span class="string">long</span>;
+
+modelname = <span class="string">'sedemo_identicalseeds'</span>;
+open_system(modelname);
+</pre><img vspace="5" hspace="5" src="sedemo_identicalseeds_m_01.png"> <h2>Model Characteristics<a name="3"></a></h2>
+         <p>The entity generation rate is a Poisson process with a mean of 2, while the service time is an exponential process with a
+            mean of 1. The Time-Based Entity Generator and the Event-Based Random Number block currently have their seed values set to
+            the same number.
+         </p>
+         <h2>Expected Theoretical Results<a name="4"></a></h2>
+         <p>Queuing theory provides that the expected delay for an M/M/1 queuing system is as follows:</p>
+         <p><img vspace="5" hspace="5" src="sedemo_identicalseeds_m_eq331812.png"> </p>
+         <p><img vspace="5" hspace="5" src="sedemo_identicalseeds_m_eq45325.png"> </p>
+         <h2>Simulating with Identical Seeds<a name="5"></a></h2>
+         <p>Upon simulating the model, we see that the delay for the system has a mean of 1, which is different from the expected delay
+            of 2.
+         </p><pre class="codeinput">sim(modelname);
+</pre><pre class="codeoutput">Identical seeds detected for multiple random number generators in SimEvents blocks.
+The seed value 12345 is being used by the following blocks:
+  sedemo_identicalseeds/Event-Based Random Number  <U>Highlight</U>  <U>Randomize</U>
+  sedemo_identicalseeds/Time-Based Entity Generator  <U>Highlight</U>  <U>Randomize</U>
+To ensure uncorrelated data from random number generators, perform one of the following options:
+1. Click on the Randomize links for each block to randomize the seed values
+2. Click on the <U>Randomize All</U> link to randomize blocks with seeds presently set to 12345
+3. Use the function SE_RANDOMIZESEEDS with appropriate input arguments
+4. Manually change the block seeds
+You can disable this diagnostic by setting 'Identical seeds for random number generators'
+parameter to 'none' in the SimEvents Diagnostics tab of the Configuration Parameters.
+</pre><img vspace="5" hspace="5" src="sedemo_identicalseeds_m_02.png"> <p>Notice that a warning indicates that some blocks use identical seeds.</p>
+         <p>The function <tt>se_getseeds</tt> retrieves the seeds from a model or a subsystem for inspection as shown below.
+         </p><pre class="codeinput">mySeeds = se_getseeds(modelname)
+</pre><pre class="codeoutput">
+mySeeds = 
+
+    system: 'sedemo_identicalseeds'
+     seeds: [1x2 struct]
+
+</pre><p>The return argument is a structure containing the seed parameters, which can be accessed for inspection as:</p><pre class="codeinput">[{mySeeds.seeds.block}' {mySeeds.seeds.value}']
+</pre><pre class="codeoutput">
+ans = 
+
+    'Event-Based Random Number'      [12345]
+    'Time-Based Entity Generator'    [12345]
+
+</pre><h2>Randomizing Seeds<a name="8"></a></h2>
+         <p>The function <tt>se_randomizeseeds</tt> randomizes the seeds for random number generators in a model or subsystem. This function ensures that the new seeds are unique.
+         </p><pre class="codeinput">se_randomizeseeds(modelname)
+</pre><p>To verify that the seeds are now unique, you can use the function <tt>se_getseeds</tt> as follows.
+         </p><pre class="codeinput">mySeeds = se_getseeds(modelname);
+[{mySeeds.seeds.block}' {mySeeds.seeds.value}']
+</pre><pre class="codeoutput">
+ans = 
+
+    'Event-Based Random Number'      [1122]
+    'Time-Based Entity Generator'    [9747]
+
+</pre><h2>Simulating with Unique Seeds<a name="10"></a></h2>
+         <p>We now simulate the model that now contains unique seed values.</p><pre class="codeinput">sim(modelname);
+</pre><img vspace="5" hspace="5" src="sedemo_identicalseeds_m_03.png"> <p>The empirical delay now conforms to the expected theoretical result.</p><pre class="codeinput">format(oldFormat);
+clear <span class="string">modelname</span> <span class="string">oldFormat</span> <span class="string">mySeeds</span>
+</pre><h2>Related Demos<a name="13"></a></h2>
+         <div>
+            <ul>
+               <li><a href="matlab:showdemo('sedemo_rngseeds_mgmt_m')">Seed Management Workflow for Random Number Generators</a></li>
+            </ul>
+         </div>
+         <h2>Reference<a name="14"></a></h2>
+         <p>[1] Kleinrock L., 'Queuing Systems. Volume 1: Theory', J. Wiley &amp; Sons 1975, Canada</p><pre class="codeinput">bdclose(<span class="string">'sedemo_identicalseeds'</span>);
+</pre><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+            Published with MATLAB&reg; 7.7
+         </p>
+         <p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks
+            of their respective owners.
+         </p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Avoiding Identical Seeds for Random Number Generators
+%
+
+% Copyright 2005-2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2008/06/13 15:15:08 $
+
+%% Overview
+%
+% Random number generator algorithms permit user-specified initial seed
+% values for the generation of random numbers. If two random number
+% generators use the same seed, then
+% they may generate correlated sequences of "random" numbers even if the
+% parameters of their distributions are different.
+%
+% For a stochastic simulation, this can lead to undesirable correlation
+% in the system, and perhaps even incorrect results.
+%
+% This demo uses an M/M/1 queuing system to show that non-unique seeds can
+% lead to incorrect results. It also describes how to avoid such effects. 
+% Refer to M/M/1 Queuing Demo for more information about M/M/1 queuing
+% systems.
+
+%% Queuing Example
+% 
+% This model shows a
+% single-queue single-server system having a single source of traffic from
+% the Time-Based Entity Generator.
+
+oldFormat = get(0, 'format');
+format long;
+
+modelname = 'sedemo_identicalseeds';
+open_system(modelname);
+
+%% Model Characteristics
+% 
+% The entity generation rate is a Poisson process with a mean of 2, while
+% the service time is an exponential process with a mean of
+% 1. The Time-Based Entity Generator and the Event-Based Random Number block
+% currently have their seed values set to the same number.
+
+%% Expected Theoretical Results
+%
+% Queuing theory provides that the expected delay for an M/M/1 queuing
+% system is as follows:
+% 
+% $$T = {1 \over {\mu - \lambda}} = {1 \over {{1 \over Service Rate} - {1 \over Generation Rate}}}$$
+% 
+% $$T = {1 \over {{1 \over 1} - {1 \over 2}}} = 2$$
+
+%% Simulating with Identical Seeds
+%
+% Upon simulating the model, we see that the delay for the system
+% has a mean of 1, which is different from the expected delay of 2.
+
+sim(modelname);
+
+%%
+% Notice that a warning indicates that some blocks use identical seeds.
+%
+% The function |se_getseeds| retrieves the seeds from a model or a
+% subsystem for inspection as shown below.
+
+mySeeds = se_getseeds(modelname)
+
+%%
+% The return argument is a structure containing the seed parameters, which
+% can be accessed for inspection as:
+
+[{mySeeds.seeds.block}' {mySeeds.seeds.value}']
+
+%% Randomizing Seeds
+%
+% The function |se_randomizeseeds| randomizes the
+% seeds for random number generators in a model or subsystem. This function
+% ensures that the new seeds are unique.
+
+se_randomizeseeds(modelname)
+
+%%
+% To verify that the seeds are now unique, you
+% can use the function |se_getseeds| as follows.
+
+mySeeds = se_getseeds(modelname);
+[{mySeeds.seeds.block}' {mySeeds.seeds.value}']
+
+%% Simulating with Unique Seeds
+%
+% We now simulate the model that now contains unique seed values.
+
+sim(modelname);
+
+%%
+% The empirical delay now conforms to the expected
+% theoretical result.
+
+%%
+format(oldFormat);
+clear modelname oldFormat mySeeds
+
+%% Related Demos
+% 
+% * <matlab:showdemo('sedemo_rngseeds_mgmt_m') Seed Management Workflow for
+% Random Number Generators>
+
+%% Reference
+%
+% [1] Kleinrock L., 'Queuing Systems. Volume 1: Theory', J. Wiley & Sons
+% 1975, Canada
+bdclose('sedemo_identicalseeds');
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

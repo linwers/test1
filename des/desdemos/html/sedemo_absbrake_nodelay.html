@@ -1,0 +1,53 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Anti-Lock Braking System (ABS) Model</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_absbrake_nodelay"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_absbrake_nodelay.mdl</div><div class="right"><a href="matlab:sedemo_absbrake_nodelay">Open this model</a></div></div><div class="content"><h1>Anti-Lock Braking System (ABS) Model</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Results And Displays</a></li><li><a href="#4">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model is a time-based simulation of an anti-lock braking system (ABS) under hard braking conditions. The simulation stops the car using a bang-bang controller whose goal is to keep the wheel's normalized relative slip near a constant.</p><img vspace="5" hspace="5" src="sedemo_absbrake_nodelay_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>This model is nearly identical to the <a href="matlab:showdemo('sldemo_absbrake')">Time-Based Anti-lock Braking Demo</a>, except that this model is self-contained and does not use the Model block to reference another model. The reason for including this model in the list of SimEvents&reg; demos is to facilitate comparison with related demos that use SimEvents blocks.</p><h2>Results And Displays<a name="3"></a></h2><img vspace="5" hspace="5" src="sedemo_absbrake_nodelay_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_absbrake_nodelay_03.png" alt=""> <h2>Related Demos<a name="4"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_absbrake_overview_m')">Design Workflow for an Anti-Lock Braking System (ABS)</a></li><li><a href="matlab:showdemo('sedemo_absbrake_delay')">Anti-Lock Braking System (ABS) Model with Queuing Delay</a></li><li><a href="matlab:showdemo('sedemo_absbrake_can');">Anti-Lock Braking System (ABS) Model Using CAN Communications</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Anti-Lock Braking System (ABS) Model
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:23 $
+
+%% Overview
+% This model is a time-based simulation of an anti-lock braking system
+% (ABS) under hard braking conditions. The simulation stops the car using a
+% bang-bang controller whose goal is to keep the wheel's normalized
+% relative slip near a constant.
+
+  modelname = 'sedemo_absbrake_nodelay';
+  open_system(modelname);
+
+%% Structure
+% This model is nearly identical to the
+% <matlab:showdemo('sldemo_absbrake') Time-Based Anti-lock Braking Demo>,
+% except that this model is self-contained and does not use the Model block
+% to reference another model. The reason for including this model in the
+% list of SimEvents® demos is to facilitate comparison with related demos
+% that use SimEvents blocks.
+
+%% Results And Displays
+%
+  sim(modelname);
+  
+%% Related Demos
+% * <matlab:showdemo('sedemo_absbrake_overview_m') Design Workflow for an
+% Anti-Lock Braking System (ABS)>
+% * <matlab:showdemo('sedemo_absbrake_delay') Anti-Lock
+% Braking System (ABS) Model with Queuing Delay>
+% * <matlab:showdemo('sedemo_absbrake_can'); Anti-Lock Braking System (ABS)
+% Model Using CAN Communications>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

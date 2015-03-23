@@ -1,0 +1,90 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>M/D/1 Queuing System</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_md1"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_md1.mdl</div><div class="right"><a href="matlab:sedemo_md1">Open this model</a></div></div><div class="content"><h1>M/D/1 Queuing System</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Results and Displays</a></li><li><a href="#4">Theoretical Results</a></li><li><a href="#5">Experimenting with the Model</a></li><li><a href="#6">Related Examples</a></li><li><a href="#7">References</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model contains a single-queue single-server system having a Poisson arrival process and a server with constant service time. The queue has an infinite storage capacity. In the notation, the M stands for Markovian; M/D/1 means that the system has a Poisson arrival process, a deterministic service time distribution, and one server.</p><h2>Structure<a name="2"></a></h2><p>The model includes the components listed below:</p><div><ul><li><b>Time Based Entity Generator block:</b> It models a Poisson arrival process by generating entities (also known as &#8220;customers&#8221; in queuing theory).</li></ul></div><div><ul><li><b>Exponential Interarrival Time Distribution subsystem:</b> It creates a signal representing the interarrival times for the generated entities. The interarrival time of a Poisson arrival process is an exponential random variable.</li></ul></div><div><ul><li><b>FIFO Queue block:</b> It stores entities that have yet to be served.</li></ul></div><div><ul><li><b>Single Server block:</b> It models a server having a constant service time.</li></ul></div><p>This model is similar to the M/M/1 Queuing System model, except that the service time in this model is constant.</p><img vspace="5" hspace="5" src="sedemo_md1_01.png" alt=""> <img vspace="5" hspace="5" src="sedemo_md1_02.png" alt=""> <h2>Results and Displays<a name="3"></a></h2><p>The model includes these visual ways to understand its performance:</p><div><ul><li> A Display block that shows the waiting time in the queue</li></ul></div><div><ul><li> A scope showing the number of entities (customers) in the queue at    any given time</li></ul></div><img vspace="5" hspace="5" src="sedemo_md1_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_md1_04.png" alt=""> <h2>Theoretical Results<a name="4"></a></h2><p>According to queuing theory, the mean waiting time in the queue equals</p><p><img vspace="5" hspace="5" src="eqn1098906411.gif" alt=""> </p><p>where <img src="sedemo_md1_eq40602.png" alt="$$ \lambda $$"> is the arrival rate and <img src="sedemo_md1_eq35250.png" alt="$$ \mu $$"> is the service rate. This duration is half the theoretical mean waiting time in the queue for the M/M/1 queuing system with the same arrival rate and service rate.</p><h2>Experimenting with the Model<a name="5"></a></h2><p>Move the Arrival Rate Gain slider during the simulation and observe the change in the mean waiting time using the Display block labeled Queue Waiting Time.</p><h2>Related Examples<a name="6"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5');">M/M/5 Queuing System</a></li><li><a href="matlab:showdemo('sedemo_mod_markov_poisson');">Markov-Modulated Poisson Process</a></li><li><a href="matlab:showdemo('sedemo_mm1');">M/M/1 Queuing System</a></li><li><a href="matlab:showdemo('sedemo_gg1');">G/G/1 Queuing System and Little's Law</a></li></ul></div><h2>References<a name="7"></a></h2><p>[1] Kleinrock, Leonard, Queueing Systems, Volume I: Theory, New York, Wiley, 1975.</p><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% M/D/1 Queuing System
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.3 $ $Date: 2009/11/13 04:15:36 $
+
+%% Overview
+% This model contains a single-queue single-server system having a Poisson
+% arrival process and a server with constant service time. The queue has an
+% infinite storage capacity. In the notation, the M stands for Markovian;
+% M/D/1 means that the system has a Poisson arrival process, a
+% deterministic service time distribution, and one server.
+
+%% Structure
+% The model includes the components listed below:
+%
+% * *Time Based Entity Generator block:* It models a Poisson arrival
+% process by generating entities (also known as “customers” in queuing
+% theory).
+%
+% * *Exponential Interarrival Time Distribution subsystem:* It creates a
+% signal representing the interarrival times for the generated entities.
+% The interarrival time of a Poisson arrival process is an exponential
+% random variable.
+%
+% * *FIFO Queue block:* It stores entities that have yet to be served.
+%
+% * *Single Server block:* It models a server having a constant service
+% time.
+%
+% This model is similar to the M/M/1 Queuing System model, except that the
+% service time in this model is constant.
+
+modelname = 'sedemo_md1';
+open_system(modelname);
+
+%% Results and Displays
+% The model includes these visual ways to understand its performance:
+%
+% *  A Display block that shows the waiting time in the queue
+%
+% *  A scope showing the number of entities (customers) in the queue at
+%    any given time
+
+sim(modelname);
+
+%% Theoretical Results
+% According to queuing theory, the mean waiting time in the queue equals
+%
+% <<eqn1098906411.gif>>
+%
+% where $$ \lambda $$ is the arrival rate and $$ \mu $$ is the service
+% rate. This duration is half the theoretical mean waiting time in the
+% queue for the M/M/1 queuing system with the same arrival rate and service
+% rate.
+
+%% Experimenting with the Model
+% Move the Arrival Rate Gain slider during the simulation and observe the
+% change in the mean waiting time using the Display block labeled Queue
+% Waiting Time.
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5'); M/M/5 Queuing System>
+% * <matlab:showdemo('sedemo_mod_markov_poisson'); Markov-Modulated Poisson Process>
+% * <matlab:showdemo('sedemo_mm1'); M/M/1 Queuing System>
+% * <matlab:showdemo('sedemo_gg1'); G/G/1 Queuing System and Little's Law>
+
+%% References
+% [1] Kleinrock, Leonard, Queueing Systems, Volume I: Theory, New York,
+% Wiley, 1975.
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

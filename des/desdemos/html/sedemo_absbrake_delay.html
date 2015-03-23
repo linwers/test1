@@ -1,0 +1,92 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Anti-Lock Braking System (ABS) Model with Queuing Delay</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_absbrake_delay"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_absbrake_delay.mdl</div><div class="right"><a href="matlab:sedemo_absbrake_delay">Open this model</a></div></div><div class="content"><h1>Anti-Lock Braking System (ABS) Model with Queuing Delay</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Behavior of the Delay Subsystem</a></li><li><a href="#4">Experimenting with the Model</a></li><li><a href="#5">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model is similar to the time-based <a href="matlab:showdemo('sedemo_absbrake_nodelay');">Anti-Lock Braking System (ABS) Model,</a> except that simple queuing components introduce timing uncertainty into the braking system of this model. The queuing components, which are in the Delay subsystem, delay the update of signals from the controller to the Hydraulic Lag block.</p><img vspace="5" hspace="5" src="sedemo_absbrake_delay_01.png" alt=""> <h2>Behavior of the Delay Subsystem<a name="2"></a></h2><p>To see the implementation of the delay, open the Delay subsystem by double-clicking it.</p><p>The subsystem attaches data from the controller to entities that move from block to block in the subsystem. If an entity reaches the Get Attribute block in the subsystem, the Hydraulic Lag block at the top level of the model can access the data attached to the entity. By the time the Hydraulic Lag block accesses the data, the data is delayed due to these cumulative effects:</p><div><ul><li>Entities arriving at the Single Server block wait there for a random   amount of time.</li></ul></div><div><ul><li>If the Time-Based Entity Generator creates an entity while the server is busy and the queue is not full, the entity waits for an undetermined amount of time   in the FIFO Queue block.</li></ul></div><p>However, if the queue is full when the entity attempts to arrive, the Output Switch block discards the entity. As a result, the subsystem does not update the signal connected to the Hydraulic Lag block with this data value.</p><p>The subsystem is similar to the one described in <a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'adding_event_based_behavior');">Adding Event-Based Behavior</a></p><img vspace="5" hspace="5" src="sedemo_absbrake_delay_02.png" alt=""> <h2>Experimenting with the Model<a name="4"></a></h2><p>(<i>For use with live model only</i>)</p><p>You can vary the delay behavior by making one or more of these changes:</p><div><ul><li>Scale the duration of the delay by changing the Gain parameter in the   Gain block next to the Delay subsystem. A value of 0 eliminates the   delay.</li></ul></div><div><ul><li>Vary the distribution of the service time by changing parameters in the   Random Delay block.</li></ul></div><div><ul><li>Vary the Delay subsystem's buffering capacity by changing the Capacity   parameter in the FIFO Queue block to zero or a positive integer. A larger   capacity increases the latency of successfully delayed data. However, a   larger capacity also reduces the number of data values that the system   drops when the server and queue are full.</li></ul></div><img vspace="5" hspace="5" src="sedemo_absbrake_delay_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_absbrake_delay_04.png" alt=""> <h2>Related Demos<a name="5"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_absbrake_overview_m');">Anti-Lock Braking System (ABS) Overview</a></li><li><a href="matlab:showdemo('sedemo_absbrake_nodelay');">Anti-Lock Braking System (ABS) Model</a></li><li><a href="matlab:showdemo('sedemo_absbrake_can');">Anti-Lock Braking System (ABS) Model Using CAN Communications</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Anti-Lock Braking System (ABS) Model with Queuing Delay
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/10/16 04:48:13 $
+
+%% Overview
+% This model is similar to the time-based
+% <matlab:showdemo('sedemo_absbrake_nodelay'); Anti-Lock Braking System (ABS)
+% Model,> except that simple queuing components introduce timing
+% uncertainty into the braking system of this model. The queuing
+% components, which are in the Delay subsystem, delay the update of signals
+% from the controller to the Hydraulic Lag block.
+
+modelname = 'sedemo_absbrake_delay';
+open_system(modelname);
+
+%% Behavior of the Delay Subsystem
+% To see the implementation of the delay, open the Delay subsystem by
+% double-clicking it.
+%
+% The subsystem attaches data from the controller to entities that move
+% from block to block in the subsystem. If an entity reaches the Get
+% Attribute block in the subsystem, the Hydraulic Lag block at the top
+% level of the model can access the data attached to the entity. By the
+% time the Hydraulic Lag block accesses the data, the data is delayed due
+% to these cumulative effects:
+%
+% * Entities arriving at the Single Server block wait there for a random
+%   amount of time.
+%
+% * If the Time-Based Entity Generator creates an entity while the server
+% is busy and the queue is not full, the entity waits for an undetermined amount of time
+%   in the FIFO Queue block.
+%
+% However, if the queue is full when the entity attempts to arrive, the
+% Output Switch block discards the entity. As a result, the subsystem does
+% not update the signal connected to the Hydraulic Lag block with this data
+% value.
+%
+% The subsystem is similar to the one described in
+% <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'adding_event_based_behavior'); Adding Event-Based Behavior>
+
+
+%%
+open_system([modelname '/Network Delay'])
+
+%% Experimenting with the Model
+% (_For use with live model only_)
+%
+% You can vary the delay behavior by making one or more of these changes:
+%
+% * Scale the duration of the delay by changing the Gain parameter in the
+%   Gain block next to the Delay subsystem. A value of 0 eliminates the
+%   delay.
+%
+% * Vary the distribution of the service time by changing parameters in the
+%   Random Delay block.
+%
+% * Vary the Delay subsystem's buffering capacity by changing the Capacity
+%   parameter in the FIFO Queue block to zero or a positive integer. A larger
+%   capacity increases the latency of successfully delayed data. However, a
+%   larger capacity also reduces the number of data values that the system
+%   drops when the server and queue are full.
+
+sim(modelname);
+
+%% Related Demos
+% * <matlab:showdemo('sedemo_absbrake_overview_m'); Anti-Lock Braking
+% System (ABS) Overview>
+% * <matlab:showdemo('sedemo_absbrake_nodelay'); Anti-Lock Braking System (ABS) Model>
+% * <matlab:showdemo('sedemo_absbrake_can'); Anti-Lock Braking System (ABS) Model Using CAN Communications>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

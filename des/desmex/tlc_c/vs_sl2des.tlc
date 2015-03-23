@@ -1,0 +1,102 @@
+%% $Revision: 1.1.12.5 $  $Date: 2009/07/14 03:52:48 $
+%% Copyright 2005 The MathWorks, Inc.
+%%
+%% Abstract: SimEvents Variable-Step S-Function TLC
+%%
+
+%implements vs_sl2des "C"
+
+%include "des_tlc_util.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%% Abstract: Add relevant files to model includes. Add extern declaration 
+%%           for the generated compiled model information.
+%%
+%function BlockTypeSetup (block, system) void
+      
+    %<LibAddToCommonIncludes("des_cg_defs.h")> 
+    %<LibAddToCommonIncludes("des_cg_interface.h")>
+    %<LibAddToCommonIncludes("seSetup.h")>
+    
+    %openfile buffer1
+    extern double gblFinalTime;
+    %closefile buffer1
+    
+    %<LibCacheExtern(buffer1)>
+
+%endfunction %%BlockTypeSetup
+
+
+%% Function: InitializeConditions =========================================
+%% Abstract: Bind SimEvents solver objects
+%%
+%function InitializeConditions(block,system) Output
+{
+    const char* errMsg = 0;
+  	errMsg = simevents_bindSolvObjs("%<LibGetModelName()>");
+    %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+}
+%endfunction %%InitializeConditions
+
+
+%% Function: BlockInstanceSetup ===========================================
+%% Abstract: Called once per block instance before generating code.
+%%           
+%function BlockInstanceSetup (block, system) void
+        
+   %addtorecord block VSIdentifier     SFcnParamSettings.vsIdentifier
+  
+%endfunction %%BlockInstanceSetup
+
+
+
+
+%% Function: Start ========================================================
+%% Abstract: Emit code that calls into SimEvents to set up the run-time 
+%%           engine environment
+%%
+%function Start(block, system) Output  
+{
+	const char *errMsg = 0;
+
+    %% Update the simulation end time with the final time resolved by Simulink
+	errMsg = simevents_setupRTEngine("%<LibGetModelName()>", ssGetTStart(rtS), ssGetTFinal(rtS), myRTSeCfgPr, myRTSeNode, numOfElem_myRTSeNode, myBParams, myInSlConn, myOutSlConn, myInSeConn, myOutSeConn, numOfElem_myAttributeDef, myAttributeDef, numOfElem_myDesDataInfo, myDesDataInfo, myDesDataDims);
+    %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+}
+%endfunction %%Start
+
+
+%% Function: Outputs ======================================================
+%% Abstract: This function calls into SLDES to execute the event
+%%           calendar. At the end of this function, it sets the next hit 
+%%           time which is the next earliest event.
+%%
+%function Outputs(block, system) Output
+{   
+	const char* errMsg       = 0;  
+    real_T slTimeNow         = %<LibGetT()>;
+    
+    real_T engineNextHitTime = slTimeNow ;    
+    const char* mdlName      = "%<LibGetModelName()>";
+    boolean_T inclusive      = true;
+    
+    if ( %<LibIsMinorTimeStep()> ) return;
+         
+    errMsg = simevents_getNextEngineHitTime(mdlName, slTimeNow, &engineNextHitTime, inclusive);
+    %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+
+    %% Set the next sample hit for this function.
+    %<LibSetVarNextHitTime(block,"engineNextHitTime")>;
+}
+
+%endfunction  %% Outputs
+
+%% Function: Terminate ====================================================
+%% Abstract: This function calls into SLDES to do clean up work upon 
+%%           termination.
+%%
+%function Terminate(block, system) Output
+{
+	simevents_exeterminate("%<LibGetModelName()>");
+}
+%endfunction

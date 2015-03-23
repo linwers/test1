@@ -1,0 +1,498 @@
+Library {
+  Name			  "simeventsattributes2"
+  Version		  7.1
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "ibm-5348_P100-1997"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  off
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Tue Nov 11 12:11:11 2003"
+  Creator		  "mclune"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "ywu"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Fri Jan 18 16:26:24 2008"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:227>"
+  ConfigurationManager	  "None"
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      From
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      PMComponent
+      SubClassName	      "unknown"
+    }
+    Block {
+      BlockType		      Sensor
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      PMIOPort
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "simeventsattributes2"
+    Location		    [101, 346, 421, 527]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "Get Attribute"
+      Ports		      [0, 1, 0, 0, 0, 1, 1]
+      Position		      [50, 72, 135, 128]
+      Priority		      "1"
+      UserDataPersistent      on
+      UserData		      "DataTag0"
+      DialogController	      "des_ddg_create"
+      DialogControllerArgs    "DataTag1"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      on
+      MaskType		      "Get Attribute"
+      MaskDescription	      "Output attribute values to signal ports for each departing entity."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Attribute name:|Action for missing attribute:|Default value:|Send attribute value:|Treat vector as 1-D:|Number of entities departed, #d:|DefaultValue for Evaluation"
+      MaskStyleString	      "edit,edit,edit,edit,edit,popup(Off|On|Upon stop or pause),edit"
+      MaskTunableValueString  "off,off,off,off,off,off,off"
+      MaskCallbackString      "||des_setEvaluatedAttributes(gcb,'GetAttribute');||||"
+      MaskEnableString	      "off,off,off,on,on,on,off"
+      MaskVisibilityString    "on,on,off,on,on,on,off"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,"
+      MaskVariables	      "AttributeName=&1;AttributeMissing=&2;AttributeDefaultValue=&3;AttributeSendTiming=&4;AttributeTreatAsVector=&5;StatNumberDeparted=&6;EvaluatedDefaultAttributeValue=@7;"
+      MaskInitialization      "AttributeTable = des_ddg_init(gcbh,'GetAttribute');"
+      MaskDisplay	      "image(des_iconLoad('attrGet.jpg'),'center');\nport_label('LConn',1,'IN');                 \nport_label('output',1,'A1');                \nport_label('RConn',1,'OUT');                "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "Attribute1|Error|1|After entity departure|1|Off|{[]}"
+      MaskTabNameString	      "A1,A1,A1,A1,A1,Statistics,Statistics"
+      System {
+	Name			"Get Attribute"
+	Location		[676, 114, 1133, 350]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Reference
+	  Name			  "DES2SL_A1"
+	  Ports			  [0, 1, 0, 0, 0, 1]
+	  Position		  [305, 43, 355, 87]
+	  SourceBlock		  "des_sfun_lib/DES2SL"
+	  SourceType		  "msb"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  PortType		  "desPortIn"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_DES2SL"
+	  timingControl		  "SimEvents"
+	  execIndex		  "0"
+	  multipleOutputs	  off
+	  updateBeforeRead	  off
+	  InitValue		  "0"
+	  sampleTime		  "-1"
+	  offsetTime		  "0"
+	  idxBlockMR		  "0"
+	  IsMonitorOnly		  off
+	  dimsInfo		  "-1"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "__Get Attribute__"
+	  Ports			  [0, 0, 0, 0, 0, 1, 3]
+	  Position		  [165, 56, 270, 194]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag2"
+	  SourceBlock		  "simeventsattributes1/Set Attribute/__Set Attribute__"
+	  SourceType		  ""
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_GETATTRIBUTEV2"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  LConnTagsString	  "DI"
+	  RConnTagsString	  "DO|DO|DO"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [385, 118, 415, 132]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "A1"
+	  Position		  [380, 43, 410, 57]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Get Attribute__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Get Attribute__"
+	  SrcPort		  RConn3
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Get Attribute__"
+	  SrcPort		  RConn2
+	  DstBlock		  "DES2SL_A1"
+	  DstPort		  LConn1
+	}
+	Line {
+	  SrcBlock		  "DES2SL_A1"
+	  SrcPort		  1
+	  DstBlock		  "A1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Set Attribute"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [170, 73, 255, 127]
+      Priority		      "1"
+      UserDataPersistent      on
+      UserData		      "DataTag3"
+      DialogController	      "des_ddg_create"
+      DialogControllerArgs    "DataTag4"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      on
+      MaskType		      "Set Attribute"
+      MaskDescription	      "Set attribute values using data from the dialog or signals for each departing entity."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Attribute assignment:|Attribute name:|Type:|Value:|Create attribute if not present|Number of entities departed, #d:|Attribute Value for Evaluation"
+      MaskStyleString	      "edit,edit,edit,edit,checkbox,popup(Off|On|Upon stop or pause),edit"
+      MaskTunableValueString  "off,off,off,off,off,off,off"
+      MaskCallbackString      "|||des_setEvaluatedAttributes(gcb,'SetAttribute');|||"
+      MaskEnableString	      "on,off,off,off,off,on,off"
+      MaskVisibilityString    "on,on,off,off,on,on,off"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,"
+      MaskVariables	      "AttributeFrom=&1;AttributeName=&2;AttributeTreatAsVector=&3;AttributeValue=&4;AttributeCreate=&5;StatNumberDeparted=&6;EvaluatedAttributeValue=@7;"
+      MaskInitialization      "AttributeTable = des_ddg_init(gcbh,'SetAttribute');"
+      MaskDisplay	      "image(des_iconLoad('attrSet.jpg'),'center');\nport_label('LConn',1,'IN');                 \nport_label('RConn',1,'OUT');                "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "Dialog|Attribute1|1|1|on|Off|{1}"
+      MaskTabNameString	      "A1,A1,A1,A1,A1,Statistics,Statistics"
+      System {
+	Name			"Set Attribute"
+	Location		[761, 607, 1215, 866]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"108"
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Set Attribute__"
+	  Ports			  [0, 0, 0, 0, 0, 1, 2]
+	  Position		  [160, 56, 265, 194]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag5"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SETATTRIBUTEV2"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  LConnTagsString	  "DI"
+	  RConnTagsString	  "DO|DO"
+	  MaskInitialization	  "\n"
+	  MaskDisplay		  "port_label('LConn',1,'IN'); \nport_label('RConn',1,'#d'); \nport_label('RConn',2,'OUT');"
+	  MaskSelfModifiable	  on
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "pixels"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [385, 118, 415, 132]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Set Attribute__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Set Attribute__"
+	  SrcPort		  RConn2
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Annotation {
+      Name		      "SimEvents Attributes Library"
+      Position		      [161, 29]
+      FontName		      "Arial"
+      FontSize		      16
+      FontWeight	      "bold"
+    }
+  }
+}
+MatData {
+  NumRecords		  6
+  DataRecord {
+    Tag			    DataTag5
+    Data		    "  %)30     .    F H   8    (     @         %    \"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!);F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"P    !@    @    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    *     8    (     0         %    \"     $          0         .    *     8    (     0         %    \"     $          0         .    ( $   8    (     @         %    \"     $    !     0         %  0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   &     &    \"     $         !0    @    !     0    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" \"-D   .    8     8    (     0         %    \"     $    !     0         .    ,     8    (    !          %    \"     $    \"     0         0  ( ;F\\   X    @ 0  !@    @    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8     8    (     0         %    \"     $    !     0         .    ,     8    (    !          %    \"     $    \"     0         0  ( 24X   X   !@    !@    @    !          4    (     0    $    !          X    P    !@    @    $          4    (     0    ,    !         !   P!Y97, #@   \" !   &    \"     (         !0    @    !     0    $         !0 $  H    !    %    '!O<G1,86)E; !I<T5N86)L960       X   !@    !@    @    !          4    (     0    $    !          X    P    !@    @    $          4    (     0    ,    !         !   P!/550 #@   &     &    \"     $         !0    @    !     0    $         #@   #     &    \"     0         !0    @    !     P    $         $  # 'EE<P .    0     8    (    !          %    \"     $    +     0         0    \"P   &%T=')3970N:G!G       .    T (   8    (     @         %    \"     $    !     0         %  0 \"@    $   !:    4%1A9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4TP     4$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     0         !0    @    !     P    $         $  # &]U=  .    .     8    (    !          %    \"     $    %     0         0    !0   %)I9VAT    #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !20V]N;E1A9W-3=')I;F< #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !20V]N;@    X    X    !@    @    $          4    (     0    4    !         !     %    3$-O;FX    .    .     8    (    !          %    \"     $    &     0         0    !@   &]U='!U=   #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !20V]N;@    X    P    !@    @    $          4    (     0    (    !         !   @!$3P  #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$15,R4TP   X   #( @  !@    @    \"          4    (     0    $    !          4 !  *     0   %H   !05&%G4TP     4VED90       $-O;FY486<   !#;VYN        3W1H97)#;VYN $-O;FY33     !00V]N;@      4%1A9U-%     $=W87D                .    ,     8    (    !          %    \"     $    \"     0         0  ( :6X   X    P    !@    @    $          4    (     0    0    !         !  ! !,969T#@   $     &    \"     0         !0    @    !    #P    $         $     \\   !,0V]N;E1A9W-3=')I;F< #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !,0V]N;@    X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    .     8    (    !          %    \"     $    %     0         0    !0   &EN<'5T    #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !20V]N;@    X    P    !@    @    $          4    (     0    (    !         !   @!$20  #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !33#)$15,   "
+  }
+  DataRecord {
+    Tag			    DataTag4
+    Data		    "  %)30     .    0     8    (    !          %    \"     $    ,     0         0    #    %-E=$%T=')I8G5T90     "
+  }
+  DataRecord {
+    Tag			    DataTag3
+    Data		    "  %)30     .    ( T   8    (     @         %    \"     $    !     0         %  0 $@    $   !L    8VAI;&1.86UE            :6Y?:6YI=               :6Y?8FQO8VMU<&1A=&4     ;6%S:W9A;'5E<P          ;6%S:VYA;65S            :6Y?9&1G8FQO8VMU<&1A=&4       X   !(    !@    @    $          4    (     0   !$    !         !     1    7U]3970@071T<FEB=71E7U\\         #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               X    X    !@    @    &          4    (     0    $    !          D    (               .    2 4   8    (     0         %    \"    !4    !     0         .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4Q        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4R        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4S        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4T        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   ! &   &    \"     $         !0    @    5     0    $         #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,0      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,0      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93$ #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93$     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4Q    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,@      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,@      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93( #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93(     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4R    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,P      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,P      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93, #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93,     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4S    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M-       #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE-       #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP930 #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU930     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4T    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !C;W5N=%-E<G9E9       #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               "
+  }
+  DataRecord {
+    Tag			    DataTag2
+    Data		    "  %)30     .    \" L   8    (     @         %    \"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!);F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"P    !@    @    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    *     8    (     0         %    \"     $          0         .    *     8    (     0         %    \"     $          0         .    D $   8    (     @         %    \"     $    !     0         %  0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   )@    &    \"     $         !0    @    !     @    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" \"-D   .    ,     8    (    !          %    \"     $    \"     0         0  ( 03$   X   \"8    !@    @    !          4    (     0    (    !          X    P    !@    @    $          4    (     0    (    !         !   @!N;P  #@   #     &    \"     0         !0    @    !     P    $         $  # 'EE<P .    ( $   8    (     @         %    \"     $    !     0         %  0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   &     &    \"     $         !0    @    !     0    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" $E.   .    8     8    (     0         %    \"     $    !     0         .    ,     8    (    !          %    \"     $    #     0         0  , >65S  X    @ 0  !@    @    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8     8    (     0         %    \"     $    !     0         .    ,     8    (    !          %    \"     $    #     0         0  , 3U54  X   !@    !@    @    !          4    (     0    $    !          X    P    !@    @    $          4    (     0    ,    !         !   P!Y97, #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R1V5T+FIP9P      #@   - \"   &    \"     (         !0    @    !     0    $         !0 $  H    !    6@   %!486=33     !3:61E        0V]N;E1A9P   $-O;FX       !/=&AE<D-O;FX 0V]N;E-,     %!#;VYN      !05&%G4T4     1W=A>0                X    P    !@    @    $          4    (     0    ,    !         !   P!O=70 #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !2:6=H=     X   !     !@    @    $          4    (     0    \\    !         !     /    4D-O;FY486=S4W1R:6YG  X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    .     8    (    !          %    \"     $    %     0         0    !0   $Q#;VYN    #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !O=71P=70   X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    ,     8    (    !          %    \"     $    \"     0         0  ( 1$\\   X    X    !@    @    $          4    (     0    8    !         !     &    1$53,E-,   .    R (   8    (     @         %    \"     $    !     0         %  0 \"@    $   !:    4%1A9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4TP     4$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     0         !0    @    !     @    $         $  \" &EN   .    ,     8    (    !          %    \"     $    $     0         0  0 3&5F= X   !     !@    @    $          4    (     0    \\    !         !     /    3$-O;FY486=S4W1R:6YG  X    X    !@    @    $          4    (     0    4    !         !     %    3$-O;FX    .    .     8    (    !          %    \"     $    %     0         0    !0   %)#;VYN    #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !I;G!U=     X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    ,     8    (    !          %    \"     $    \"     0         0  ( 1$D   X    X    !@    @    $          4    (     0    8    !         !     &    4TPR1$53   "
+  }
+  DataRecord {
+    Tag			    DataTag1
+    Data		    "  %)30     .    0     8    (    !          %    \"     $    ,     0         0    #    $=E=$%T=')I8G5T90     "
+  }
+  DataRecord {
+    Tag			    DataTag0
+    Data		    "  %)30     .    . $   8    (     @         %    \"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI=           :6Y?8FQO8VMU<&1A=&4     #@   $@    &    \"     0         !0    @    !    $0    $         $    !$   !?7T=E=\"!!='1R:6)U=&5?7P         .    .     8    (    !@         %    \"     $    !     0         )    \"               #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               "
+  }
+}

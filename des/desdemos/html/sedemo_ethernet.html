@@ -1,0 +1,88 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Ethernet Local Area Network</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_ethernet"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_ethernet.mdl</div><div class="right"><a href="matlab:sedemo_ethernet">Open this model</a></div></div><div class="content"><h1>Ethernet Local Area Network</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#3">Implementing the CSMA/CD Protocol</a></li><li><a href="#4">Results and Displays</a></li><li><a href="#5">References</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model simulates an Ethernet LAN with three computers and a shared channel operated at 10 Mbps. The MAC Controller block implements the CSMA/CD (Carrier Sense Multiple Access with Collision Detection) protocol.</p><h2>Structure of the Model<a name="2"></a></h2><p>The top level of the model includes three computers, each consisting of the following:</p><div><ul><li>An Application block that models the consumer of data.</li><li>A MAC (medium access control) controller that governs the computer's use of the  shared channel.</li><li>A T-junction that connects the computer to the network.</li></ul></div><p>You can specify the packet generation rate and packet size range at the Application blocks, the transmission buffer size at the MAC Controller blocks, and the length of the cable at the Cable blocks. The terminator, T-junction, and cable blocks at the bottom of the model represent physical components of the network.</p><img vspace="5" hspace="5" src="sedemo_ethernet_01.png" alt=""> <h2>Implementing the CSMA/CD Protocol<a name="3"></a></h2><p>Standard Ethernet networks use a CSMA/CD protocol to manage use of the shared channel. Each computer's MAC controller physically monitors the traffic on the channel and initiates a transmission only when the controller detects no other traffic on the channel. If transmissions from two computers compete for use of the channel, then a collision occurs. Packets that collide with other packets can make a fixed number of additional attempts after a waiting period elapses, using the binary exponential backoff algorithm.</p><p>In this model, the CSMA/CD protocol is implemented in the MAC Controller subsystems.</p><img vspace="5" hspace="5" src="sedemo_ethernet_02.png" alt=""> <h2>Results and Displays<a name="4"></a></h2><p>This model includes various visualization that capture the performance of this Ethernet bus:</p><div><ul><li>Display blocks that show the number of packets that each computer observes as   successful or unsuccessful communications. Propagation delay modeled in the   Cable blocks can cause different computers to observe slightly different results.</li><li>The Throughput plot shows the ransmission throughput at one of the computers.</li><li>The Channel Utilization plot shows the proportion of time that the channel is in use.</li></ul></div><img vspace="5" hspace="5" src="sedemo_ethernet_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_ethernet_04.png" alt=""> <h2>References<a name="5"></a></h2><p>[1] Tanenbaum, Andrew S., Computer Networks, Fourth Ed., Upper Saddle River, N.J., Prentice Hall PTR, 2002.</p><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Ethernet Local Area Network
+%Copyright 2005-2008 The MathWorks, Inc.
+
+%% Overview
+% 
+% This model simulates an Ethernet LAN with three computers and a shared channel 
+% operated at 10 Mbps. The MAC Controller block implements the CSMA/CD 
+% (Carrier Sense Multiple Access with Collision Detection) protocol. 
+
+%% Structure of the Model
+% The top level of the model includes three computers, each consisting of the 
+% following:
+% 
+% * An Application block that models the consumer of data.
+% * A MAC (medium access control) controller that governs the computer's use of the 
+%  shared channel.
+% * A T-junction that connects the computer to the network.
+% 
+% You can specify the packet generation rate and packet size range at the Application 
+% blocks, the transmission buffer size at the MAC Controller blocks, and the length 
+% of the cable at the Cable blocks. 
+% The terminator, T-junction, and cable blocks at the bottom of the model represent 
+% physical components of the network.
+
+model_name = 'sedemo_ethernet';
+open_system(model_name);
+%%  Implementing the CSMA/CD Protocol
+% 
+% Standard Ethernet networks use a CSMA/CD protocol to manage use of the shared 
+% channel. Each computer's MAC controller physically monitors the traffic on the 
+% channel and initiates a transmission only when the controller detects no other 
+% traffic on the channel. If transmissions from two computers compete for use of the 
+% channel, then a collision occurs. Packets that collide with other packets can make 
+% a fixed number of additional attempts after a waiting period elapses, using the 
+% binary exponential backoff algorithm.
+% 
+% In this model, the CSMA/CD protocol is implemented in the MAC Controller
+% subsystems.
+open_system('sedemo_ethernet/MAC Controller (B)', 'force');
+
+% The Transmission Buffer block holds packets waiting for transmission. 
+% When the carrier-sensing component modeled in CSMA/CD subsystem indicates that the channel is ready, the Medium Access Control block that acts as a gate opens 
+% and the packet advances to the subsystem's TX output port. This output port
+% permits the packet to advance to the T-junction.
+% In the course of advancing past the Medium Access Control block to the TX output port, 
+% the packet also passes through a Replicate block that makes a copy of the packet. D
+% The CSMA/CD subsystem uses this copy to observe the channel's state and to implement CSMA/CD.
+% In particular, the subsystem tracks the packets that use the channel, determines 
+% when the channel is not busy, and determines when the channel experiences a 
+% collision between two packets. For packets that experience a collision, 
+% the Backoff Controller subsystem determines whether and when a packet reattempts 
+% transmission.
+
+%% Results and Displays
+% This model includes various visualization that capture the performance of
+% this Ethernet bus:
+%
+% * Display blocks that show the number of packets that each computer observes as 
+%   successful or unsuccessful communications. Propagation delay modeled in the 
+%   Cable blocks can cause different computers to observe slightly different results.
+% * The Throughput plot shows the ransmission throughput at one of the
+% computers.
+% * The Channel Utilization plot shows the proportion of time that the
+% channel is in use.
+sim(model_name);
+
+%% References
+% 
+% [1] Tanenbaum, Andrew S., Computer Networks, Fourth Ed., Upper Saddle River, N.J., 
+% Prentice Hall PTR, 2002.
+
+%%
+clear (model_name);
+bdclose all;
+displayEndOfDemoMessage(mfilename)
+##### SOURCE END #####
+--></body></html>

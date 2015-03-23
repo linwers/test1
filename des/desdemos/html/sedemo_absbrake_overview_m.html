@@ -1,0 +1,124 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Anti-Lock Braking System (ABS) Overview</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_absbrake_overview_m"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left"><a href="matlab:edit sedemo_absbrake_overview_m">Open sedemo_absbrake_overview_m.m in the Editor</a></div><div class="right"><a href="matlab:echodemo sedemo_absbrake_overview_m">Run in the Command Window</a></div></div><div class="content"><h1>Anti-Lock Braking System (ABS) Overview</h1><!--introduction--><p>The following related models build on each other to illustrate the early, middle and late phases in the design of a component in a distributed system. The system being modeled is that of an anti-lock braking system (ABS) in a vehicle.</p><p>Increasing the complexity of your model incrementally lets you evaluate and refine your design efficiently. By including real-world timing effects in the model, you gain confidence about the behavior and robustness of your design before you test it in hardware.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">ABS Model Without Delays</a></li><li><a href="#2">ABS Model with Queuing Delay</a></li><li><a href="#3">ABS Model Using CAN Communications</a></li></ul></div><h2>ABS Model Without Delays<a name="1"></a></h2><p>The <a href="matlab:showdemo('sedemo_absbrake_nodelay')">Anti-Lock Braking System (ABS)</a> demo lets you prototype a design and explore its performance without accounting for latency between components in a distributed system. The following figure shows the simulation result of an ABS system model. The simulation result below shows the vehicle speed and the wheel speed for a braking vehicle with an ABS system the prevents wheel lock-up.</p><pre class="codeinput">modelname = <span class="string">'sedemo_absbrake_nodelay'</span>;
+open_system( [modelname, <span class="string">'.mdl'</span>] );
+sim(modelname);
+close(findobj(<span class="string">'Name'</span>, <span class="string">'ABS Slip'</span>));
+sedemo_helper(gcs, <span class="string">'CloseFig'</span>);
+f = findobj(<span class="string">'Name'</span>, <span class="string">'ABS Speeds'</span>);
+set(f, <span class="string">'Tag'</span>, <span class="string">''</span>);
+close_system(modelname, 0);
+</pre><img vspace="5" hspace="5" src="sedemo_absbrake_overview_m_01.png" alt=""> <h2>ABS Model with Queuing Delay<a name="2"></a></h2><p>The <a href="matlab:showdemo('sedemo_absbrake_delay')">Anti-Lock Braking System (ABS) Model with Queuing Delay</a> demo uses a simple queuing model to introduce timing uncertainty in the ABS system. This uncertainty models latency between components in the distributed system. The following figure shows the simulation result of such a system.</p><pre class="codeinput">bdclose <span class="string">all</span>;
+close(findobj(<span class="string">'Name'</span>, <span class="string">'ABS Speeds'</span>));
+modelname = <span class="string">'sedemo_absbrake_delay'</span>;
+open_system( modelname );
+sim(modelname);
+close(findobj(<span class="string">'Name'</span>, <span class="string">'ABS Slip'</span>));
+sedemo_helper(gcs, <span class="string">'CloseFig'</span>);
+f = findobj(<span class="string">'Name'</span>, <span class="string">'ABS Speeds'</span>);
+set(f, <span class="string">'Tag'</span>, <span class="string">''</span>);
+close_system(modelname, 0);
+</pre><img vspace="5" hspace="5" src="sedemo_absbrake_overview_m_02.png" alt=""> <h2>ABS Model Using CAN Communications<a name="3"></a></h2><p>The <a href="matlab:showdemo('sedemo_absbrake_can')">Anti-Lock Braking System (ABS) Model Using CAN Communications</a> demo models the Control Area Network (CAN) and shows how stochastic network traffic causes timing latency and uncertainty that is representative of a real-world heavily-loaded network. The following figure shows the simulation result of such a system.</p><pre class="codeinput">bdclose <span class="string">all</span>;
+close(findobj(<span class="string">'Name'</span>, <span class="string">'ABS Speeds'</span>));
+modelname = <span class="string">'sedemo_absbrake_can'</span>;
+open_system(modelname);
+sim(modelname);
+sedemo_helper(gcs, <span class="string">'CloseFig'</span>);
+f = findobj(<span class="string">'Name'</span>, <span class="string">'ABS Speeds'</span>);
+set(f, <span class="string">'Tag'</span>, <span class="string">''</span>);
+close_system(modelname, 0);
+</pre><img vspace="5" hspace="5" src="sedemo_absbrake_overview_m_03.png" alt=""> <pre class="codeinput">close(f);
+bdclose <span class="string">all</span>;
+clear <span class="string">modelname</span> <span class="string">f</span>
+</pre><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Anti-Lock Braking System (ABS) Overview
+%Copyright 2008 The MathWorks, Inc.
+%
+% The following related models build on each other to illustrate the early,
+% middle and late phases in the design of a component in a distributed
+% system. The system being modeled is that of an anti-lock braking system
+% (ABS) in a vehicle.
+%
+% Increasing the complexity of your model incrementally lets you evaluate
+% and refine your design efficiently. By including real-world timing
+% effects in the model, you gain confidence about the behavior and
+% robustness of your design before you test it in hardware.
+
+%% ABS Model Without Delays
+%
+% The 
+% <matlab:showdemo('sedemo_absbrake_nodelay')
+% Anti-Lock Braking System (ABS)> demo lets you prototype a design and 
+% explore its performance without accounting for latency between 
+% components in a distributed system. The following figure shows the 
+% simulation result of an ABS system model. The simulation result below 
+% shows the vehicle speed and the wheel speed for a braking vehicle with 
+% an ABS system the prevents wheel lock-up.
+
+modelname = 'sedemo_absbrake_nodelay';
+open_system( [modelname, '.mdl'] );
+sim(modelname);
+close(findobj('Name', 'ABS Slip'));
+sedemo_helper(gcs, 'CloseFig');
+f = findobj('Name', 'ABS Speeds');
+set(f, 'Tag', '');
+close_system(modelname, 0);
+
+%% ABS Model with Queuing Delay
+%
+% The
+% <matlab:showdemo('sedemo_absbrake_delay')
+% Anti-Lock Braking System (ABS) Model with Queuing Delay> demo uses a 
+% simple queuing model to introduce timing uncertainty in the ABS system. 
+% This uncertainty models latency between components in the distributed 
+% system. The following figure shows the simulation result of such a 
+% system.
+
+bdclose all;
+close(findobj('Name', 'ABS Speeds'));
+modelname = 'sedemo_absbrake_delay';
+open_system( modelname );
+sim(modelname);
+close(findobj('Name', 'ABS Slip'));
+sedemo_helper(gcs, 'CloseFig');
+f = findobj('Name', 'ABS Speeds');
+set(f, 'Tag', '');
+close_system(modelname, 0);
+
+%% ABS Model Using CAN Communications
+%
+% The
+% <matlab:showdemo('sedemo_absbrake_can')
+% Anti-Lock Braking System (ABS) Model Using CAN Communications> demo
+% models the Control Area Network (CAN) and shows how stochastic network
+% traffic causes timing latency and uncertainty that is representative of
+% a real-world heavily-loaded network. The following figure shows the 
+% simulation result of such a system.
+
+bdclose all;
+close(findobj('Name', 'ABS Speeds'));
+modelname = 'sedemo_absbrake_can';
+open_system(modelname);
+sim(modelname);
+sedemo_helper(gcs, 'CloseFig');
+f = findobj('Name', 'ABS Speeds');
+set(f, 'Tag', '');
+close_system(modelname, 0);
+
+%%
+close(f);
+bdclose all;
+clear modelname f
+displayEndOfDemoMessage(mfilename)
+
+
+##### SOURCE END #####
+--></body></html>

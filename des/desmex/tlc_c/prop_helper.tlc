@@ -1,0 +1,19 @@
+%% $RCSfile: prop_helper.tlc,v $
+
+%% $Revision: 1.1.6.1 $  $Date: 2009/04/21 03:09:27 $
+%% Copyright 2005 The MathWorks, Inc.
+%%
+%% Abstract: TLC Code generation for SimEvents
+%%           Propagation Helper Block (for prop_helper.cpp)
+%%
+
+%implements prop_helper "C"
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% Function: Outputs ===========================================================
+%%
+%function Outputs(block, system) Output
+
+%endfunction  %% Outputs

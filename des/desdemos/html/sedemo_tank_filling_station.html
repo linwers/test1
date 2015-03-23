@@ -1,0 +1,153 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Tank Filling Station</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_tank_filling_station"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_tank_filling_station.mdl</div><div class="right"><a href="matlab:sedemo_tank_filling_station">Open this model</a></div></div><div class="content"><h1>Tank Filling Station</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Tank Level Controller</a></li><li><a href="#5">Trucks Queuing at the Filling Station</a></li><li><a href="#6">Results and Displays</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model contains a tank whose fluid level decreases as fluid flows out of the tank and increases when trucks fill the tank.</p><img vspace="5" hspace="5" src="sedemo_tank_filling_station_01.png" alt=""> <p><i>Fig 1: Tank Filling Station Model</i></p><h2>Tank Level Controller<a name="3"></a></h2><p>A controller (block named Tank Level Controller) aims to keep the tank's fluid level between a lower level, L, and an upper level, U. The controller responds to varying tank levels by changing its state and the tank outflow rate, as shown below in Table 1. The number M is a middle level. In this model, L=1 &lt; M=3 &lt; U=5.</p><p>
+<div class="informaltable">
+<table cellspacing="0" class="body" cellpadding="4" border="2">
+<colgroup>
+<col width="21%"><col width="61%"><col width="18%">
+</colgroup>
+<thead><tr valign="top">
+<th bgcolor="#B2B2B2" valign="top">Tank Level Threshold</th>
+<th bgcolor="#B2B2B2" valign="top">State Change</th>
+<th bgcolor="#B2B2B2" valign="top">Outflow Rate</th>
+</tr></thead>
+<tbody><tr valign="top">
+<td bgcolor="#F2F2F2">L</td>
+<td bgcolor="#F2F2F2">Set URF = 1 (underflow)</td>
+<td bgcolor="#F2F2F2">0</td>
+</tr>
+<tr valign="top"><td bgcolor="#F2F2F2" rowspan="2">M</td>
+<td bgcolor="#F2F2F2">When crossing M from below, set URF = 0</td>
+<td bgcolor="#F2F2F2">10</td>
+</tr>
+<tr valign="top">
+<td bgcolor="#F2F2F2">When crossing M from above, set OVF = 0</td>
+<td bgcolor="#F2F2F2">10</td>
+</tr>
+<tr valign="top"><td bgcolor="#F2F2F2">U</td>
+<td bgcolor="#F2F2F2">Set OVF = 1 (overflow)</td>
+<td bgcolor="#F2F2F2">20</td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</p><p><i>Table 1: Tank Controller Policy</i></p><h2>Trucks Queuing at the Filling Station<a name="5"></a></h2><p>Trucks arrive to fill the tank and wait in a queue. Each truck has attributes that specify the tank inflow rate and the truck's service time. The tank inflow rate equals</p><div><ul><li>The truck's Inflow attribute, while the truck is at the filling station.</li><li>Zero, when no truck is present.</li></ul></div><p>In this model, the trucks' interarrival times are exponentially distributed with mean 1.2 hours. Their service times are beta distributed between 0.75 and 1.25 with shape parameters equal to 1. Their Inflow attributes are uniformly distributed between 10 and 20.</p><h2>Results and Displays<a name="6"></a></h2><p>Plots (Figs 2, 3 and 4) display the following simulation results:</p><div><ul><li>Tank level throughout the simulation</li><li>Short-term view of the system (tank level, inflow and outflow)</li><li>Long-term view of the system (tank level, inflow and outflow)</li></ul></div><img vspace="5" hspace="5" src="sedemo_tank_filling_station_02.png" alt=""> <p><i>Fig 2: Tank Level (Simulation Result)</i></p><img vspace="5" hspace="5" src="sedemo_tank_filling_station_03.png" alt=""> <p><i>Fig 3: Short-Term View of the System (Simulation Result)</i></p><img vspace="5" hspace="5" src="sedemo_tank_filling_station_04.png" alt=""> <p><i>Fig 4: Long-Term View of the System (Simulation Result)</i></p><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Tank Filling Station
+%Copyright 2008 The MathWorks, Inc.
+
+%% Overview
+%
+% This model contains a tank whose fluid level decreases as fluid
+% flows out of the tank and increases when trucks fill the tank.
+
+modelname = 'sedemo_tank_filling_station';
+open_system(modelname);
+close_system([modelname, '/Scopes/Tank level ']);
+
+%%
+% _Fig 1: Tank Filling Station Model_
+%
+
+%% Tank Level Controller
+%
+% A controller (block named Tank Level Controller) aims to keep the tank's
+% fluid level between a lower level, L, and an upper level, U. The 
+% controller responds to varying tank levels by changing its state and the 
+% tank outflow rate, as shown below in Table 1. The number M is a middle level. 
+% In this model, L=1 < M=3 < U=5.
+% 
+
+%%
+% 
+% <html>
+% <div class="informaltable">
+% <table cellspacing="0" class="body" cellpadding="4" border="2">
+% <colgroup>
+% <col width="21%"><col width="61%"><col width="18%">
+% </colgroup>
+% <thead><tr valign="top">
+% <th bgcolor="#B2B2B2" valign="top">Tank Level Threshold</th>
+% <th bgcolor="#B2B2B2" valign="top">State Change</th>
+% <th bgcolor="#B2B2B2" valign="top">Outflow Rate</th>
+% </tr></thead>
+% <tbody><tr valign="top">
+% <td bgcolor="#F2F2F2">L</td>
+% <td bgcolor="#F2F2F2">Set URF = 1 (underflow)</td>
+% <td bgcolor="#F2F2F2">0</td>
+% </tr>
+% <tr valign="top"><td bgcolor="#F2F2F2" rowspan="2">M</td>
+% <td bgcolor="#F2F2F2">When crossing M from below, set URF = 0</td>
+% <td bgcolor="#F2F2F2">10</td>
+% </tr>
+% <tr valign="top">
+% <td bgcolor="#F2F2F2">When crossing M from above, set OVF = 0</td>
+% <td bgcolor="#F2F2F2">10</td>
+% </tr>
+% <tr valign="top"><td bgcolor="#F2F2F2">U</td>
+% <td bgcolor="#F2F2F2">Set OVF = 1 (overflow)</td>
+% <td bgcolor="#F2F2F2">20</td>
+% </tr></tbody>
+% </table>
+% <p></p>
+% </div>
+% </html>
+% 
+% _Table 1: Tank Controller Policy_
+%
+
+%% Trucks Queuing at the Filling Station
+%
+% Trucks arrive to fill the tank and wait in a queue. Each truck has 
+% attributes that specify the tank inflow rate and the truck's service 
+% time. The tank inflow rate equals
+% 
+% * The truck's Inflow attribute, while the truck is at the filling station.
+% * Zero, when no truck is present.
+% 
+% In this model, the trucks' interarrival times are exponentially 
+% distributed with mean 1.2 hours. Their service times are beta distributed 
+% between 0.75 and 1.25 with shape parameters equal to 1. Their Inflow 
+% attributes are uniformly distributed between 10 and 20.
+% 
+
+%% Results and Displays
+%
+% Plots (Figs 2, 3 and 4) display the following simulation results:
+% 
+% * Tank level throughout the simulation
+% * Short-term view of the system (tank level, inflow and outflow)
+% * Long-term view of the system (tank level, inflow and outflow)
+
+sim(modelname)
+
+%%
+open_system([modelname, '/Scopes/Tank level ']);
+%%
+% _Fig 2: Tank Level (Simulation Result)_
+%
+
+open_system([modelname, '/Scopes/Short Term View']);
+%%
+% _Fig 3: Short-Term View of the System (Simulation Result)_
+%
+
+open_system([modelname, '/Scopes/Long Term View']);
+%%
+% _Fig 4: Long-Term View of the System (Simulation Result)_
+%
+
+%%
+close_system(modelname, 0);
+displayEndOfDemoMessage(modelname);
+clear modelname;
+
+##### SOURCE END #####
+--></body></html>

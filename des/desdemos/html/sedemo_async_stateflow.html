@@ -1,0 +1,123 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Asynchronous Execution of a Stateflow&reg; Chart</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_async_stateflow"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_async_stateflow.mdl</div><div class="right"><a href="matlab:sedemo_async_stateflow">Open this model</a></div></div><div class="content"><h1>Asynchronous Execution of a Stateflow&reg; Chart</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Overview</a></li><li><a href="#5">Method 1: Delaying Function-Calls</a></li><li><a href="#7">Method 2: Delaying Entities</a></li><li><a href="#9">Results</a></li></ul></div><h2>Overview<a name="2"></a></h2><p>This demo shows two alternative methods to execute a Stateflow&reg; chart asynchronously, where a Simulink&reg; signal is used to decide execution times. In this example, the chart computes its own execution times during the simulation. The two approaches are:</p><div><ul><li>Delaying function calls</li><li>Delaying entities</li></ul></div><p>When using these techniques in your own models, you can choose the technique that you find most natural.</p><p>The top-level model shows a Stateflow chart and a subsystem that executes the chart after a certain amount of delay.</p><img vspace="5" hspace="5" src="sedemo_async_stateflow_01.png" alt=""> <p>The Stateflow chart logic increments the variable <tt>delay_time</tt> upon each firing, and the value of this variable is used as the delay before the next execution of the chart. When the delay interval exceeds 5, the <tt>End</tt> state becomes active indicating that the chart will not be executed any more.</p><img vspace="5" hspace="5" src="sedemo_async_stateflow_02.png" alt=""> <p>Refer to the <a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'guidelines_chart_des');">documentation</a> for instructions on how to configure a Stateflow chart for use with SimEvents&reg;.</p><h2>Method 1: Delaying Function-Calls<a name="5"></a></h2><p>The figure below shows the contents of the <tt>Delayed Execution</tt> subsystem for the first approach. It shows the use of delayed function calls to execute the Stateflow chart at times determined by the chart itself. The model is available <a href="matlab:open_system('sedemo_async_stateflow')">here</a>.</p><img vspace="5" hspace="5" src="sedemo_async_stateflow_03.png" alt=""> <p>A Function-Call Generator block executes the chart at the start of the simulation. Subsequently, the chart produces the output (<tt>delay_time</tt>) that determines the next firing time.</p><p>A Signal-Based Event to Function-Call Event block converts the signal update of the chart into a function call f1 which is delayed by the value of the block's <tt>t</tt> signal. This function call is used to execute the Stateflow chart, thus effectively causing a delayed execution.</p><h2>Method 2: Delaying Entities<a name="7"></a></h2><p>The figure below shows the contents of the <tt>Delayed Execution</tt> subsystem for the second approach. It shows the use of entities to execute the Stateflow chart. The model is available <a href="matlab:open_system('sedemo_async_stateflow_ent')">here</a>.</p><img vspace="5" hspace="5" src="sedemo_async_stateflow_04.png" alt=""> <p>At the start of simulation, the Time-Based Entity Generator block generates the first entity. This entity moves immediately to the Entity-Departure Event to Function-Call Event block which fires a function call that executes the Stateflow chart for the first time. The intergeneration period of this Time-Based Entity Generator block is Inf and hence it does not generate any more entities throughout the simulation.</p><p>When <tt>time &gt; 0</tt>, the chart provides the next execution delay on its first output port. Each time the chart executes, its output signal line updates, and this update event causes the Event-Based Entity Generator block to create a new entity. Each such entity is delayed in the Single Server for a time equal to the <tt>delay_time</tt> produced by the chart.</p><h2>Results<a name="9"></a></h2><p>A simulation of both models yields the following results.</p><img vspace="5" hspace="5" src="sedemo_async_stateflow_05.png" alt=""> <p>The spots on the x-axis where the value changes are the instants when the Stateflow chart executes. The values on the y-axis are the delays between successive execution times as computed by the chart, i.e. the values of <tt>delay_time</tt>. When <tt>delay_time</tt> exceeds 5, the chart no longer gets executed and instead maintains its state.</p><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Asynchronous Execution of a Stateflow(R) Chart
+%Copyright 2008 The MathWorks, Inc.
+
+%%
+modelname1 = 'sedemo_async_stateflow';
+modelname2 = 'sedemo_async_stateflow_ent';
+
+%% Overview
+%
+% This demo shows two alternative methods to execute a Stateflow(R) chart
+% asynchronously, where a Simulink(R) signal is used to decide execution
+% times. In this example, the chart computes its own execution times during
+% the simulation. The two approaches are:
+%
+% * Delaying function calls
+% * Delaying entities
+%
+% When using these techniques in your own models, you can choose the
+% technique that you find most natural.
+% 
+% The top-level model shows a Stateflow chart and a subsystem that executes 
+% the chart after a certain amount of delay.
+
+open_system(modelname1);
+set_param(modelname1, 'SimulationCommand', 'update');
+
+%%
+% The Stateflow chart logic increments the variable 
+% |delay_time| upon each firing, and the value of this variable is 
+% used as the delay before the next execution of the chart. When the delay 
+% interval exceeds 5, the |End| state becomes active indicating that the
+% chart will not be executed any more.
+
+open_system([modelname1, '/Chart']);
+
+%%
+% Refer to the 
+% <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'guidelines_chart_des');
+% documentation>
+% for instructions on 
+% how to configure a Stateflow chart for use with SimEvents(R).
+
+%% Method 1: Delaying Function-Calls
+%
+% The figure below shows the contents of the |Delayed Execution| subsystem
+% for the first approach. It shows the use of delayed function calls to 
+% execute the Stateflow chart at times determined by the chart itself. The
+% model is available
+% <matlab:open_system('sedemo_async_stateflow') here>. 
+
+open_system([modelname1, '/Asynchronous Execution']);
+
+%%
+% A Function-Call Generator block executes the chart at the start 
+% of the simulation. Subsequently, the chart produces the output 
+% (|delay_time|) that determines the next firing time.
+%
+% A Signal-Based Event to Function-Call Event block converts the
+% signal update of the chart into a function call f1 which is delayed by 
+% the value of the block's |t| signal. This 
+% function call is used to execute the Stateflow chart, thus effectively 
+% causing a delayed execution.
+
+%% Method 2: Delaying Entities
+%
+% The figure below shows the contents of the |Delayed Execution| subsystem
+% for the second approach. It shows the use of entities to execute the
+% Stateflow chart. The model is available
+% <matlab:open_system('sedemo_async_stateflow_ent') here>.
+
+load_system(modelname2);
+open_system([modelname2, '/Asynchronous Execution']);
+set_param(modelname2, 'SimulationCommand', 'update');
+
+%%
+% At the start of simulation, the Time-Based Entity Generator block
+% generates the first entity. This
+% entity moves immediately to the Entity-Departure Event to Function-Call 
+% Event block which fires a function call that executes the Stateflow chart 
+% for the first time. The intergeneration period of this Time-Based Entity
+% Generator block is Inf and hence it does not generate any more
+% entities throughout the simulation.
+%
+% When |time > 0|, the chart provides the next execution delay on its 
+% first output port. Each time the chart executes, its output signal line
+% updates, and this update event causes the Event-Based Entity Generator
+% block to create a new entity. Each such entity is delayed in the Single 
+% Server for a time equal to the |delay_time| produced by the chart. 
+
+%% Results
+%
+% A simulation of both models yields the following results.
+
+sim(modelname1);
+open_system([modelname1, '/Scope']);
+
+%%
+% The spots on the x-axis where the value changes are the instants when the
+% Stateflow chart executes. The values on the y-axis are the delays between
+% successive execution times as computed by the chart, i.e. the values of
+% |delay_time|. When |delay_time| exceeds 5, the chart no longer gets 
+% executed and instead maintains its state.
+
+%%
+close_system(modelname1, 0);
+close_system(modelname2, 0);
+clear modelname1 modelname2
+displayEndOfDemoMessage(mfilename);
+
+
+##### SOURCE END #####
+--></body></html>

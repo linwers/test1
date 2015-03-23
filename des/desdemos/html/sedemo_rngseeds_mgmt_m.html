@@ -1,0 +1,171 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Seed Management Workflow for Random Number Generators</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_rngseeds_mgmt_m"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left"><a href="matlab:edit sedemo_rngseeds_mgmt_m">Open sedemo_rngseeds_mgmt_m.m in the Editor</a></div><div class="right"><a href="matlab:echodemo sedemo_rngseeds_mgmt_m">Run in the Command Window</a></div></div><div class="content"><h1>Seed Management Workflow for Random Number Generators</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Getting Seeds from a Model</a></li><li><a href="#6">Generating Multiple Sets of Seeds</a></li><li><a href="#7">Switching Between Sets of Seeds</a></li><li><a href="#10">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This demo describes how to manage sets of seeds for random number generators in a SimEvents&reg; model. Using such an approach, you can experiment with different sets of seeds, and easily switch between different sets of seeds for a single model.</p><p>The model shown is a discrete event system in which entities arrive at random times, carry random data and are randomly routed by the Output Switch block to one of two paths.</p><pre class="codeinput">oldFormat = get(0, <span class="string">'format'</span>);
+format <span class="string">long</span>;
+
+modelname = <span class="string">'sedemo_rngseeds_mgmt'</span>;
+open_system(modelname);
+</pre><img vspace="5" hspace="5" src="sedemo_rngseeds_mgmt_m_01.png" alt=""> <p>The following blocks in the model use seeded random number generators for their operation:</p><div><ul><li>Event-Based Random Number</li><li>Time-Based Entity Generator</li><li>Output Switch</li></ul></div><h2>Getting Seeds from a Model<a name="3"></a></h2><p>The SimEvents function <tt>se_getseeds</tt> obtains information from a model or subsystem about the seed values and the blocks currently using them.</p><pre class="codeinput">mySeedSet = se_getseeds(modelname)
+</pre><pre class="codeoutput">mySeedSet = 
+    system: 'sedemo_rngseeds_mgmt'
+     seeds: [1x3 struct]
+</pre><p>This function returns a structure with two fields. The first field, <tt>system</tt>, contains the name of the model or subsystem from which these seeds were obtained.</p><p>The second field, <tt>seeds</tt> contains information about the seed values and the corresponding blocks. The seeds can be inspected as follows:</p><pre class="codeinput">[{mySeedSet.seeds.block}' {mySeedSet.seeds.value}']
+</pre><pre class="codeoutput">ans = 
+    'Event-Based Random Number'      [12345]
+    'Output Switch'                  [12345]
+    'Time-Based Entity Generator'    [ 6548]
+</pre><p>As can be seen above, two of the blocks use identical seeds which may cause undesirable effects or incorrect results for stochastic simulations as shown in the demo "Avoiding Identical Seeds for Random Number Generators". The function <tt>se_randomizeseeds</tt> can alleviate this condition as shown below.</p><h2>Generating Multiple Sets of Seeds<a name="6"></a></h2><p>The SimEvents function <tt>se_randomizeseeds</tt> makes all the seeds in a model or subsystem unique by randomizing them.</p><p>The functions <tt>se_randomizeseeds</tt> and <tt>se_getseeds</tt> can be used together as shown to generate multiple sets of seeds for simulation.</p><pre class="codeinput"><span class="comment">% generate one set of seeds and simulate the model</span>
+se_randomizeseeds(modelname, <span class="string">'GlobalSeed'</span>, 123);
+newSeedSet1 = se_getseeds(modelname);
+sim(modelname);
+
+<span class="comment">% generate a new set of seeds and simulate the model</span>
+se_randomizeseeds(modelname, <span class="string">'GlobalSeed'</span>, 456);
+newSeedSet2 = se_getseeds(modelname);
+sim(modelname);
+
+<span class="comment">% inspect the generated sets</span>
+set1 = [{newSeedSet1.seeds.block}' {newSeedSet1.seeds.value}']
+set2 = [{newSeedSet2.seeds.block}' {newSeedSet2.seeds.value}']
+</pre><pre class="codeoutput">set1 = 
+    'Event-Based Random Number'      [395689]
+    'Output Switch'                  [398906]
+    'Time-Based Entity Generator'    [402123]
+set2 = 
+    'Event-Based Random Number'      [1466947]
+    'Output Switch'                  [1470164]
+    'Time-Based Entity Generator'    [1473381]
+</pre><h2>Switching Between Sets of Seeds<a name="7"></a></h2><p>The SimEvents function <tt>se_setseeds</tt> can be used to switch between different sets of seeds for different simulation runs. The following example applies the seeds contained in <tt>newSeedSet1</tt> to the model (which is the system specified in <tt>newSeedSet1.system</tt>).</p><pre class="codeinput"><span class="comment">% set seeds to newSeedSet1 and simulate the model</span>
+oldSeeds = se_setseeds(newSeedSet1)
+sim(modelname);
+</pre><pre class="codeoutput">oldSeeds = 
+    system: 'sedemo_rngseeds_mgmt'
+     seeds: [1x3 struct]
+</pre><p>In addition the function <tt>se_setseeds</tt> returns all of the original seed values in the model in the variable <tt>oldSeeds</tt>. In case we need to revert changes then the function <tt>se_setseeds</tt> can be used again with the variable <tt>oldSeeds</tt> as the input argument.</p><pre class="codeinput">format(oldFormat);
+clear <span class="string">modelname</span>
+clear <span class="string">mySeedSet</span> <span class="string">newSeedSet1</span> <span class="string">newSeedSet2</span> <span class="string">oldSeeds</span>
+clear <span class="string">set1</span> <span class="string">set2</span> <span class="string">ans</span>
+</pre><h2>Related Demos<a name="10"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_identicalseeds_m')">Avoiding Identical Seeds for Random Number Generators</a></li></ul></div><pre class="codeinput">bdclose(<span class="string">'sedemo_rngseeds_mgmt'</span>);
+</pre><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Seed Management Workflow for Random Number Generators
+% 
+
+% Copyright 2005-2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2008/06/13 15:14:59 $
+
+%% Overview
+%
+% This demo describes how to manage
+% sets of seeds for random number generators in a SimEvents(R)
+% model. Using such an approach, you can experiment with different
+% sets of seeds, and easily switch between different sets of seeds for a
+% single model.
+%
+% The model shown is a
+% discrete event system in which entities arrive at random times, carry
+% random data and are randomly routed by the Output Switch block to one of
+% two paths.
+
+oldFormat = get(0, 'format');
+format long;
+
+modelname = 'sedemo_rngseeds_mgmt';
+open_system(modelname);
+
+%%
+% The following blocks in the model use seeded random
+% number generators for their operation:
+%
+% * Event-Based Random Number
+% * Time-Based Entity Generator
+% * Output Switch
+
+%% Getting Seeds from a Model
+%
+% The SimEvents function |se_getseeds| obtains information from a model or
+% subsystem
+% about the seed values and the blocks currently using them.
+
+mySeedSet = se_getseeds(modelname)
+
+%%
+% This function returns a structure with two fields. The first field,
+% |system|, contains the name of the model or subsystem from which these
+% seeds were obtained.
+%
+% The second field, |seeds| contains information about the seed values and
+% the corresponding blocks. The seeds can be inspected as follows:
+
+[{mySeedSet.seeds.block}' {mySeedSet.seeds.value}']
+
+%%
+% As can be seen above, two of the blocks use identical seeds which
+% may cause undesirable effects or incorrect results for stochastic
+% simulations as shown in the demo "Avoiding Identical Seeds for
+% Random Number Generators". The function |se_randomizeseeds| can 
+% alleviate this condition as shown below.
+
+%% Generating Multiple Sets of Seeds
+%
+% The SimEvents function |se_randomizeseeds| makes all
+% the seeds in a model or subsystem unique by randomizing them.
+%
+% The functions |se_randomizeseeds| and |se_getseeds| can be used together
+% as shown to generate multiple sets of seeds for simulation.
+
+% generate one set of seeds and simulate the model
+se_randomizeseeds(modelname, 'GlobalSeed', 123);
+newSeedSet1 = se_getseeds(modelname);
+sim(modelname);
+
+% generate a new set of seeds and simulate the model
+se_randomizeseeds(modelname, 'GlobalSeed', 456);
+newSeedSet2 = se_getseeds(modelname);
+sim(modelname);
+
+% inspect the generated sets
+set1 = [{newSeedSet1.seeds.block}' {newSeedSet1.seeds.value}']
+set2 = [{newSeedSet2.seeds.block}' {newSeedSet2.seeds.value}']
+
+%% Switching Between Sets of Seeds
+%
+% The SimEvents function |se_setseeds| can be used to switch between
+% different sets of seeds for different simulation runs. The following
+% example applies the seeds contained in |newSeedSet1| to the model (which
+% is the system specified in |newSeedSet1.system|).
+
+% set seeds to newSeedSet1 and simulate the model
+oldSeeds = se_setseeds(newSeedSet1)
+sim(modelname);
+
+%%
+% In addition the function |se_setseeds| returns all of the original seed
+% values in
+% the model in the variable |oldSeeds|. In case we need to revert changes
+% then the function |se_setseeds| can be used
+% again with the variable |oldSeeds| as the input argument.
+
+%%
+format(oldFormat);
+clear modelname
+clear mySeedSet newSeedSet1 newSeedSet2 oldSeeds
+clear set1 set2 ans
+
+%% Related Demos
+%
+% * <matlab:showdemo('sedemo_identicalseeds_m') Avoiding Identical Seeds
+% for Random Number Generators>
+bdclose('sedemo_rngseeds_mgmt');
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

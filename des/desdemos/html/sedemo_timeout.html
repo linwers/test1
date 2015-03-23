@@ -1,0 +1,56 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Schedule Timeout and Cancel Timeout Blocks</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_timeout"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_timeout.mdl</div><div class="right"><a href="matlab:sedemo_timeout">Open this model</a></div></div><div class="content"><h1>Schedule Timeout and Cancel Timeout Blocks</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Results and Displays</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Description<a name="1"></a></h2><p>This model shows how to use the <b>Schedule Timeout</b> and <b>Cancel Timeout</b> blocks to enforce a time limit on how long an entity can remain in a part of the model.</p><p>The Schedule Timeout block schedules a timeout which determines how long each entity can remain in the Infinite Server block. The Cancel Timeout block cancels the scheduled timeout, reads the residual time for each entity, and computes the time until each timeout would have occurred. The 'TO' port on the Infinite Server block allows entities to leave upon expiration of the timeout.</p><p>If the service time in the Infinite Server block is less than the timeout duration of the entity, then the timeout will be cancelled by the Cancel Timeout block upon completion of service.</p><img vspace="5" hspace="5" src="sedemo_timeout_01.png" alt=""> <h2>Results and Displays<a name="2"></a></h2><img vspace="5" hspace="5" src="sedemo_timeout_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_timeout_03.png" alt=""> <h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timeout_basic');">Basic Example Using Timeouts</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timeout_until_svc');">Limiting the Time Until Service Completion</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Schedule Timeout and Cancel Timeout Blocks
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:32 $
+
+%% Description
+% This model shows how to use the *Schedule Timeout* and *Cancel Timeout*
+% blocks to enforce a time limit on how long an entity can remain in a part
+% of the model. 
+%
+% The Schedule Timeout block schedules a timeout which determines how long
+% each entity can remain in the Infinite Server block. The Cancel Timeout
+% block cancels the scheduled timeout, reads the residual time for each
+% entity, and computes the time until each timeout would have occurred.
+% The 'TO' port on the Infinite Server block allows entities to leave upon
+% expiration of the timeout. 
+%
+% If the service time in the Infinite Server block is less than the timeout
+% duration of the entity, then the timeout will be cancelled by the Cancel
+% Timeout block upon completion of service.
+
+modelname = 'sedemo_timeout';
+open_system(modelname);
+set_param([modelname '/Residual Time'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Average Residual Time '],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Number of Entities Time-Stamped'],'OpenScopeAtSimStart', 'off' );
+
+%% Results and Displays
+
+sim(modelname);
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timeout_basic'); Basic Example Using Timeouts> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timeout_until_svc'); Limiting the Time 
+% Until Service Completion>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

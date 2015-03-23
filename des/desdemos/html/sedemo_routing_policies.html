@@ -1,0 +1,59 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Comparison of Routing Policies</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_routing_policies"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_routing_policies.mdl</div><div class="right"><a href="matlab:sedemo_routing_policies">Open this model</a></div></div><div class="content"><h1>Comparison of Routing Policies</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Results And Displays</a></li><li><a href="#4">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model runs three similar queuing systems in parallel under three routing policies</p><img vspace="5" hspace="5" src="sedemo_routing_policies_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>This model compares the queuing system under three routing policies given below:</p><div><ul><li>Shortest Queue:	Each entity advances to the shortest queue</li></ul></div><div><ul><li>Probabilistic:	Each entity is randomly routed to a queue</li></ul></div><div><ul><li>Round robin:	Entities alternate between the two queues</li></ul></div><h2>Results And Displays<a name="3"></a></h2><p>The plot compares the average system time (end-to-end delay) to demonstrate the optimality of the Shortest Queue policy when all service time distributions are exponential. If this assumption is violated, a Shortest Queue policy is not necessarily optimal.</p><img vspace="5" hspace="5" src="sedemo_routing_policies_02.png" alt=""> <h2>Related Demos<a name="4"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_single_v_multi_queue')">Single Queue Versus Multiple Queues</a></li><li><a href="matlab:showdemo('sedemo_preempt_policy')">Preemption Policy Comparison</a></li><li><a href="matlab:simeventsdemohelp('sedemo_priority_policies')">Prioritized Queuing Policy Comparison</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Comparison of Routing Policies
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:23 $
+
+%% Overview
+% This model runs three similar queuing systems in parallel under three
+% routing policies
+
+  modelname = 'sedemo_routing_policies';
+  open_system(modelname);
+  set_param([modelname '/Average System Time'],'open', 'off' );
+
+%% Structure
+% This model compares the queuing system under three routing policies given
+% below:
+%
+% * Shortest Queue:	Each entity advances to the shortest queue
+%
+% * Probabilistic:	Each entity is randomly routed to a queue
+%
+% * Round robin:	Entities alternate between the two queues
+
+%% Results And Displays
+% The plot compares the average system time (end-to-end delay) to
+% demonstrate the optimality of the Shortest Queue policy when all service
+% time distributions are exponential. If this assumption is violated, a
+% Shortest Queue policy is not necessarily optimal.
+  
+  set_param([modelname '/Average System Time'],'open', 'on' );
+  sim(modelname);
+  
+%% Related Demos
+% * <matlab:showdemo('sedemo_single_v_multi_queue') Single Queue Versus 
+% Multiple Queues>
+% * <matlab:showdemo('sedemo_preempt_policy') Preemption Policy 
+% Comparison>
+% * <matlab:simeventsdemohelp('sedemo_priority_policies') Prioritized Queuing 
+% Policy Comparison>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

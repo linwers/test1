@@ -1,0 +1,52 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Input and Output Switching</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_inputoutputswitch"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_inputoutputswitch.mdl</div><div class="right"><a href="matlab:sedemo_inputoutputswitch">Open this model</a></div></div><div class="content"><h1>Input and Output Switching</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Working</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates how the routing of entities can be achieved via <b>Input Switch</b> and <b>Output Switch</b></p><img vspace="5" hspace="5" src="sedemo_inputoutputswitch_01.png" alt=""> <h2>Working<a name="2"></a></h2><p>In this model, the Input Switch block determines from which input port to accept entities by reading values from the p input port. The Entity Departure Counter block sets the OutputPort attribute for the Output Switch to use to determine the path for the entities. The values used by the Input Switch and Output Switch appear in the plots. The markers on the lines in these plots indicate times at which entities pass through the switch blocks.</p><img vspace="5" hspace="5" src="sedemo_inputoutputswitch_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_inputoutputswitch_03.png" alt=""> <h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_roundrobin');">Round-robin approach via Input Switch</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_race_conditions_switch');">Race condition for simultaneous events with varying event priorities using Input Switch</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_switch_nostorage');">Signal-based output switching</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_packet_switch');">Packet switch in a communication network</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Input and Output Switching
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:33 $
+
+%% Overview
+% This model demonstrates how the routing of entities can be achieved via 
+% *Input Switch* and *Output Switch*
+
+modelname = 'sedemo_inputoutputswitch';
+open_system(modelname);
+
+%% Working
+% In this model, the Input Switch block determines from which input port 
+% to accept entities by reading values from the p input port. The Entity
+% Departure Counter block sets the OutputPort attribute for the Output 
+% Switch to use to determine the path for the entities. The values used by
+% the Input Switch and Output Switch appear in the plots. The markers on 
+% the lines in these plots indicate times at which entities pass through 
+% the switch blocks. 
+    
+sim(modelname);
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_roundrobin'); Round-robin approach via
+% Input Switch>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_race_conditions_switch'); Race condition 
+% for simultaneous events with varying event priorities using Input Switch>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_switch_nostorage'); Signal-based output 
+% switching>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_packet_switch'); Packet switch in a 
+% communication network>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

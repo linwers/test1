@@ -1,0 +1,43 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Prioritized Queuing Policy Comparison</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_priority_policies"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_priority_policies.mdl</div><div class="right"><a href="matlab:sedemo_priority_policies">Open this model</a></div></div><div class="content"><h1>Prioritized Queuing Policy Comparison</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model uses the Priority Queue block to implement queuing policies based on service time.</p><img vspace="5" hspace="5" src="sedemo_priority_policies_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>This model compares the performance of two prioritized queuing policies with the first-in, first-out (FIFO) queuing policy.</p><h2>Related Demos<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1');">dd1 Queuing Example</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo');">LIFO Queuing</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5');">N server example M/M/5 Queuing System (Markovian)</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq');">Priority Queuing Example</a></li><li><a href="matlab:showdemo('sedemo_preempt_policy');">Preempt Policy Demo</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Prioritized Queuing Policy Comparison
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:21 $
+
+%% Overview
+% This model uses the Priority Queue block to implement queuing policies
+% based on service time.
+
+  modelname = 'sedemo_priority_policies';
+  open_system(modelname);
+
+%% Structure
+% This model compares the performance of two prioritized queuing policies
+% with the first-in, first-out (FIFO) queuing policy.
+
+%% Related Demos
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1'); dd1 Queuing Example>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo'); LIFO Queuing>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5'); N server example M/M/5 Queuing 
+% System (Markovian)>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq'); Priority Queuing Example>
+% * <matlab:showdemo('sedemo_preempt_policy'); Preempt Policy Demo>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,70 @@
+%% $RCSfile: fc_sl2des.tlc,v $
+
+%% $Revision: 1.1.10.4 $  $Date: 2009/07/14 03:52:46 $
+%% Copyright 2004-2009 The MathWorks, Inc.
+%%
+%% Abstract: Function Call outputs TLC
+%%
+
+%implements fc_sl2des "C"
+
+%% Function: BlockTypeSetup===========================================================           
+%% Abstract: Do nothing.
+%%  
+%function BlockTypeSetup(block, system) void
+%endfunction
+
+%% Function: BlockInstanceSetup ===========================================================
+%% Abstract: -
+%%
+%function BlockInstanceSetup (block, system) Output
+  
+  %addtorecord block FcIndex SFcnParamSettings.fcIndex
+  
+%endfunction %% BlockInstanceSetup
+
+ 
+%% Function: InitializeConditions ===========================================================
+%% Abstract: Register the generated output function pointer with DES.
+%%
+
+%function InitializeConditions(block,system) Output
+   
+   
+   
+%endfunction %%InitializeConditions
+
+%% Function: Start ===========================================================
+%% Abstract: Emit the output function which will be called
+%%           by the SE blocks when a function call from a port 
+%%           corresponding to this instance has to be made.
+%%
+
+%function Start(block,system) Output
+
+   %assign temp = 1
+   %openfile funcbuf
+      void fcn_outputs_%<FcIndex>(void)
+      { 
+          %% This is tlc code for calling function call
+          %if LibIsEqual(SFcnSystemOutputCall[0].BlockToCall, "unconnected")
+              %% if unconnected, then nothing to do
+          %else
+              %<LibBlockExecuteFcnCall(block, 0)>
+          %endif
+       
+        }        
+   %closefile funcbuf
+   %assign srcFile = LibGetModelDotCFile()
+   %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)>
+   
+   simevents_setFcnCallBackFcn("%<LibGetModelName()>",%<FcIndex>,fcn_outputs_%<FcIndex>);
+   
+%endfunction
+
+
+%% Function: Outputs ===========================================================
+%% Abstract: Do nothing
+%function Outputs(block, system) Output
+
+%endfunction  %% Outputs

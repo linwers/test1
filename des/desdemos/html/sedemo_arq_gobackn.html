@@ -1,0 +1,117 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Go-Back-N Automatic Repeat Request</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_arq_gobackn"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_arq_gobackn.mdl</div><div class="right"><a href="matlab:sedemo_arq_gobackn">Open this model</a></div></div><div class="content"><h1>Go-Back-N Automatic Repeat Request</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#3">Results and Displays</a></li><li><a href="#4">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model simulates a go-back-N automatic repeat request (ARQ) system. Packets are created, transmitted over a channel, and affected by errors with a probability determined by the Forward Channel. For each data frame it receives, the receiver uses the return channel to send an acknowledgement (ACK) or nonacknowledgement (NAK) message back to the transmitter, based on a cyclic redundancy code (CRC) check. Upon receiving a NAK message, the transmitter retransmits all frames that have not yet been acknowledged with an ACK. By modeling the transmission and flow of data frames, this model lets you visualize the system's behavior and analyze its performance under different conditions.</p><p>This model's transmitter and receiver subsystems also illustrate how to use SimEvents blocks and Stateflow&reg; blocks together.</p><h2>Structure of the Model<a name="2"></a></h2><p><b>Frame Creation</b></p><p>This subsystem generates data frames with an exponential intergeneration time. Each frame has a unique sequence number that identifies it. (This demo uses the term &#8220;frame&#8221; in an abstract sense that is unrelated to frame-based signals in Simulink&reg; software.)</p><p><b>Transmitter</b></p><p>The transmitter transmits frames and also retransmits corrupted frames based on ACK and NAK messages from the receiver. An entity whose ack attribute is 1 corresponds to an ACK message, while 0 corresponds to a NAK message.</p><p>Enhances the ability to model clock drift between the transmitter and receiver. This demo adds a sinusoidally varying error in symbol timing to the original demo's constant error.</p><p>The transmitter uses a Stateflow chart to control the transmission and retransmission of frames. The transmitter state can have one of these values:</p><div><ul><li><i>Transmitting</i> &#8212; Placing a new data frame on the link</li></ul></div><div><ul><li><i>Retransmitting</i> &#8212; Retransmitting data frames across the link</li></ul></div><div><ul><li><i>WaitingToRetransmit</i> &#8212; Waiting for the link to become available in order   to start retransmission of rejected frames</li></ul></div><div><ul><li><i>Idle</i> &#8212; Not transmitting because no new data is available or the maximum   number of outstanding frames has been reached</li></ul></div><p><b>Forward Channel and Reverse Channel</b></p><p>The forward and reverse channels represent the propagation delay, assumed to be longer than the delay associated with transmission. That is, the transmitter finishes sending the complete frame before the receiver begins receiving it. Packets are potentially corrupted, but not dropped, during transmission. The reverse channel is assumed to be error-free.</p><p><b>Addition of errors</b></p><p>This subsystem corrupts packets with a given probability. The model assumes that the receiver can detect an error via a CRC check but cannot correct the error.</p><p><b>Receiver</b></p><p>The receiver sends an ACK or NAK message back to the transmitter for each frame and either accepts or rejects the frame according to the CRC check. After rejecting a frame, the receiver continues to reject frames until the originally rejected frame is correctly received. A Stateflow chart controls the state of the receiver as either accepting or rejecting data frames.</p><img vspace="5" hspace="5" src="sedemo_arq_gobackn_01.png" alt=""> <h2>Results and Displays<a name="3"></a></h2><p>Scopes display</p><div><ul><li>Result of the CRC check for each received frame, where a value of 0   indicates an error</li></ul></div><div><ul><li>The time and sequence number of transmitted frames</li></ul></div><div><ul><li>The time and sequence number of frames rejected by the receiver</li></ul></div><div><ul><li>The time and sequence number of frames accepted by the receiver</li></ul></div><img vspace="5" hspace="5" src="sedemo_arq_gobackn_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_arq_gobackn_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_arq_gobackn_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_arq_gobackn_05.png" alt=""> <h2>Related Demos<a name="4"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_arq_selective_repeat');">Selective-Repeat Automatic Repeat Request</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Go-Back-N Automatic Repeat Request
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.3 $ $Date: 2009/11/13 04:15:25 $
+
+%% Overview
+% This model simulates a go-back-N automatic repeat request (ARQ) system.
+% Packets are created, transmitted over a channel, and affected by errors
+% with a probability determined by the Forward Channel. For each data frame
+% it receives, the receiver uses the return channel to send an
+% acknowledgement (ACK) or nonacknowledgement (NAK) message back to the
+% transmitter, based on a cyclic redundancy code (CRC) check. Upon
+% receiving a NAK message, the transmitter retransmits all frames that have
+% not yet been acknowledged with an ACK. By modeling the transmission and
+% flow of data frames, this model lets you visualize the system's behavior
+% and analyze its performance under different conditions.
+%
+% This model's transmitter and receiver subsystems also illustrate how to
+% use SimEvents blocks and Stateflow® blocks together.
+
+%% Structure of the Model
+% *Frame Creation*
+%
+% This subsystem generates data frames with an exponential intergeneration
+% time. Each frame has a unique sequence number that identifies it. (This
+% demo uses the term “frame” in an abstract sense that is unrelated to
+% frame-based signals in Simulink® software.)
+%
+% *Transmitter*
+%
+% The transmitter transmits frames and also retransmits corrupted frames
+% based on ACK and NAK messages from the receiver. An entity whose ack
+% attribute is 1 corresponds to an ACK message, while 0 corresponds to a
+% NAK message.
+%
+% Enhances the ability to model clock drift between the transmitter and
+% receiver. This demo adds a sinusoidally varying error in symbol timing to
+% the original demo's constant error.
+% 
+% The transmitter uses a Stateflow chart to control the transmission and
+% retransmission of frames. The transmitter state can have one of these
+% values: 
+%
+% * _Transmitting_ — Placing a new data frame on the link
+%
+% * _Retransmitting_ — Retransmitting data frames across the link
+%
+% * _WaitingToRetransmit_ — Waiting for the link to become available in order
+%   to start retransmission of rejected frames
+%
+% * _Idle_ — Not transmitting because no new data is available or the maximum
+%   number of outstanding frames has been reached
+%
+% *Forward Channel and Reverse Channel*
+%
+% The forward and reverse channels represent the propagation delay, assumed
+% to be longer than the delay associated with transmission. That is, the
+% transmitter finishes sending the complete frame before the receiver
+% begins receiving it. Packets are potentially corrupted, but not dropped,
+% during transmission. The reverse channel is assumed to be error-free.
+%
+% *Addition of errors*
+%
+% This subsystem corrupts packets with a given probability. The model
+% assumes that the receiver can detect an error via a CRC check but cannot
+% correct the error.
+%
+% *Receiver*
+%
+% The receiver sends an ACK or NAK message back to the transmitter for each
+% frame and either accepts or rejects the frame according to the CRC check.
+% After rejecting a frame, the receiver continues to reject frames until
+% the originally rejected frame is correctly received. A Stateflow chart
+% controls the state of the receiver as either accepting or rejecting data
+% frames.
+
+modelname = 'sedemo_arq_gobackn';
+open_system(modelname);
+
+%% Results and Displays
+%
+% Scopes display
+%
+% * Result of the CRC check for each received frame, where a value of 0
+%   indicates an error
+%
+% * The time and sequence number of transmitted frames
+%
+% * The time and sequence number of frames rejected by the receiver
+%
+% * The time and sequence number of frames accepted by the receiver
+
+
+sim(modelname);
+
+%% Related Demos
+% * <matlab:showdemo('sedemo_arq_selective_repeat'); Selective-Repeat Automatic Repeat Request>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

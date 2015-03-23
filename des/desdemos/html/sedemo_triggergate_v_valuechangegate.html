@@ -1,0 +1,43 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Release Gate: Value Change Versus Trigger</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_triggergate_v_valuechangegate"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_triggergate_v_valuechangegate.mdl</div><div class="right"><a href="matlab:sedemo_triggergate_v_valuechangegate">Open this model</a></div></div><div class="content"><h1>Release Gate: Value Change Versus Trigger</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Results And Displays</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Description<a name="1"></a></h2><p>This model compares the change-in-signal and Trigger modes of the <b>Release Gate</b> block. In this model, the <b>Gating Signal</b> scope shows the signal used to open the gates. The change-in-signal gate opens whenever the gating signal changes.  The triggered gate opens whenever the gating signal changes from zero to positive, or vice versa.</p><img vspace="5" hspace="5" src="sedemo_triggergate_v_valuechangegate_01.png" alt=""> <h2>Results And Displays<a name="2"></a></h2><img vspace="5" hspace="5" src="sedemo_triggergate_v_valuechangegate_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_triggergate_v_valuechangegate_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_triggergate_v_valuechangegate_04.png" alt=""> <h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_warmup');">Example for Release Gate and Enabled Gate</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_sync');">Synchronizing service start times</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Release Gate: Value Change Versus Trigger
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:47 $
+
+%% Description
+% This model compares the change-in-signal and Trigger modes of the 
+% *Release Gate* block. In this model, the *Gating Signal* scope shows the
+% signal used to open the gates. The change-in-signal gate opens whenever
+% the gating signal changes.  The triggered gate opens whenever the gating
+% signal changes from zero to positive, or vice versa. 
+
+modelname = 'sedemo_triggergate_v_valuechangegate';
+open_system(modelname);
+
+%% Results And Displays
+sim(modelname);
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_warmup'); Example for Release 
+% Gate and Enabled Gate> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_sync'); Synchronizing service 
+% start times>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,68 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Variable-Capacity Queue</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_variable_capacity_queue"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_variable_capacity_queue.mdl</div><div class="right"><a href="matlab:sedemo_variable_capacity_queue">Open this model</a></div></div><div class="content"><h1>Variable-Capacity Queue</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#4">Structure</a></li><li><a href="#5">Results And Displays</a></li><li><a href="#6">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates how to model a queue whose capacity is parameterized.</p><img vspace="5" hspace="5" src="sedemo_variable_capacity_queue_01.png" alt=""> <img vspace="5" hspace="5" src="sedemo_variable_capacity_queue_02.png" alt=""> <pre>           Fig.1 Variable Capacity Queue</pre><h2>Structure<a name="4"></a></h2><p>In this model, the block labeled Queue Capacity (Fig. 1) produces a signal that changes during the simulation and represents the queue capacity.</p><p>The Variable-Capacity Queue subsystem contains a FIFO Queue block that has no limit on its capacity. The preceding Enabled Gate block restricts entry to the queue as necessary. The Enabled Gate block depends on the Space Usage Control subsystem, which determines whether the queue has space for another entity.</p><p>If the capacity of the queue decreases such that the queue length exceeds the new capacity, then the queue becomes full beyond its capacity and does not flush excess entities. The queue remains in this state until either the capacity increases or enough entities depart from the queue. By comparison, the Queue with Flushing Capability demo illustrates how to reduce the length of a queue immediately.</p><h2>Results And Displays<a name="5"></a></h2><img vspace="5" hspace="5" src="sedemo_variable_capacity_queue_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_variable_capacity_queue_04.png" alt=""> <h2>Related Demos<a name="6"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1');">dd1 Queuing Example</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo');">LIFO Queuing</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5');">N server example M/M/5 Queuing System (Markovian)</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq');">Priority Queuing Example</a></li><li><a href="matlab:showdemo('sedemo_priority_policies');">Priority Policy Demo</a></li><li><a href="matlab:showdemo('sedemo_preempt_policy');">Preempt Policy Demo</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Variable-Capacity Queue
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:35 $
+
+%% Overview
+% This model demonstrates how to model a queue whose capacity is
+% parameterized.
+
+  modelname = 'sedemo_variable_capacity_queue';
+  open_system(modelname);
+
+%%
+  open_system([modelname '/Variable-Capacity Queue']);
+
+%%
+%             Fig.1 Variable Capacity Queue
+
+%% Structure
+% In this model, the block labeled Queue Capacity (Fig. 1) produces a
+% signal that changes during the simulation and represents the queue
+% capacity.
+% 
+% The Variable-Capacity Queue subsystem contains a FIFO Queue block that
+% has no limit on its capacity. The preceding Enabled Gate block restricts
+% entry to the queue as necessary. The Enabled Gate block depends on the
+% Space Usage Control subsystem, which determines whether the queue has
+% space for another entity.
+% 
+% If the capacity of the queue decreases such that the queue length exceeds
+% the new capacity, then the queue becomes full beyond its capacity and
+% does not flush excess entities. The queue remains in this state until
+% either the capacity increases or enough entities depart from the queue.
+% By comparison, the Queue with Flushing Capability demo illustrates how to
+% reduce the length of a queue immediately.
+
+%% Results And Displays
+
+  sim(modelname);
+  
+%% Related Demos
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1'); dd1 Queuing Example>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo'); LIFO Queuing>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5'); N server example M/M/5 Queuing 
+% System (Markovian)>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq'); Priority Queuing Example>
+% * <matlab:showdemo('sedemo_priority_policies'); Priority Policy Demo>
+% * <matlab:showdemo('sedemo_preempt_policy'); Preempt Policy Demo>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

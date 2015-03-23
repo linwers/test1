@@ -1,0 +1,169 @@
+%% $RCSfile: des_seq_gen.tlc,v $
+%% $Revision: 1.1.6.7 $  $Date: 2009/06/11 15:57:49 $
+%%
+%% Copyright 2005-2006 The MathWorks, Inc.
+%%
+%% Abstract: TLC for Event-Based Sequence Generator
+
+
+%implements des_seq_gen "C"
+
+%% Function: BlockInstanceSetup ===========================================
+%% Abstract:
+%%        Setup the S-function parameters
+%function BlockInstanceSetup (block, system) void
+
+    %addtorecord block OUTPORT 0   
+    %addtorecord block FinalValueOpt     SFcnParamSettings.finalValueOpt
+    %addtorecord block Index			 SFcnParamSettings.index
+    %addtorecord block PIndex			 SFcnParamSettings.proxyIndex
+      
+%endfunction
+
+%%%%%%%%%%%%%%%%%%%
+%% Fucntion : Start
+%% Description: For non accelarator mode, this function 
+%% emits the call back function that is will
+%% be called by the solver interface object when an output
+%% signal needs to be updated. 
+%% RSim target the connection check is disabled.
+%%%%%%%%%%%%%%%%%%%
+
+%function Start(block,system) Output
+
+  %if !Accelerator  %%if not accelerator mode
+  
+	%if block.SFcnParamSettings.genCodeOpt == 1 %% if code gen is turned on
+    
+	  %openfile funcbuf
+   
+      void sigsrc_%<Index>(void)
+      { 
+            real_T     *y  = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;   
+            int_T *idx_ptr =   %<LibBlockDWorkAddr(dwOutputIdx,"","",0)>;
+            
+            real_T *outputValue = %<LibBlockMatrixParameterBaseAddr(rtpOutputVector)>;
+
+            if(idx_ptr[0] < idx_ptr[1]) 
+            {
+                y[0] = outputValue[idx_ptr[0]];
+                idx_ptr[0]++;
+            }
+            else{
+                %switch FinalValueOpt
+                %case 1
+                    y[0] = outputValue[0];                
+                    idx_ptr[0] = 1;
+                    %break
+                %case 2
+                    y[0] = outputValue[idx_ptr[1] - 1];
+                    %break
+                %case 3
+                    y[0] = *(real_T*)%<LibBlockDWorkAddr(dwInfValue,"","",0)>;
+                    %break
+                %case 4
+                    y[0] = 0;
+                    %break
+                %default
+                    %assign errStr = "%<LibGetFormattedBlockPath(block)>: Invalid parameter FormOutputOpt in S-function des_seq_gen\n"
+                    %<LibBlockReportFatalError([], errStr)>
+                %endswitch
+           }
+           %<SLibFcnComputeOutput(block, 0)>;
+      }
+        
+      %closefile funcbuf
+      
+      %assign srcFile = LibGetModelDotCFile()
+   
+      %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)> 
+      
+      simevents_setSigSrcCallBackFcn("%<LibGetModelName()>",%<Index>, %<PIndex>, sigsrc_%<Index>);
+      
+     %endif %% Code gen is turned on  
+   %endif %% Not accelerator mode   
+ %endfunction
+
+
+%% Function: InitializeConditions ===========================================
+%% Abstract: Initialize the output vectors.
+
+%function InitializeConditions(block,system) Output
+{
+%if !Accelerator  %%if not accelerator mode
+
+  %if block.SFcnParamSettings.genCodeOpt == 1 %% if code gen is turned on
+
+	int_T *outValueIdx =  %<LibBlockDWorkAddr(dwOutputIdx,"","",0)>;
+	real_T* infVal		=  %<LibBlockDWorkAddr(dwInfValue,"","",0)>;
+	
+	%% Initialize the output vector index used in runtime
+	
+	%assign myIdx = block.SFcnParamSettings.outValueIdx
+	%foreach k = LibBlockDWorkWidth(dwOutputIdx)
+		*outValueIdx++ = %<myIdx[k]>;
+	%endforeach
+	
+	%% Initialize the dwork that stores the inf value.
+	
+	*infVal = %<block.SFcnParamSettings.infValue>;
+	
+  %endif %% code gen turned on
+  
+%endif %% !Accelerator mode
+}
+
+%endfunction %%InitializeConditions
+
+
+%% Function: Outputs                                                                 
+%% Abstract                                                                          
+%% Access the in/output data vectors and do the functions.                      
+                                                                                     
+%function Outputs(block, system) Output                                   
+{  
+%if Accelerator
+    %if block.SFcnParamSettings.genCodeOpt == 1
+        int_T *isCallerDesED = %<LibBlockDWorkAddr(dwEdSfunCaller,"","",0)>;
+        int_T valueIsCallerDesED = *isCallerDesED;
+           
+        if(*isCallerDesED == 1)
+        {   
+            real_T     *y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;   
+       
+            int_T *idx_ptr =   %<LibBlockDWorkAddr(dwOutputIdx,"","",0)>;
+            real_T *outputValue =  %<LibBlockDWorkAddr(dwOutputValue,"","",0)>;
+        
+            if(idx_ptr[0] < idx_ptr[1]) 
+            {
+                y[0] = outputValue[idx_ptr[0]];
+                idx_ptr[0]++;
+            }
+            else{
+                %switch FinalValueOpt
+                %case 1
+                    y[0] = outputValue[0];                
+                    idx_ptr[0] = 1;
+                    %break
+                %case 2
+                    y[0] = outputValue[idx_ptr[1] - 1];
+                    %break
+                %case 3
+                    y[0] = *(real_T*)%<LibBlockDWorkAddr(dwInfValue,"","",0)>;
+                    %break
+                %case 4
+                    y[0] = 0;
+                    %break
+                %default
+                    %assign errStr = "%<LibGetFormattedBlockPath(block)>: Invalid parameter FormOutputOpt in S-function des_seq_gen\n"
+                    %<LibBlockReportFatalError([], errStr)>
+                %endswitch
+            }
+            %<SLibFcnComputeOutput(block, 0)>;
+            *isCallerDesED  = 0;
+        }
+    %endif
+%endif
+}
+
+%endfunction

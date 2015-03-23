@@ -1,0 +1,74 @@
+%% $RCSfile: mr_sl2des.tlc
+
+%% $Revision: 1.1.10.3 $  $Date: 2009/05/23 07:54:22 $
+%% Copyright 2004-2009 The MathWorks, Inc.
+%%
+%% Abstract: Reactive port - mr_sl2des TLC
+%%
+
+%implements mr_sl2des "C"
+
+%include "des_tlc_util.tlc"
+
+%% Function: BlockTypeSetup ===========================================================
+%% Abstract: Do nothing.
+%%           
+
+%function BlockTypeSetup(block, system) void
+
+%endfunction %%BlockTypeSetup
+
+%% Function: BlockInstanceSetup ===========================================================
+%% Abstract: -
+%% 
+%function BlockInstanceSetup (block, system) Output
+  
+   %addtorecord block INPORT 0
+   %addtorecord block MrIndex SFcnParamSettings.mrIndex
+     
+%endfunction %%BlockInstanceSetup
+
+
+%% Function: InitializeConditions ===========================================================
+%% Abstract: Register index and  monitor only status. 
+%%           In the prototype version, this is not done.
+%% 
+
+%function InitializeConditions(block,system) Output
+{
+    const char* errMsg = 0;
+    %assign dataTypeName = LibBlockInputSignalDataTypeName(INPORT, "")
+	real_T     *u = (real_T*)%<LibBlockInputSignalAddr(0, "", "", 0)>;
+    int_T dataSize = (%<LibBlockInputSignalWidth(INPORT)>) * sizeof(%<dataTypeName>);
+    
+    errMsg = simevents_init_mr_internal_states("%<LibGetModelName()>",u,(int_T)(%<MrIndex>),dataSize);
+    %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+}
+%endfunction %% InitializeConditions
+
+%% Function: Start ===========================================================
+%% Abstract: Do nothing.
+%%           
+
+%function Start(block,system) Output
+
+%endfunction %%Start
+
+
+%% Function: Outputs ===========================================================
+%% Abstract: Call into DES to update the solver interface object
+%%           corresponding to this sfunction.
+
+%function Outputs(block, system) Output
+
+ {
+     if ( %<LibIsMajorTimeStep()> )
+     {
+         const char* errMsg = 0;
+         real_T * u = (real_T*)%<LibBlockInputSignalAddr(0, "", "", 0)>;
+         errMsg = simevents_mrInPortUpdate("%<LibGetModelName()>",%<MrIndex>,u,  %<LibGetT()>);
+         %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+     }
+ }
+  
+%endfunction  %% Outputs

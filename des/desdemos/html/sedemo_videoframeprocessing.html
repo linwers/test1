@@ -1,0 +1,90 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Distributed Video Processing</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_videoframeprocessing"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_videoframeprocessing.mdl</div><div class="right"><a href="matlab:sedemo_videoframeprocessing">Open this model</a></div></div><div class="content"><h1>Distributed Video Processing</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Experimenting with the Model</a></li><li><a href="#5">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model illustrates a high-level algorithm for processing video frames using distributed computed resources. This model and the <a href="matlab:showdemo('sedemo_dist_processing_nominal');">Distributed Processing Resource Modeling</a> demo jointly demonstrate how you can prototype an architecture or algorithm at a high level and later introduce refinements.</p><h2>Structure<a name="2"></a></h2><p>The model includes</p><div><ul><li>The Frame Generation section, which generates video frames at a fixed   rate and assigns each frame several pieces of data that represent the   processing time constants. In this part of the model, each entity   represents a frame of video data.</li></ul></div><div><ul><li>The Dropped Frames section, which discards frames that the video   processing computers can neither process nor store immediately.</li></ul></div><div><ul><li>The video-Processing Computer section.</li></ul></div><p>The Video-Processing Computers section processes entities   iteratively in this sequence:</p><div><ul><li>The Computer(s) for Shared Dispatch and Aggregation subsystem        models the process of dispatching each frame to one of multiple        processors.</li></ul></div><div><ul><li>The Computers for Video Processing subsystem models the video        processing for the frame.</li></ul></div><div><ul><li>Frames return to the Computer(s) for Shared Dispatch and        Aggregation subsystem, which models the process of sequencing the        frames after the video processing is complete.</li></ul></div><p>The loop is not infinite because the Output Switch block selects an output port based on an attribute that reflects the entity's stage of processing. When processing is complete, the entity advances to the block labeled Finished Frames.</p><img vspace="5" hspace="5" src="sedemo_videoframeprocessing_01.png" alt=""> <h2>Experimenting with the Model<a name="3"></a></h2><p>Run the simulation with default settings. From the plot labeled Count of Dropped Frames, you can see that the system drops many frames throughout the simulation. You can vary these parameters in the demo to see the effect on the rate at which the system drops frames:</p><div><ul><li>The number of servers in the Computer(s) for Shared Dispatch and   Aggregation subsystem</li></ul></div><div><ul><li>The number of servers in the Computers for Video Processing subsystem</li></ul></div><img vspace="5" hspace="5" src="sedemo_videoframeprocessing_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_videoframeprocessing_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_videoframeprocessing_04.png" alt=""> <p><b>Experimenting Further</b></p><p>The <a href="matlab:showdemo('sedemo_dist_processing_nominal');">Distributed Processing Resource Modeling</a> is similar to this model, but introduces refinements such as partitioning each frame for independing processing.</p><h2>Related Demos<a name="5"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_dist_processing_nominal');">Distributed Video Process Modelling</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Distributed Video Processing
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:50 $
+
+%% Overview
+% This model illustrates a high-level algorithm for processing video frames
+% using distributed computed resources. This model and the
+% <matlab:showdemo('sedemo_dist_processing_nominal'); Distributed
+% Processing Resource Modeling> demo jointly demonstrate how you can
+% prototype an architecture or algorithm at a high level and later
+% introduce refinements.
+
+%% Structure
+% The model includes
+%
+% * The Frame Generation section, which generates video frames at a fixed
+%   rate and assigns each frame several pieces of data that represent the
+%   processing time constants. In this part of the model, each entity
+%   represents a frame of video data.
+%
+% * The Dropped Frames section, which discards frames that the video
+%   processing computers can neither process nor store immediately.
+%
+% * The video-Processing Computer section.
+%
+% The Video-Processing Computers section processes entities
+%   iteratively in this sequence:
+% 
+% * The Computer(s) for Shared Dispatch and Aggregation subsystem
+%        models the process of dispatching each frame to one of multiple
+%        processors.
+%
+% * The Computers for Video Processing subsystem models the video
+%        processing for the frame.
+% 
+% * Frames return to the Computer(s) for Shared Dispatch and
+%        Aggregation subsystem, which models the process of sequencing the
+%        frames after the video processing is complete.
+%
+% The loop is not infinite because the Output Switch block selects an
+% output port based on an attribute that reflects the entity's stage of
+% processing. When processing is complete, the entity advances to the block
+% labeled Finished Frames.
+
+modelname = 'sedemo_videoframeprocessing';
+open_system(modelname);
+
+%% Experimenting with the Model
+% Run the simulation with default settings. From the plot labeled Count of
+% Dropped Frames, you can see that the system drops many frames throughout
+% the simulation. You can vary these parameters in the demo to see the
+% effect on the rate at which the system drops frames:
+%
+% * The number of servers in the Computer(s) for Shared Dispatch and
+%   Aggregation subsystem
+%
+% * The number of servers in the Computers for Video Processing subsystem
+
+sim(modelname);
+
+%%
+% *Experimenting Further*
+%
+% The <matlab:showdemo('sedemo_dist_processing_nominal'); Distributed
+% Processing Resource Modeling> is similar to this model, but introduces
+% refinements such as partitioning each frame for independing processing.
+
+%% Related Demos
+% * <matlab:showdemo('sedemo_dist_processing_nominal'); Distributed Video
+% Process Modelling>
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

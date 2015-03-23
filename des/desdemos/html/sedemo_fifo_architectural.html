@@ -1,0 +1,234 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>FIFO Buffer: Architectural Model</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_fifo_architectural"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_fifo_architectural.mdl</div><div class="right"><a href="matlab:sedemo_fifo_architectural">Open this model</a></div></div><div class="content"><h1>FIFO Buffer: Architectural Model</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Overview of the FIFO Buffer Model</a></li><li><a href="#3">Description of Processor A, Task 1</a></li><li><a href="#4">Description of Processor B</a></li><li><a href="#5">Description of FIFO Buffer</a></li><li><a href="#6">FIFO Buffer Model Behavior with Processor A Slower Than Processor B</a></li><li><a href="#8">FIFO Buffer Model Behavior with Processor A Faster Than Processor B</a></li><li><a href="#11">Description of the almost_full Signal to Manage Data Exchange</a></li><li><a href="#13">Description of Processor A, Task 2</a></li><li><a href="#14">Behavior Using The almost_full Signal to Manage Data Transfer</a></li><li><a href="#18">Modeling Drifting Clocks</a></li><li><a href="#19">Related Demos</a></li></ul></div><h2>Introduction<a name="1"></a></h2><p>This demo shows the architectural modeling of an asynchronous first in, first out (FIFO) buffer and uses the buffer to enable processors with different clocks to manage data exchange.</p><h2>Overview of the FIFO Buffer Model<a name="2"></a></h2><p>A FIFO buffer is a hardware component that is used to store data as a part of communications between  processors.  This demo shows the structure of the model and how to use the model to regulate the flow of data between processors operating at different clock speeds.</p><p>The modeling of the buffer with a more functional implementation is shown in <a href="matlab:simeventsdemohelp('sedemo_fifo_functional');">FIFO Buffer: Functional Model</a>.</p><p>The model contains two processors and a FIFO Buffer that supports data transfer between the processors.  Processor A contains two tasks, the first tasks for communicating with Processor B and a background task. Processor B only contains a task for communication with Processor A.  The connections between the processors and the FIFO Buffer include signals for data transfer and signals for control of the data transfer.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_01.png" alt=""> <h2>Description of Processor A, Task 1<a name="3"></a></h2><p>Task 1 for Processor A increments its state, state A, with each trigger. In addition, the processor includes logic to process the <b>full</b> signal asserted by the FIFO Buffer.  This logic inverts the <b>full</b> signal to assert the <b>wr_assert</b> signal to the FIFO Buffer. The Integer Delay block represents the latency in the response of Processor A to the <b>full</b> signal.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_02.png" alt=""> <h2>Description of Processor B<a name="4"></a></h2><p>Processor B accepts the state received from the FIFO Buffer via the Bin port and stores it when triggered.  In addition, it includes logic to receive the <b>empty</b> signal from the FIFO Buffer and assert the <b>rd_assert</b> signal.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_03.png" alt=""> <h2>Description of FIFO Buffer<a name="5"></a></h2><p>The FIFO Buffer subsystem includes the Event-Based Entity Generator and Set Attribute blocks to translate the <b>In</b> signal to an entity.  The entity is stored in the FIFO Queue block, released by the Release Gate block, and translated back to a signal by the Get Attribute block.  The <b>wr_clk</b> signal and <b>wr_en</b> signal combine to trigger the signal-to-entity translation while the <b>rd_clk</b> and <b>rd_en</b> signals combine to control the entity-to-signal translation.  The Compare to Thresholds subsystem contains logic that is triggered by control signals from the <b>rd_clk</b>, <b>rd_en</b>, and <b>wr_clk</b> inports of the FIFO Buffer subsystem as well as the <b>#n</b> signal from the FIFO Queue block. This subsystem, in turn, regulates the flow of entities to ensure that the buffer is not in an overflow or underflow state. The buffer capacity is specified on the FIFO Buffer mask dialog.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_04.png" alt=""> <h2>FIFO Buffer Model Behavior with Processor A Slower Than Processor B<a name="6"></a></h2><p>Running the model so Processor A is clocked slower than Processor B shows the FIFO Buffer block holding data between the instants that Processor A writes until the instants that Processor B reads.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_07.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_08.png" alt=""> <p>Zooming in on the plot of Number in Buffer shows, in detail, that the space usage in the buffer alternates rapidly between 0 and 1.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_09.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_10.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_11.png" alt=""> <h2>FIFO Buffer Model Behavior with Processor A Faster Than Processor B<a name="8"></a></h2><p>Running the model so Processor A is being clocked faster than Processor B shows the FIFO Buffer block attempting to limit the number of storage locations to the desired buffer capacity, 256.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_12.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_13.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_14.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_15.png" alt=""> <p>Zooming in on the corner of the plot of Number in Buffer shows that the space usage in the FIFO Buffer rises slightly above the desired buffer capacity, 256, to 258.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_16.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_17.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_18.png" alt=""> <p>The overflow is due to the latency in the response of Processor A to the <b>full</b> signal from the FIFO Buffer.  The latency comprises propagation delay, CPU processing delay, and quantization effects.  The exact time at which Processor A responds is quantized to synchronize with the clock for Processor A.</p><h2>Description of the almost_full Signal to Manage Data Exchange<a name="11"></a></h2><p>The latency in Processor A's response to the <b>full</b> signal can be managed by using the <b>almost_full</b> signal from the FIFO Buffer.  The reduced threshold represented by the Almost Full Threshold block ensures that the overshoot does not result in exceeding the buffer capacity.</p><p>The use of the <b>almost_full</b> signal also allows for a more flexible use of the CPU in Processor A.  Since Processor A is capable of sending data faster than Processor B can accept, there is unused processing capacity in Processor A.  When the space used in the buffer reaches the <b>almost_full</b> threshold, Processor A can switch from the communication task to another, less critical task.  This task is represented by the Task 2 subsystem in Processor A.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_19.png" alt=""> <h2>Description of Processor A, Task 2<a name="13"></a></h2><p>The Processor A Task 2 subsystem includes a Time-Based Entity Generator block that creates the enitity representing the second task in Processor A.  The task executes when the Enabled Gate block allows the entity to advance. The two Single Server blocks represent the time to switch context and to execute task 2.  When the entity is in the FIFO Queue block, the task is idle.  The <b>#n</b> signal disables the firing of the clock for Task 1 and the <b>wr_assert</b> signal, effectively modeling the task switching in Processor A.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_20.png" alt=""> <h2>Behavior Using The almost_full Signal to Manage Data Transfer<a name="14"></a></h2><p>Running the model with the Almost Full Control block enabled shows that when the number in buffer rises slightly above the <b>almost_full</b> threshold, Processor A switches context to task 2, and the number in buffer falls until Processor A resumes task 1, the communications task. The Almost Full Control block is located at the top level of the model.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_21.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_22.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_23.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_24.png" alt=""> <p>The closeup shows the benefit of using the <b>almost_full</b> signal for ensuring the buffer's capacity is not exceeded. In addition, the plots show that Processor A can execute lower priority, non-communication tasks while ensuring that data is always available for Processor B.</p><img vspace="5" hspace="5" src="sedemo_fifo_architectural_25.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_26.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_architectural_27.png" alt=""> <p>The values of state A and state B below show the uninterrupted incrementing of the states until the first time the buffer is almost full.  After this point the incrementing of State A is interrupted at regular intervals, confirming the assertion of the <b>almost_full</b> signal and the change of task execution in Processor A.</p><p>Processor B can be modified similarly to respond to the almost_empty signal to allow other, non-communication, tasks to be executed while the buffer is almost empty.  This will help maximize throughput and allow for efficient scheduling of high and low priority tasks for Processor B.</p><h2>Modeling Drifting Clocks<a name="18"></a></h2><p>This model can be used to model drifting clocks by replacing the existing clocks with clocks from the <a href="matlab:simeventsdemohelp('sedemo_async_clocks');">Asynchronous Clock Domains</a> model.</p><h2>Related Demos<a name="19"></a></h2><div><ul><li><a href="matlab:simeventsdemohelp('sedemo_fifo_functional');">FIFO Buffer: Functional Model</a></li><li><a href="matlab:simeventsdemohelp('sedemo_async_clocks');">Asynchronous Clock Domains</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% FIFO Buffer: Architectural Model
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2008/06/13 15:15:06 $
+
+%% Introduction
+% This demo shows the architectural modeling of an asynchronous 
+% first in, first out (FIFO) buffer and uses the buffer 
+% to enable processors with different clocks to manage data exchange. 
+
+%% Overview of the FIFO Buffer Model
+% A FIFO buffer is a hardware component that is used to store data as a 
+% part of communications between  processors.  This demo shows the 
+% structure of the model and how to use the model to regulate the flow
+% of data between processors operating at different clock speeds. 
+%
+% The modeling of the buffer with a more functional implementation is shown in
+% <matlab:simeventsdemohelp('sedemo_fifo_functional'); FIFO Buffer: Functional Model>.
+%
+% The model contains two processors and a FIFO Buffer that supports
+% data transfer between the processors.  Processor A contains two tasks,
+% the first tasks for communicating with Processor B and a background
+% task. Processor B only contains a task for communication with Processor
+% A.  The connections between the processors and the FIFO Buffer include
+% signals for data transfer and signals for control of the data transfer. 
+
+modelname = 'sedemo_fifo_architectural';
+open_system(modelname);
+
+%% Description of Processor A, Task 1
+% Task 1 for Processor A increments its state, state A, with each trigger.  
+% In addition, the processor includes logic to process the 
+% *full* signal asserted by the FIFO Buffer.  This logic inverts the *full* 
+% signal to assert the *wr_assert* signal to the FIFO Buffer. 
+% The Integer Delay block represents the latency in the response of 
+% Processor A to the *full* signal. 
+
+open_system([modelname '/Processor A/Processor A Task 1']);
+
+%% Description of Processor B
+% Processor B accepts the state received from the FIFO Buffer via the Bin port 
+% and stores it when triggered.  In addition, it includes logic to receive the
+% *empty* signal from the FIFO Buffer and assert the *rd_assert* signal.
+
+open_system([modelname '/Processor B/Processor B Task']);
+
+%% Description of FIFO Buffer
+% The FIFO Buffer subsystem includes the Event-Based Entity Generator and Set
+% Attribute blocks to translate the *In* signal to an entity.  The entity is
+% stored in the FIFO Queue block, released by the Release Gate block, and
+% translated back to a signal by the Get Attribute block.  The *wr_clk* signal
+% and *wr_en* signal combine to trigger the signal-to-entity translation while
+% the *rd_clk* and *rd_en* signals combine to control the entity-to-signal
+% translation.  The Compare to Thresholds subsystem contains logic that is
+% triggered by control signals from the *rd_clk*, *rd_en*, and *wr_clk* inports
+% of the FIFO Buffer subsystem 
+% as well as the *#n* signal from the FIFO Queue block. This subsystem, in turn, 
+% regulates the flow of entities to ensure that the buffer is not in an
+% overflow or underflow state. The buffer capacity is specified on
+% the FIFO Buffer mask dialog. 
+
+close_system([modelname '/Processor A/Processor A Task 1']);
+close_system([modelname '/Processor B/Processor B Task']);
+open_system([modelname '/FIFO Buffer'],'force');
+
+%% FIFO Buffer Model Behavior with Processor A Slower Than Processor B
+% Running the model so Processor A is clocked slower than Processor B
+% shows the FIFO Buffer block holding data between the instants that 
+% Processor A writes until the instants that Processor B reads.  
+
+set_param([modelname '/FIFO Buffer'], 'thresholdLow', '40');
+set_param([modelname '/Clock B'],'Period','0.0045');
+close_system([modelname '/FIFO Buffer']);
+set_param([modelname '/Scopes/Value of ''A'''],'OpenScopeAtSimStart','off');
+set_param([modelname '/Scopes/Value of ''B'''],'OpenScopeAtSimStart','off');
+sim(modelname);
+
+%%
+% Zooming in on the plot of Number in Buffer shows, in detail, that the 
+% space usage in the buffer alternates rapidly between 0 and 1. 
+
+set_param([modelname '/Scopes/Buffer Size'], 'XMin', '0', 'XMax','0.1');
+set_param([modelname '/Scopes/Buffer Size'], 'YMin', '0', 'YMax','2');
+set_param([modelname '/Scopes/Buffer Size'], 'XLimitExceededOption', 'Keep axis limits unchanged');
+set_param([modelname '/Scopes/Buffer Size'], 'YLimitExceededOption', 'Keep axis limits unchanged');
+sim(modelname);
+sedemo_helper([modelname '/Scopes/Value of ''A'' - ''B'''],'CloseFig');
+
+%% FIFO Buffer Model Behavior with Processor A Faster Than Processor B
+% Running the model so Processor A is being clocked faster than Processor B
+% shows the FIFO Buffer block attempting to limit the number of storage 
+% locations to the desired buffer capacity, 256.
+
+close_system([modelname '/FIFO Buffer']);
+set_param([modelname '/Clock A'],'Period','0.005');
+set_param([modelname '/Clock B'],'Period','0.0065');
+set_param([modelname '/FIFO Buffer'], 'thresholdHigh', '240');
+set_param([modelname '/Scopes/Buffer Size'], 'XMin', '0', 'XMax','10');
+set_param([modelname '/Scopes/Buffer Size'], 'YMin', '0', 'YMax','300');
+set_param([modelname '/Scopes/Buffer Size'], 'XLimitExceededOption', 'Stretch axis limits');
+set_param([modelname '/Scopes/Buffer Size'], 'YLimitExceededOption', 'Stretch axis limits');
+sim(modelname);
+
+%%
+% Zooming in on the corner of the plot of Number in Buffer shows that the
+% space usage in the FIFO Buffer rises slightly above the desired buffer 
+% capacity, 256, to 258.
+
+set_param([modelname '/Scopes/Buffer Size'], 'XMin', '5.5', 'XMax','5.63');
+set_param([modelname '/Scopes/Buffer Size'], 'YMin', '252', 'YMax','259');
+set_param([modelname '/Scopes/Buffer Size'], 'XLimitExceededOption', 'Keep axis limits unchanged');
+set_param([modelname '/Scopes/Buffer Size'], 'YLimitExceededOption', 'Keep axis limits unchanged');
+sim(modelname);
+sedemo_helper([modelname '/Scopes/Value of ''A'' - ''B'''],'CloseFig');
+
+
+%%
+% The overflow is due to the latency in the response of Processor A to the 
+% *full* signal from the FIFO Buffer.  The latency comprises propagation delay,
+% CPU processing delay, and quantization effects.  The exact time at 
+% which Processor A responds is quantized to synchronize with the clock
+% for Processor A.
+
+%% Description of the almost_full Signal to Manage Data Exchange
+% The latency in Processor A's response to the *full* signal can be managed
+% by using the *almost_full* signal from the FIFO Buffer.  The reduced
+% threshold represented by the Almost Full Threshold block ensures that the
+% overshoot does not result in exceeding the buffer capacity. 
+%
+% The use of the *almost_full* signal also allows for a more flexible use of the
+% CPU in Processor A.  Since Processor A is capable of sending data faster
+% than Processor B can accept, there is unused processing capacity in
+% Processor A.  When the space used in the buffer reaches the *almost_full*
+% threshold, Processor A can switch from the communication task to another,
+% less critical task.  This task is represented by the Task 2 subsystem in
+% Processor A.  
+
+%% 
+
+open_system([modelname '/Processor A']);
+
+%% Description of Processor A, Task 2
+% The Processor A Task 2 subsystem includes a Time-Based Entity
+% Generator block that creates the enitity representing the second task in
+% Processor A.  The task executes when the Enabled Gate 
+% block allows the entity to advance.  
+% The two Single Server blocks represent the time to switch
+% context and to execute task 2.  When the entity is in the FIFO Queue
+% block, the task is idle.  The *#n* signal disables the firing
+% of the clock for Task 1 and the *wr_assert* signal, 
+% effectively modeling the task switching in Processor A. 
+
+close_system([modelname '/Processor A']);
+open_system([modelname '/Processor A/Processor A Task 2']);
+
+%% Behavior Using The almost_full Signal to Manage Data Transfer
+% Running the model with the Almost Full Control block enabled shows that
+% when the number in
+% buffer rises slightly above the *almost_full* threshold, Processor A 
+% switches context to task 2, and the number in buffer falls until 
+% Processor A resumes task 1, the communications task.  
+% The Almost Full Control block is located at the top level of the model.
+
+close_system([modelname '/Processor A/Processor A Task 2']);
+set_param([modelname '/Almost Full Control 0 - Disable 1 - Enable'], 'Gain', '1');
+set_param([modelname '/Scopes/Buffer Size'], 'XMin', '0', 'XMax','10');
+set_param([modelname '/Scopes/Buffer Size'], 'YMin', '0', 'YMax','300');
+set_param([modelname '/Scopes/Buffer Size'], 'XLimitExceededOption', 'Stretch axis limits');
+set_param([modelname '/Scopes/Buffer Size'], 'YLimitExceededOption', 'Stretch axis limits');
+sim(modelname);
+
+%%
+% The closeup shows the benefit of using the *almost_full* signal for
+% ensuring the buffer's capacity is not exceeded. In addition, the plots 
+% show that Processor A can execute
+% lower priority, non-communication tasks while ensuring that data 
+% is always available for Processor B.
+
+set_param([modelname '/Scopes/Buffer Size'], 'XMin', '5.15', 'XMax','5.28');
+set_param([modelname '/Scopes/Buffer Size'], 'YMin', '236', 'YMax','244');
+set_param([modelname '/Scopes/Buffer Size'], 'XLimitExceededOption', 'Keep axis limits unchanged');
+set_param([modelname '/Scopes/Buffer Size'], 'YLimitExceededOption', 'Keep axis limits unchanged');
+sim(modelname);
+sedemo_helper([modelname '/Scopes/Value of ''A'' - ''B'''],'CloseFig');
+
+%% 
+% The values of state A and state B below show the uninterrupted 
+% incrementing of the states until the first time the buffer is almost 
+% full.  After this point the incrementing of State A is interrupted at 
+% regular intervals, confirming the assertion of the *almost_full* signal and
+% the change of task execution in Processor A.
+
+sedemo_helper([modelname '/Scopes/Value of ''A'''],'OpenFig');
+sedemo_helper([modelname '/Scopes/Value of ''B'''],'OpenFig');
+
+%% 
+% Processor B can be modified similarly to respond to the
+% almost_empty signal to allow other, non-communication, tasks to be 
+% executed while the buffer is almost empty.  This will help maximize
+% throughput and allow for efficient scheduling of high 
+% and low priority tasks for Processor B.
+
+sedemo_helper([modelname '/Scopes/Value of ''A'''],'CloseFig');
+sedemo_helper([modelname '/Scopes/Value of ''B'''],'CloseFig');
+
+%% Modeling Drifting Clocks
+% This model can be used to model drifting clocks by replacing the existing 
+% clocks with clocks from the 
+% <matlab:simeventsdemohelp('sedemo_async_clocks'); Asynchronous Clock Domains> model.
+
+%% Related Demos
+% * <matlab:simeventsdemohelp('sedemo_fifo_functional'); FIFO Buffer: Functional Model>
+% * <matlab:simeventsdemohelp('sedemo_async_clocks'); Asynchronous Clock Domains>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+
+##### SOURCE END #####
+--></body></html>

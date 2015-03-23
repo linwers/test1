@@ -1,0 +1,50 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Interfacing with External File Formats</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_interfacing_with_external_file_formats"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_interfacing_with_external_file_formats.mdl</div><div class="right"><a href="matlab:sedemo_interfacing_with_external_file_formats">Open this model</a></div></div><div class="content"><h1>Interfacing with External File Formats</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Import Data from a Microsoft Excel File</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>It is important to validate or test a simulation model against real data from a system. For example if the intergeneration time for an Entity Generator exactly matches the input traffic pattern in a system, the simulation analysis becomes very valuable. The input data in a real world system may be recorded in a file format external to the MATLAB&reg; environment. MATLAB has a rich set of functionality to import/export data from/to a variety of external file formats. In this demo model we use a Microsoft&reg; Excel&reg; file as an example to illustrate the data import functionality in the context of a SimEvents&reg; model. The following figure illustrates this workflow.</p><p><img vspace="5" hspace="5" src="sedemo_exceldemopicture.jpg" alt=""> </p><h2>Import Data from a Microsoft Excel File<a name="2"></a></h2><p>The function 'TimeAndPriorityData.m' imports the Intergeneration Time and Priority data from a Microsoft Excel file using the 'xlsread' function in MATLAB. The Intergeneration Time data is used by the Event-Based Sequence block to provide intergeneration time values to the Time-Based Entity Generator block. The Priority data values are used by the Set Attribute block in order to set a Priority attribute to each entity. The Single Server serves the entities sorted according to the 'Priority' attribute.</p><img vspace="5" hspace="5" src="sedemo_interfacing_with_external_file_formats_01.png" alt=""> <p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Interfacing with External File Formats
+% Copyright 2008 The MathWorks, Inc.
+
+%% Overview
+% It is important to validate or test a simulation model against real data
+% from a system. For example if the intergeneration time for an Entity
+% Generator exactly matches the input traffic pattern in a system, the
+% simulation analysis becomes very valuable. The input data in a real world
+% system may be recorded in a file format external to the MATLAB(R)
+% environment. MATLAB has a rich set of functionality to import/export data
+% from/to a variety of external file formats. In this demo model we use a
+% Microsoft(R) Excel(R) file as an example to illustrate the data import
+% functionality in the context of a SimEvents(R) model. The following
+% figure illustrates this workflow.
+%
+% <<sedemo_exceldemopicture.jpg>>
+% 
+%% Import Data from a Microsoft Excel File
+% The function 'TimeAndPriorityData.m' imports the Intergeneration Time and
+% Priority data from a Microsoft Excel file using the 'xlsread' function in
+% MATLAB. The Intergeneration Time data is used by the Event-Based Sequence
+% block to provide intergeneration time values to the Time-Based Entity
+% Generator block. The Priority data values are used by the Set Attribute
+% block in order to set a Priority attribute to each entity. The Single
+% Server serves the entities sorted according to the 'Priority' attribute. 
+modelname = 'sedemo_interfacing_with_external_file_formats';
+open_system(modelname);
+set_param([modelname '/Signal Scope'],'OpenScopeAtSimStart','off');
+sim(modelname);
+
+%%
+bdclose(modelname);
+
+clear modelname;
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

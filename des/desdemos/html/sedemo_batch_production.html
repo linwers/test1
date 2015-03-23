@@ -1,0 +1,294 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Batch Production Process</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_batch_production"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_batch_production.mdl</div><div class="right"><a href="matlab:sedemo_batch_production">Open this model</a></div></div><div class="content"><h1>Batch Production Process</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Structure of Model</a></li><li><a href="#6">Batch Production Process</a></li><li><a href="#11">Results and Displays</a></li><li><a href="#12">Experimenting with the Model</a></li><li><a href="#13">Using the Model to Analyze Production Process</a></li><li><a href="#39">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model simulates the use of shared resources in a batch production process to provide insights into inadequacies in resource capacities. Altering the resource profile in different ways and observing the changes in simulation results can help you eliminate such inadequacies and improve the performance of the production system. The explicit steps for improving the performance begin in <a href="#13">Using the Model to Analyze Production Process</a>.</p><h2>Structure of Model<a name="3"></a></h2><img vspace="5" hspace="5" src="sedemo_batch_production_01.png" alt=""> <p>At the top level of the model, the Production Orders subsystem simulates the generation and backlog of production orders. The Batch Reactors subsystem models batch reactors, one of the main shared resources in the production process. The block labeled Obtain Reactor requests a batch reactor upon starting to process a production order. After the Execute Chemical Process Recipe subsystem completes the order according to a specified chemical process recipe, the block labeled Release Reactor releases the use of the batch reactor. The Data Analysis subsystem analyzes data related to completion of production orders.</p><p>The model uses a preloaded queue technique to model the group of batch reactors. To learn about this technique, see <a href="matlab:showdemo('sedemo_preload_queue');">Preload Queue with Entities</a>. To learn about the resource request and release technique in this model, see <a href="matlab:simeventsdemohelp('sedemo_resource_allocation');">Resource Allocation from Multiple Pools</a>.</p><h2>Batch Production Process<a name="6"></a></h2><p>The Execute Chemical Process Recipe subsystem simulates the chemical process to produce sol (a type of colloid). A six-step recipe models the main operations in sol production. Execution of these steps requires different resources. A batch reactor provides built-in capabilities to execute steps like adding color, adding particles and stir. Thus the resources required by these steps do not need to be modeled separately. The steps to add water, heat up and drain, on the other hand, require extra resources. These resources are shared by all the batch reactors and are limited by the capacity of the production system.</p><img vspace="5" hspace="5" src="sedemo_batch_production_02.png" alt=""> <p>For example, when water usage reaches the full capacity, water pressure is too low for another batch reactor to access. In this case, the production process in that batch reactor pauses until the water supply becomes available. In the Execute Chemical Process Recipe subsystem, such a resource sharing process is modeled by a FIFO Queue block labeled Wait for Water Supply and an N-Server block labeled Add Water in the Add Water subsystem, with the <b>Number of servers</b> parameter of the N-Server block modeling the capacity of the water supply. During simulation, the number of entities in the FIFO Queue block indicates the number of batch reactors waiting for water, and the number of entities in the N-Server block represents the number of batch reactors accessing water.</p><img vspace="5" hspace="5" src="sedemo_batch_production_03.png" alt=""> <p>The modeled batch production process is capable of producing two types of batches: type A and type B. Although the main steps required to produce either batch are the same, the chemical process recipes are different. For example, the recipe to produce type B batch requires more water, so the step to add water takes more time to complete.</p><h2>Results and Displays<a name="11"></a></h2><p>During simulation, the Data Analysis subsystem displays these scopes to demonstrate the performance of the production process:</p><div><ul><li>Average number of orders in backlog</li><li>Average number of batches waiting for water</li><li>Average number of batches waiting for heat</li><li>Average number of batches waiting for draining</li><li>Utilization of batch reactors</li><li>Utilization of water supply</li><li>Utilization of heat supply</li><li>Utilization of draining facility</li><li>Throughput of type A batch</li><li>Throughput of type B batch</li></ul></div><p>A Display block at the top level of the model also provides a numeric view of the utilization of all four types of shared resources.</p><h2>Experimenting with the Model<a name="12"></a></h2><p>(<i>For use with live model only</i>)</p><div><ul><li>To change the capacities of shared resources, double-click the configuration block in the colored region labeled Production System, and change the settings in the dialog.</li><li>To change the properties of either type of batch, double-click the corresponding configuration block in the colored region labeled Order System. Here you can change the period at which orders are generated for that type of batch by changing the <b>Order generation period</b> parameter, or change the recipe to produce such type of batch by changing other parameters. These parameters indicates the processing time a batch requires in a specific chemical processing step.</li></ul></div><h2>Using the Model to Analyze Production Process<a name="13"></a></h2><p>The model with the original configuration represents a production system equipped with inadequate resources. Such situation is common to manufacturing industry, where upgrade of existing production systems is a necessity with the growth of production demand.</p><p>Simulation can help you find a solution to eliminate such inadequacies and improve the performance of the production system. The process of searching for solutions is the process of evaluating the existing production process and exploring alternative resource profiles. Simulation helps this process by effectively replicating what is happening or is going to happen in the real world.</p><p>The following steps introduce how a performance improvement solution is developed for the modeled batch production process.</p><p><b>Step 1:</b> Run the simulation using the original resource profile. The scope labeled Average Volume of Order Backlog shows that orders accumulate. In addition, the scope labeled Utilization of Batch Reactors shows that the batch reactors operate at full capacity. Both quantities indicate that the system needs more batch reactors to enhance its production capability.</p><img vspace="5" hspace="5" src="sedemo_batch_production_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_05.png" alt=""> <p><b>Step 2:</b> Following the analysis in the previous step, the second simulation increases the number of batch reactors to <tt>20</tt>. You may expect a drop in the volume of order backlog and the utilization of the batch reactors. However, the figures below illustrate that neither becomes true. The order backlog stays at a high volume and even with 10 more batch reactors, the utilization is still at a peak.</p><img vspace="5" hspace="5" src="sedemo_batch_production_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_07.png" alt=""> <p>Inspecting the scope labeled Average Number of Batches Waiting and the scope labeled Utilization of Draining Facility indicates that over half the batch reactors wait for draining even though the draining facility operates at full capacity. This performance bottleneck can be alleviated by increasing the capacity of the draining facility.</p><img vspace="5" hspace="5" src="sedemo_batch_production_08.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_09.png" alt=""> <p><b>Step 3:</b> Increase the capacity of the draining facility to <tt>2</tt>, and run the simulation again. From the figures below, you can observe that the average number of batches waiting for draining is tremendously reduced. This indicates that the draining facility is adequate.</p><img vspace="5" hspace="5" src="sedemo_batch_production_10.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_11.png" alt=""> <p>However, the order backlog still has a high volume. Further inspection of simulation results exposes another bottleneck of the production process -- the heat supply. On average, almost 10 batches are waiting for the use of the heat supply. This indicates that the capacity of the heat supply needs to be increased.</p><img vspace="5" hspace="5" src="sedemo_batch_production_12.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_13.png" alt=""> <p><b>Step 4:</b> Increase capacity of the heat supply by <tt>1</tt> and rerun the simulation. This time, scopes show a performance that indicates a system with sufficient capacity -- order backlog is almost zero and the number of waiting batches between production steps is low.</p><img vspace="5" hspace="5" src="sedemo_batch_production_14.png" alt=""> <p>Inspecting utilizations of shared resources indicates that the water supply, the heat supply and the draining facility almost operate at full capacity. However, batch reactors only have a utilization of 60%. This suggests that the production system may have more batch reactors than needed.</p><img vspace="5" hspace="5" src="sedemo_batch_production_15.png" alt=""> <p><b>Step 5:</b> Reduce the number of batch reactors to <tt>13</tt>. This time the utilization of batch reactors are increased, with the system providing sufficient capacity to fully satisfy the production demand.</p><p>The figures below illustrate the performance of the production system at the end of step 5.</p><img vspace="5" hspace="5" src="sedemo_batch_production_16.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_17.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_18.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_19.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_20.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_21.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_22.png" alt=""> <img vspace="5" hspace="5" src="sedemo_batch_production_23.png" alt=""> <p>The above steps suggest a solution to improve the production system. Adding 3 more batch reactors, 1 more heating unit and 1 more draining unit will enable the system to fully satisfy the given production demand when the system operates at full capacity. The production system should further increase resource capacities considering future growth of the demand and the needs for system maintenance.</p><h2>Related Demos<a name="39"></a></h2><div><ul><li><a href="matlab:simeventsdemohelp('sedemo_resource_allocation');">Resource Allocation from Multiple Pools</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Batch Production Process
+% Copyright 2008 The MathWorks, Inc.
+
+%% Overview
+%
+% This model simulates the use of shared resources in a batch production
+% process to provide insights into inadequacies in resource capacities.
+% Altering the resource profile in different ways and observing the changes
+% in simulation results can help you eliminate such inadequacies and
+% improve the performance of the production system. The explicit steps for
+% improving the performance begin in <#13 Using the Model to Analyze
+% Production Process>. 
+%
+%%
+model = 'sedemo_batch_production';
+
+subsystem1 = [model '/Execute Chemical ' sprintf('\n') 'Process Recipe'];
+subsystem2 = [subsystem1 '/Add Water'];
+subsystem3 = [model '/Data Analysis'];
+
+configblk1 = [model '/ConfigResource'];
+
+scope_len_reactor  = [subsystem3 '/Average Number of Orders in Backlog'];
+scope_len_water    = [subsystem3 '/Average Number of Batches Waiting for Water'];
+scope_len_heat     = [subsystem3 '/Average Number of Batches Waiting for Heat'];
+scope_len_drain    = [subsystem3 '/Average Number of Batches Waiting for Draining'];
+scope_util_reactor = [subsystem3 '/Utilization of Batch Reactors'];
+scope_util_water   = [subsystem3 '/Utilization of Water Supply'];
+scope_util_heat    = [subsystem3 '/Utilization of Heat Supply'];
+scope_util_drain   = [subsystem3 '/Utilization of Draining Facility'];
+scope_xput_typeA   = [subsystem3 '/Throughput of Type A Batch'];
+scope_xput_typeB   = [subsystem3 '/Throughput of Type B Batch'];
+
+%% Structure of Model
+open_system(model);
+%%
+% At the top level of the model, the Production Orders subsystem simulates
+% the generation and backlog of production orders. The Batch Reactors
+% subsystem models batch reactors, one of the main shared resources in the
+% production process. The block labeled Obtain Reactor requests a batch
+% reactor upon starting to process a production order. After the Execute
+% Chemical Process Recipe subsystem completes the order according to a
+% specified chemical process recipe, the block labeled Release Reactor
+% releases the use of the batch reactor. The Data Analysis subsystem
+% analyzes data related to completion of production orders.
+%%
+% The model uses a preloaded queue technique to model the group of batch
+% reactors. To learn about this technique, see 
+% <matlab:showdemo('sedemo_preload_queue'); Preload Queue with Entities>.
+% To learn about the resource request and release technique in this model, see 
+% <matlab:simeventsdemohelp('sedemo_resource_allocation'); Resource Allocation from Multiple Pools>.
+%
+%% Batch Production Process
+set_param(scope_len_reactor,'OpenScopeAtSimStart','off');
+set_param(scope_len_water,'OpenScopeAtSimStart','off');
+set_param(scope_len_heat,'OpenScopeAtSimStart','off');
+set_param(scope_len_drain,'OpenScopeAtSimStart','off');
+set_param(scope_util_reactor,'OpenScopeAtSimStart','off');
+set_param(scope_util_water,'OpenScopeAtSimStart','off');
+set_param(scope_util_heat,'OpenScopeAtSimStart','off');
+set_param(scope_util_drain,'OpenScopeAtSimStart','off');
+set_param(scope_xput_typeA,'OpenScopeAtSimStart','off');
+set_param(scope_xput_typeB,'OpenScopeAtSimStart','off');
+
+%%
+% The Execute Chemical Process Recipe subsystem simulates the chemical process
+% to produce sol (a type of colloid). A six-step recipe models the main
+% operations in sol production. Execution of these steps requires different
+% resources. A batch reactor provides built-in capabilities to execute
+% steps like adding color, adding particles and stir. Thus the resources
+% required by these steps do not need to be modeled separately. The steps
+% to add water, heat up and drain, on the other hand, require extra
+% resources. These resources are shared by all the batch reactors and are
+% limited by the capacity of the production system.
+open_system(subsystem1);
+%%
+% For example, when water usage reaches the full capacity, water pressure
+% is too low for another batch reactor to access. In this case, the
+% production process in that batch reactor pauses until the water supply
+% becomes available. In the Execute Chemical Process Recipe subsystem, such
+% a resource sharing process is modeled by a FIFO Queue block labeled Wait
+% for Water Supply and an N-Server block labeled Add Water in the Add Water
+% subsystem, with the *Number of servers* parameter of the N-Server block
+% modeling the capacity of the water supply. During simulation, the number
+% of entities in the FIFO Queue block indicates the number of batch
+% reactors waiting for water, and the number of entities in the N-Server
+% block represents the number of batch reactors accessing water.
+%%
+open_system(subsystem2);
+%% 
+% The modeled batch production process is capable of producing two types of
+% batches: type A and type B. Although the main steps required to produce
+% either batch are the same, the chemical process recipes are different.
+% For example, the recipe to produce type B batch requires more water, so
+% the step to add water takes more time to complete.
+%
+%% Results and Displays
+%
+% During simulation, the Data Analysis subsystem displays these scopes to
+% demonstrate the performance of the production process:
+%
+% * Average number of orders in backlog 
+% * Average number of batches waiting for water 
+% * Average number of batches waiting for heat 
+% * Average number of batches waiting for draining 
+% * Utilization of batch reactors 
+% * Utilization of water supply 
+% * Utilization of heat supply 
+% * Utilization of draining facility 
+% * Throughput of type A batch 
+% * Throughput of type B batch
+%
+% A Display block at the top level of the model also provides a numeric
+% view of the utilization of all four types of shared resources.
+%
+%% Experimenting with the Model
+% (_For use with live model only_)
+%
+% * To change the capacities of shared resources, double-click the
+% configuration block in the colored region labeled Production System, and
+% change the settings in the dialog.
+% * To change the properties of either type of batch, double-click the
+% corresponding configuration block in the colored region labeled Order
+% System. Here you can change the period at which orders are generated for
+% that type of batch by changing the *Order generation period* parameter,
+% or change the recipe to produce such type of batch by changing other
+% parameters. These parameters indicates the processing time a batch
+% requires in a specific chemical processing step.
+%
+%% Using the Model to Analyze Production Process
+% The model with the original configuration represents a production system
+% equipped with inadequate resources. Such situation is common to
+% manufacturing industry, where upgrade of existing production systems is a
+% necessity with the growth of production demand.
+%
+% Simulation can help you find a solution to eliminate such inadequacies
+% and improve the performance of the production system. The process of
+% searching for solutions is the process of evaluating the existing
+% production process and exploring alternative resource profiles.
+% Simulation helps this process by effectively replicating what is
+% happening or is going to happen in the real world.
+%
+% The following steps introduce how a performance improvement solution is
+% developed for the modeled batch production process.
+%
+% *Step 1:* Run the simulation using the original resource profile. The
+% scope labeled Average Volume of Order Backlog shows that orders
+% accumulate. In addition, the scope labeled Utilization of Batch Reactors
+% shows that the batch reactors operate at full capacity. Both quantities
+% indicate that the system needs more batch reactors to enhance its
+% production capability.
+sim(model);
+sedemo_helper(scope_len_reactor,'OpenFig');
+%%
+sedemo_helper(scope_len_reactor,'CloseFig');
+sedemo_helper(scope_util_reactor,'OpenFig');
+%%
+sedemo_helper(scope_util_reactor,'CloseFig');
+%%
+% *Step 2:* Following the analysis in the previous step, the second
+% simulation increases the number of batch reactors to |20|. You may expect
+% a drop in the volume of order backlog and the utilization of the batch
+% reactors. However, the figures below illustrate that neither becomes
+% true. The order backlog stays at a high volume and even with 10 more
+% batch reactors, the utilization is still at a peak. 
+set_param(configblk1,'NumBatchReactor','20');
+sim(model);
+sedemo_helper(scope_len_reactor,'OpenFig');
+%%
+sedemo_helper(scope_len_reactor,'CloseFig');
+sedemo_helper(scope_util_reactor,'OpenFig');
+%%
+% Inspecting the scope labeled Average Number of Batches Waiting and the
+% scope labeled Utilization of Draining Facility indicates that over half
+% the batch reactors wait for draining even though the draining facility
+% operates at full capacity. This performance bottleneck can be alleviated
+% by increasing the capacity of the draining facility.
+sedemo_helper(scope_util_reactor,'CloseFig');
+sedemo_helper(scope_len_drain,'OpenFig');
+%%
+sedemo_helper(scope_len_drain,'CloseFig');
+sedemo_helper(scope_util_drain,'OpenFig');
+%%
+% *Step 3:* Increase the capacity of the draining facility to |2|, and run
+% the simulation again. From the figures below, you can observe that the
+% average number of batches waiting for draining is tremendously reduced.
+% This indicates that the draining facility is adequate. 
+sedemo_helper(scope_util_drain,'CloseFig');
+%%
+set_param(configblk1,'NumDrain','2');
+sim(model);
+sedemo_helper(scope_len_drain,'OpenFig');
+%%
+sedemo_helper(scope_len_drain,'CloseFig');
+sedemo_helper(scope_util_drain,'OpenFig');
+%%
+% However, the order backlog still has a high volume. Further inspection of
+% simulation results exposes another bottleneck of the production process
+% REPLACE_WITH_DASH_DASH the heat supply. On average, almost 10 batches are waiting for the use
+% of the heat supply. This indicates that the capacity of the heat supply
+% needs to be increased.
+sedemo_helper(scope_util_drain,'CloseFig');
+sedemo_helper(scope_len_heat,'OpenFig');
+%%
+sedemo_helper(scope_len_heat,'CloseFig');
+sedemo_helper(scope_util_heat,'OpenFig');
+%%
+sedemo_helper(scope_util_heat,'CloseFig');
+%%
+% *Step 4:* Increase capacity of the heat supply by |1| and rerun the
+% simulation. This time, scopes show a performance that indicates a system
+% with sufficient capacity REPLACE_WITH_DASH_DASH order backlog is almost zero and the number
+% of waiting batches between production steps is low.
+set_param(configblk1,'NumHeat','4');
+sim(model);
+sedemo_helper(scope_len_reactor,'OpenFig');
+%%
+% Inspecting utilizations of shared resources indicates that the water
+% supply, the heat supply and the draining facility almost operate at full
+% capacity. However, batch reactors only have a utilization of 60%. This
+% suggests that the production system may have more batch reactors than
+% needed.
+sedemo_helper(scope_len_reactor,'CloseFig');
+sedemo_helper(scope_util_reactor,'OpenFig');
+%%
+sedemo_helper(scope_util_reactor,'CloseFig');
+%%
+% *Step 5:* Reduce the number of batch reactors to |13|. This time the
+% utilization of batch reactors are increased, with the system providing
+% sufficient capacity to fully satisfy the production demand.
+%
+% The figures below illustrate the performance of the production system at
+% the end of step 5.
+set_param(configblk1,'NumBatchReactor','13');
+sim(model);
+sedemo_helper(scope_len_reactor,'OpenFig');
+%%
+sedemo_helper(scope_len_reactor,'CloseFig');
+sedemo_helper(scope_util_reactor,'OpenFig');
+%%
+sedemo_helper(scope_util_reactor,'CloseFig');
+sedemo_helper(scope_len_water,'OpenFig');
+%%
+sedemo_helper(scope_len_water,'CloseFig');
+sedemo_helper(scope_util_water,'OpenFig');
+%%
+sedemo_helper(scope_util_water,'CloseFig');
+sedemo_helper(scope_len_heat,'OpenFig');
+%%
+sedemo_helper(scope_len_heat,'CloseFig');
+sedemo_helper(scope_util_heat,'OpenFig');
+%%
+sedemo_helper(scope_util_heat,'CloseFig');
+sedemo_helper(scope_len_drain,'OpenFig');
+%%
+sedemo_helper(scope_len_drain,'CloseFig');
+sedemo_helper(scope_util_drain,'OpenFig');
+%%
+sedemo_helper(scope_util_drain,'CloseFig');
+%%
+% The above steps suggest a solution to improve the production system.
+% Adding 3 more batch reactors, 1 more heating unit and 1 more draining
+% unit will enable the system to fully satisfy the given production demand
+% when the system operates at full capacity. The production system should
+% further increase resource capacities considering future growth of the
+% demand and the needs for system maintenance.
+%
+%% Related Demos
+% 
+% * <matlab:simeventsdemohelp('sedemo_resource_allocation'); Resource Allocation from Multiple Pools>
+%%
+bdclose(model);
+clear model subsystem1 subsystem2 subsystem3 configblk1 ...
+    scope_len_reactor scope_util_reactor ...
+    scope_len_water scope_util_water ...
+    scope_len_heat scope_util_heat ...
+    scope_len_drain scope_util_drain ...
+    scope_xput_typeA scope_xput_typeB;
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

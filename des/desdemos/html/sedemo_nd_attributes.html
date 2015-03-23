@@ -1,0 +1,53 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Transporting Multidimensional Data Using Attributes</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_nd_attributes"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_nd_attributes.mdl</div><div class="right"><a href="matlab:sedemo_nd_attributes">Open this model</a></div></div><div class="content"><h1>Transporting Multidimensional Data Using Attributes</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Working</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates that an entity can carry multidimensional data from block to block using an attribute.</p><img vspace="5" hspace="5" src="sedemo_nd_attributes_01.png" alt=""> <h2>Working<a name="2"></a></h2><p>When you open the model, it loads a three-dimensional array, image_source, into the MATLAB&reg; workspace. When you run the simulation, the Set Attribute block assigns an attribute to the arriving entity. The value of the attribute is the entire multidimensional array. The Get Attribute block reads the array from the attribute of the arriving entity and writes the array to the A1 signal output port. The Discrete Event Signal to Workspace block creates a corresponding structure, image_dest, in the MATLAB workspace. When the simulation ends, the imageview function uses the image_dest structure to plot the image that the array represents.</p><img vspace="5" hspace="5" src="sedemo_nd_attributes_02.png" alt=""> <h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_when_to_use_attributes');">Role of attributes in SimEvents models</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_settingattributes');">Different ways to assign attribute values to entities</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_combiner_data');">Attribute handling for composite entities</a></li><li><a href="matlab:showdemo('sedemo_count_attributes');">Attributes: Data Within Entities</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Transporting Multidimensional Data Using Attributes
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:39 $
+
+%% Overview
+% This model demonstrates that an entity can carry multidimensional data
+% from block to block using an attribute.
+
+modelname = 'sedemo_nd_attributes';
+open_system(modelname);
+
+%% Working
+% When you open the model, it loads a three-dimensional array,
+% image_source, into the MATLAB® workspace. When you run the simulation,
+% the Set Attribute block assigns an attribute to the arriving entity. The
+% value of the attribute is the entire multidimensional array. The Get
+% Attribute block reads the array from the attribute of the arriving entity
+% and writes the array to the A1 signal output port. The Discrete Event Signal to Workspace block
+% creates a corresponding structure, image_dest, in the MATLAB workspace.
+% When the simulation ends, the imageview function uses the image_dest
+% structure to plot the image that the array represents.
+
+sim(modelname);
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_when_to_use_attributes'); Role of attributes in SimEvents models>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_settingattributes'); Different ways to
+% assign attribute values to entities>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_combiner_data'); Attribute handling 
+% for composite entities>
+% * <matlab:showdemo('sedemo_count_attributes'); Attributes: Data Within Entities>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,100 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Astable Multivibrator Circuit</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_astable_multivibrator"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_astable_multivibrator.mdl</div><div class="right"><a href="matlab:sedemo_astable_multivibrator">Open this model</a></div></div><div class="content"><h1>Astable Multivibrator Circuit</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Circuit Operation</a></li><li><a href="#3">Structure of the Model</a></li><li><a href="#4">Results and Displays</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates how to model a hybrid system containing event-driven and time-driven behavior.</p><p>The system in this model is the simple astable multivibrator circuit shown below. An astable multivibrator is a two-stage switching circuit that generates a square wave with no external triggering pulse. The circuit switches between its two stable states, remaining in each state for a duration that depends on the discharging of the capacitive circuit.</p><p><img vspace="5" hspace="5" src="astable_multivibrator_ckt.jpg" alt=""> </p><p>To focus on the integration of the time-driven and event-driven aspects, the model makes these simplifying assumptions:</p><div><ul><li>Transistors change their on/off states instantaneously.</li></ul></div><div><ul><li>The turn-on voltage for transistors is 0.6 V.</li></ul></div><h2>Circuit Operation<a name="2"></a></h2><div><ul><li>When supply voltage, Vcc, is applied, one transistor conducts more than   the other due to imbalance in resistance and capacitance values.</li></ul></div><div><ul><li>Suppose that Q1 is on and Q2 is off. The voltage at the output of Q1 is   approximately Vcesat, which is zero.</li></ul></div><div><ul><li>Immediately after Q1 turns on, C1 charges with the time constant R1C1   toward the supply voltage through R1. That is, Vbe of Q2 increases   asymptotically towards VCC.</li></ul></div><div><ul><li>When Vbe of Q2 crosses the turn-on voltage, Q2 turns on and voltage at   the output of Q2 drops to approximately zero.</li></ul></div><div><ul><li>Immediately after Q2 turns on, Vbe of Q1 falls due to capacitive   coupling between the collector of Q2 and the base of Q1. As a result,   Q1 turns off.</li></ul></div><div><ul><li>Immediately after Q2 turns on, C2 charges with the time constant R2C2   toward the supply voltage through R2. That is, Vbe of Q1 increases   asymptotically towards VCC.</li></ul></div><div><ul><li>When Vbe of Q1 crosses the turn-on voltage, Q1 turns on again and the   process repeats.</li></ul></div><h2>Structure of the Model<a name="3"></a></h2><p>The model has a symmetric arrangement of blocks representing the two branches in the circuit. Each branch in the block diagram has a feedback connection to the other branch. Each branch includes these components:</p><div><ul><li>Enabled subsystem &#8212; Models the variation in the base voltage when a   transistor switches its on/off state. In this subsystem, a Transfer Fcn   block models the charging and discharging of the RC circuit.</li></ul></div><div><ul><li>Switching Logic subsystem &#8212; Switches based on the potential barrier. In   this subsystem, the Saturation block enables the detection of level   crossings, while the Embedded MATLAB Function block contains the logic.</li></ul></div><div><ul><li>Signal Latch block &#8212; Allows the transistor Vce or the input to the RC   circuit to have two values at one time. The sequence of these values is   controlled by the block's event-based operation, which enables the   feedback to occur without delay.</li></ul></div><img vspace="5" hspace="5" src="sedemo_astable_multivibrator_01.png" alt=""> <h2>Results and Displays<a name="4"></a></h2><img vspace="5" hspace="5" src="sedemo_astable_multivibrator_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_astable_multivibrator_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_astable_multivibrator_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_astable_multivibrator_05.png" alt=""> <p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Astable Multivibrator Circuit
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/10/16 04:48:15 $
+
+%% Overview
+% This model demonstrates how to model a hybrid system containing
+% event-driven and time-driven behavior.
+%
+% The system in this model is the simple astable multivibrator circuit
+% shown below. An astable multivibrator is a two-stage switching circuit
+% that generates a square wave with no external triggering pulse. The
+% circuit switches between its two stable states, remaining in each state
+% for a duration that depends on the discharging of the capacitive circuit.
+%
+% <<astable_multivibrator_ckt.jpg>>
+%
+% To focus on the integration of the time-driven and event-driven aspects,
+% the model makes these simplifying assumptions:
+%
+% * Transistors change their on/off states instantaneously.
+%
+% * The turn-on voltage for transistors is 0.6 V.
+
+%% Circuit Operation
+% * When supply voltage, Vcc, is applied, one transistor conducts more than
+%   the other due to imbalance in resistance and capacitance values.
+%
+% * Suppose that Q1 is on and Q2 is off. The voltage at the output of Q1 is
+%   approximately Vcesat, which is zero.
+%
+% * Immediately after Q1 turns on, C1 charges with the time constant R1C1
+%   toward the supply voltage through R1. That is, Vbe of Q2 increases
+%   asymptotically towards VCC.
+%
+% * When Vbe of Q2 crosses the turn-on voltage, Q2 turns on and voltage at
+%   the output of Q2 drops to approximately zero.
+%
+% * Immediately after Q2 turns on, Vbe of Q1 falls due to capacitive
+%   coupling between the collector of Q2 and the base of Q1. As a result,
+%   Q1 turns off.
+%
+% * Immediately after Q2 turns on, C2 charges with the time constant R2C2
+%   toward the supply voltage through R2. That is, Vbe of Q1 increases
+%   asymptotically towards VCC.
+%
+% * When Vbe of Q1 crosses the turn-on voltage, Q1 turns on again and the
+%   process repeats.
+
+
+%% Structure of the Model
+%
+% The model has a symmetric arrangement of blocks representing the two
+% branches in the circuit. Each branch in the block diagram has a
+% feedback connection to the other branch. Each branch includes these
+% components:
+%
+% * Enabled subsystem — Models the variation in the base voltage when a
+%   transistor switches its on/off state. In this subsystem, a Transfer Fcn
+%   block models the charging and discharging of the RC circuit.
+%
+% * Switching Logic subsystem — Switches based on the potential barrier. In
+%   this subsystem, the Saturation block enables the detection of level
+%   crossings, while the Embedded MATLAB Function block contains the logic.
+%
+% * Signal Latch block — Allows the transistor Vce or the input to the RC
+%   circuit to have two values at one time. The sequence of these values is
+%   controlled by the block's event-based operation, which enables the
+%   feedback to occur without delay.
+
+modelname = 'sedemo_astable_multivibrator';
+open_system(modelname);
+set_param([modelname '/Vbe for Q1'],'Open', 'off' );
+set_param([modelname '/Vbe for Q2'],'Open', 'off' );
+
+%% Results and Displays
+
+set_param([modelname '/Vbe for Q1'],'Open', 'on' );
+set_param([modelname '/Vbe for Q2'],'Open', 'on' );
+sim(modelname);
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

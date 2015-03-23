@@ -1,0 +1,100 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Packet Creation, Transmission and Error Analysis</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_packet_creation"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_packet_creation.mdl</div><div class="right"><a href="matlab:sedemo_packet_creation">Open this model</a></div></div><div class="content"><h1>Packet Creation, Transmission and Error Analysis</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Packet Creation</a></li><li><a href="#3">Transmission via a Channel</a></li><li><a href="#4">Receiver and Error Analysis</a></li><li><a href="#5">Results and Displays</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model illustrates how to create and manipulate entities that represent packets in a communication system.</p><h2>Packet Creation<a name="2"></a></h2><p>These components generate packets at the transmitter:</p><div><ul><li>Generate Payloads subsystem &#8212; Generates entities as a Poisson process.   Each entity's Payload attribute contains random binary data.</li></ul></div><div><ul><li>Generate Headers subsystem &#8212; Supplies an entity whenever a payload   requires a header. The entities' PacketID attributes contain a   binary-valued vector that counts from 0 to 7.</li></ul></div><div><ul><li>Generate Trailers subsystem &#8212; Supplies an entity whenever a payload   requires a trailer.</li></ul></div><div><ul><li>Block labeled Packet Generator, which is an instance of the Entity   Combiner library block &#8212; Merges the entities representing header,   payload, and trailer into one entity representing a packet. The Payload   and PacketID attributes are accessible in the packet.</li></ul></div><div><ul><li>Set Parity Bit subsystem &#8212; Assigns a ParityBit attribute to each   packet, using the Payload and PacketID attributes in the computation.</li></ul></div><p>To supply an entity &#8220;whenever a payload requires&#8221; a header or trailer, the model exploits the interactions among the blocks that store pending entities within the Generate Headers or Generate Trailers subsystem and the synchronizing capabilities of the Entity Combiner block. To learn more about such synchronization, see <a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_sync_schematic');">Example: Waiting to Combine Entities</a></p><h2>Transmission via a Channel<a name="3"></a></h2><p>The Channel subsystem models a channel that delays packets and randomly introduces bit errors. A bit error can affect the payload, packet ID, or parity bit of a packet. The variable BER in the MATLAB workspace is the probability of a bit error. <b>Addition of errors</b></p><h2>Receiver and Error Analysis<a name="4"></a></h2><p>The Receiver and Analysis subsystem uses the packet's parity bit to decide whether the packet is correct or contains an error. The receiver can detect an odd number of bit errors in a packet's data.</p><p>The Receiver and Analysis subsystem computes these statistics:</p><div><ul><li>Total number of packets received</li></ul></div><div><ul><li>Number of packets in which the receiver detected an error</li></ul></div><div><ul><li>Packet error rate, which is the ratio of the two numbers mentioned   above</li></ul></div><p>Assuming that each detected packet error corresponds to exactly one bit error, you expect the receiver to detect a packet error rate of</p><p>(20C1)BER(1&#8211;BER)19 = 20BER(1&#8211;BER)19</p><img vspace="5" hspace="5" src="sedemo_packet_creation_01.png" alt=""> <img vspace="5" hspace="5" src="sedemo_packet_creation_02.png" alt=""> <h2>Results and Displays<a name="5"></a></h2><p>The model includes these visual ways to understand its performance:</p><div><ul><li>The Display block displays the output of the Receiver and Analysis   subsystem throughout the simulation.</li></ul></div><div><ul><li>A Scope block plots the empirical and expected values of the detected   packet error rate.</li></ul></div><div><ul><li>An Instantaneous Event Counting Scope block plots a stem whenever the   Receiver and Analysis subsystem detects a packet containing an error.</li></ul></div><img vspace="5" hspace="5" src="sedemo_packet_creation_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_packet_creation_04.png" alt=""> <p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Packet Creation, Transmission and Error Analysis
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:18 $
+
+%% Overview
+% This model illustrates how to create and manipulate entities that
+% represent packets in a communication system.
+
+%% Packet Creation
+% These components generate packets at the transmitter:
+%
+% * Generate Payloads subsystem — Generates entities as a Poisson process.
+%   Each entity's Payload attribute contains random binary data.
+%
+% * Generate Headers subsystem — Supplies an entity whenever a payload
+%   requires a header. The entities' PacketID attributes contain a
+%   binary-valued vector that counts from 0 to 7.
+%
+% * Generate Trailers subsystem — Supplies an entity whenever a payload
+%   requires a trailer.
+%
+% * Block labeled Packet Generator, which is an instance of the Entity
+%   Combiner library block — Merges the entities representing header,
+%   payload, and trailer into one entity representing a packet. The Payload
+%   and PacketID attributes are accessible in the packet.
+% 
+% * Set Parity Bit subsystem — Assigns a ParityBit attribute to each
+%   packet, using the Payload and PacketID attributes in the computation. 
+% 
+% To supply an entity “whenever a payload requires” a header or trailer,
+% the model exploits the interactions among the blocks that store pending
+% entities within the Generate Headers or Generate Trailers subsystem and
+% the synchronizing capabilities of the Entity Combiner block. To learn
+% more about such synchronization, see
+% <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_sync_schematic'); Example: Waiting to Combine Entities>
+
+%% Transmission via a Channel
+%
+% The Channel subsystem models a channel that delays packets and randomly
+% introduces bit errors. A bit error can affect the payload, packet ID, or
+% parity bit of a packet. The variable BER in the MATLAB workspace is the
+% probability of a bit error. *Addition of errors*
+%
+%% Receiver and Error Analysis
+% The Receiver and Analysis subsystem uses the packet's parity bit to
+% decide whether the packet is correct or contains an error. The receiver
+% can detect an odd number of bit errors in a packet's data.
+%
+% The Receiver and Analysis subsystem computes these statistics:
+%
+% * Total number of packets received
+%
+% * Number of packets in which the receiver detected an error
+%
+% * Packet error rate, which is the ratio of the two numbers mentioned
+%   above
+%
+% Assuming that each detected packet error corresponds to exactly one bit
+% error, you expect the receiver to detect a packet error rate of
+%
+% (20C1)BER(1–BER)19 = 20BER(1–BER)19
+
+modelname = 'sedemo_packet_creation';
+open_system(modelname);
+
+%% Results and Displays
+%
+% The model includes these visual ways to understand its performance:
+%
+% * The Display block displays the output of the Receiver and Analysis
+%   subsystem throughout the simulation.
+%
+% * A Scope block plots the empirical and expected values of the detected
+%   packet error rate.
+%
+% * An Instantaneous Event Counting Scope block plots a stem whenever the
+%   Receiver and Analysis subsystem detects a packet containing an error.
+
+sim(modelname);
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

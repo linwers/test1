@@ -1,0 +1,582 @@
+Library {
+  Name			  "simeventssignalmanage1"
+  Version		  7.1
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-1252"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  off
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Thu Oct 11 16:29:26 2007"
+  Creator		  "Liw"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "liw"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Wed Nov 28 17:11:14 2007"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:86>"
+  ConfigurationManager	  "None"
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Actuator
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      From
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Goto
+      IconDisplay	      "Tag"
+    }
+    Block {
+      BlockType		      Ground
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      PMComponent
+      SubClassName	      "unknown"
+    }
+    Block {
+      BlockType		      Sensor
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      PMIOPort
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Arial"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "simeventssignalmanage1"
+    Location		    [501, 73, 849, 242]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      "S-Function"
+      Name		      "Initial Value"
+      Ports		      [1, 1]
+      Position		      [75, 77, 120, 123]
+      CopyFcn		      "des_support('desSfunCopyFcn',gcbh)"
+      LoadFcn		      "des_support('desSfunLoadFcn',gcbh)"
+      NameChangeFcn	      "des_support('desSfunNameChangeFcn',gcbh)"
+      FunctionName	      "des_init_value"
+      Parameters	      "InitialValue"
+      EnableBusSupport	      off
+      MaskType		      "Initial Value"
+      MaskDescription	      "Output the specified value from the start of the simulation until the first sample time hit at the input port. For the first sample time hit and all subsequent hits, the output signal is identical to the input signal."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Value until first sample time hit:"
+      MaskStyleString	      "edit"
+      MaskTunableValueString  "off"
+      MaskEnableString	      "on"
+      MaskVisibilityString    "on"
+      MaskToolTipString	      "on"
+      MaskVariables	      "InitialValue=@1;"
+      MaskInitialization      "% For icon display\nValueStr = get_param(gcb,'MaskValueString');\n"
+      MaskDisplay	      "image(des_iconLoad('signalInitValue.bmp'),'center')\ndisp([ValueStr '    \\n\\n'])"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      MaskValueString	      "1"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Signal Latch"
+      Ports		      [3, 1]
+      Position		      [200, 73, 285, 127]
+      UserDataPersistent      on
+      UserData		      "DataTag0"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      on
+      MaskType		      "Signal Latch"
+      MaskDescription	      "Write signal value to memory when write to memory event occurs. Read memory value and update out port when read from memory event occurs. The state of the block is 0 if the last event was a read event, and 1 if the last event was a write event."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Initial memory value:|Write to memory upon:|Type of change in signal value:|Resolve simultaneous signal updates according to event priority|Event priority for writing to memory:|Read from memory upon:|Type of change in signal value:|Resolve simultaneous signal updates according to event priority|Event priority for reading from memory:|Report state of the block, st|Report memory value upon write event, mem|Report memory value upon read event, out"
+      MaskStyleString	      "edit,popup(Sample time hit from port wts|Trigger from port wtr|Change in signal from port wvc|Function call from port wfcn),popup(Rising|Falling|Either),checkbox,edit,popup(Sample time hit from port rts|Trigger from port rtr|Change in signal from port rvc|Function call from port rfcn|Write to memory event),popup(Rising|Falling|Either),checkbox,edit,checkbox,checkbox,checkbox"
+      MaskTunableValueString  "off,off,off,off,off,off,off,off,off,off,off,off"
+      MaskCallbackString      "|des_sgnlatchmask(gcb,'cbWriteMemoryUpon','noapply');||des_sgnlatchmask(gcb,'cbSpecifyWriteEventPriority','noapply');||des_sgnlatchmask(gcb,'cbReadMemoryUpon','noapply');||des_sgnlatchmask(gcb,'cbSpecifyReadEventPriority','noapply');||des_sgnlatchmask(gcb,'cbReportMemoryState','noapply');|des_sgnlatchmask(gcb,'cbReportMemoryUponWrite','noapply');|des_sgnlatchmask(gcb,'cbReportMemoryUponRead','noapply');"
+      MaskEnableString	      "on,on,on,on,on,on,on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on,on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,,,,,,"
+      MaskVariables	      "InitialMemoryValue=@1;WriteMemoryUpon=@2;MemoryWriteEdgeOption=@3;SpecifyWriteEventPriority=@4;PriorityMemoryWrite=@5;ReadMemoryUpon=@6;MemoryReadEdgeOption=@7;SpecifyReadEventPriority=@8;PriorityMemoryRead=@9;ReportMemoryState=@10;ReportMemoryUponWrite=@11;ReportMemoryUponRead=@12;"
+      MaskInitialization      "des_sgnlatchmask(gcb, 'init','apply')"
+      MaskDisplay	      "image(des_iconLoad('gatesSigLatch.jpg'),'center');\nport_label('input',1,'wvc');                      \nport_label('input',2,'rvc');                      \nport_label('input',3,'in');                       \nport_label('output',1,'out');                     "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "0|Change in signal from port wvc|Rising|on|7100|Change in signal from port rvc|Falling|on|7000|off|off|on"
+      MaskTabNameString	      "Write,Write,Write,Write,Write,Read,Read,Read,Read,Status,Status,Status"
+      System {
+	Name			"Signal Latch"
+	Location		[112, 57, 570, 338]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "wvc"
+	  Position		  [15, 43, 45, 57]
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "1"
+	  OutDataTypeStr	  "double"
+	  DataType		  "double"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	  SignalType		  "real"
+	  SamplingMode		  "Sample based"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "rvc"
+	  Position		  [15, 43, 45, 57]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "1"
+	  OutDataTypeStr	  "double"
+	  DataType		  "double"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	  SignalType		  "real"
+	  SamplingMode		  "Sample based"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in"
+	  Position		  [15, 48, 45, 62]
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "1"
+	  OutDataTypeStr	  "double"
+	  DataType		  "double"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	  SignalType		  "real"
+	  SamplingMode		  "Sample based"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "DES2SL_out"
+	  Ports			  [0, 1, 0, 0, 0, 1]
+	  Position		  [305, 43, 355, 87]
+	  SourceBlock		  "des_sfun_lib/DES2SL"
+	  SourceType		  "msb"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  PortType		  "desPortIn"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_DES2SL"
+	  timingControl		  "SimEvents"
+	  execIndex		  "0"
+	  multipleOutputs	  off
+	  updateBeforeRead	  off
+	  InitValue		  "0"
+	  sampleTime		  "-1"
+	  offsetTime		  "0"
+	  idxBlockMR		  "0"
+	  IsMonitorOnly		  off
+	  dimsInfo		  "1"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "SL2DES_in"
+	  Ports			  [1, 0, 0, 0, 0, 0, 1]
+	  Position		  [45, 146, 115, 194]
+	  SourceBlock		  "des_sfun_lib/SL2DES"
+	  SourceType		  "msb"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  PortType		  "desPortOut"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SL2DES"
+	  timingControl		  "SimEvents"
+	  execIndex		  "1"
+	  trigger		  "None"
+	  filter		  "0"
+	  updateBeforeRead	  off
+	  InitValue		  "0"
+	  initToFactVal		  off
+	  sampleTime		  "-1"
+	  offsetTime		  "0"
+	  idxBlockMR		  "0"
+	  IsMonitorOnly		  off
+	  dimsInfo		  "1"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "SL2DES_rvc"
+	  Ports			  [1, 0, 0, 0, 0, 0, 1]
+	  Position		  [80, 39, 130, 81]
+	  SourceBlock		  "des_sfun_lib/SL2DES"
+	  SourceType		  "msb"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  PortType		  "desPortOut"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SL2DES"
+	  timingControl		  "Simulink"
+	  execIndex		  "7000"
+	  trigger		  "None"
+	  filter		  "0"
+	  updateBeforeRead	  off
+	  InitValue		  "0"
+	  initToFactVal		  off
+	  sampleTime		  "-1"
+	  offsetTime		  "0"
+	  idxBlockMR		  "0"
+	  IsMonitorOnly		  off
+	  dimsInfo		  "1"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "SL2DES_wvc"
+	  Ports			  [1, 0, 0, 0, 0, 0, 1]
+	  Position		  [80, 39, 130, 81]
+	  SourceBlock		  "des_sfun_lib/SL2DES"
+	  SourceType		  "msb"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  PortType		  "desPortOut"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SL2DES"
+	  timingControl		  "Simulink"
+	  execIndex		  "7100"
+	  trigger		  "None"
+	  filter		  "0"
+	  updateBeforeRead	  off
+	  InitValue		  "0"
+	  initToFactVal		  off
+	  sampleTime		  "-1"
+	  offsetTime		  "0"
+	  idxBlockMR		  "0"
+	  IsMonitorOnly		  off
+	  dimsInfo		  "1"
+	}
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Signal Latch__"
+	  Ports			  [0, 0, 0, 0, 0, 10, 4]
+	  Position		  [230, 52, 335, 203]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag1"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SIGNAL_LATCH"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  LConnTagsString	  "DI|DI|DI|DI|DI|DI|DI|DI|DI|DI"
+	  RConnTagsString	  "DO|DO|DO|DO"
+	  MaskInitialization	  "\n"
+	  MaskDisplay		  "port_label('LConn',1,'wts'); \nport_label('LConn',2,'wtr'); \nport_label('LConn',3,'wvc'); \nport_label('LConn',4,'wfcn');\nport_label('LConn',5,'rts'); \nport_label('LConn',6,'rtr'); \nport_label('LConn',7,'rvc'); \nport_label('LConn',8,'rfcn');\nport_label('LConn',9,'in');  \nport_label('LConn',10,'IN'); \nport_label('RConn',1,'st');  \nport_label('RConn',2,'mem'); \nport_label('RConn',3,'out'); \nport_label('RConn',4,'OUT'); "
+	  MaskSelfModifiable	  on
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "pixels"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out"
+	  Position		  [380, 43, 410, 57]
+	  IconDisplay		  "Port number"
+	  OutDataTypeStr	  "double"
+	  DataType		  "double"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	  SignalType		  "real"
+	  SamplingMode		  "Sample based"
+	}
+	Line {
+	  SrcBlock		  "rvc"
+	  SrcPort		  1
+	  DstBlock		  "SL2DES_rvc"
+	  DstPort		  1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "SL2DES_rvc"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Signal Latch__"
+	  DstPort		  LConn7
+	}
+	Line {
+	  SrcBlock		  "wvc"
+	  SrcPort		  1
+	  DstBlock		  "SL2DES_wvc"
+	  DstPort		  1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "SL2DES_wvc"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Signal Latch__"
+	  DstPort		  LConn3
+	}
+	Line {
+	  SrcBlock		  "in"
+	  SrcPort		  1
+	  DstBlock		  "SL2DES_in"
+	  DstPort		  1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "SL2DES_in"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Signal Latch__"
+	  DstPort		  LConn9
+	}
+	Line {
+	  SrcBlock		  "DES2SL_out"
+	  SrcPort		  1
+	  DstBlock		  "out"
+	  DstPort		  1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Signal Latch__"
+	  SrcPort		  RConn3
+	  DstBlock		  "DES2SL_out"
+	  DstPort		  LConn1
+	}
+      }
+    }
+    Annotation {
+      Name		      "SimEvents Signal Management Library"
+      Position		      [181, 30]
+      FontSize		      16
+      FontWeight	      "bold"
+    }
+  }
+}
+MatData {
+  NumRecords		  2
+  DataRecord {
+    Tag			    DataTag1
+    Data		    "  %)30     .    < \\   8    (     @         %    \"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!);F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"@!   !@    @    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    ( (   8    (     0         %    \"     $    )     0         .    ,     8    (    !          %    \"     $    #     0         0  , =W1S  X    P    !@    @    $          4    (     0    ,    !         !   P!W='( #@   #     &    \"     0         !0    @    !     P    $         $  # '=V8P .    ,     8    (    !          %    \"     $    $     0         0  0 =V9C;@X    P    !@    @    $          4    (     0    ,    !         !   P!R=', #@   #     &    \"     0         !0    @    !     P    $         $  # ')T<@ .    ,     8    (    !          %    \"     $    #     0         0  , <G9C  X    P    !@    @    $          4    (     0    0    !         !  ! !R9F-N#@   #     &    \"     0         !0    @    !     @    $         $  \" &EN   .    ( (   8    (     0         %    \"     $    )     0         .    ,     8    (    !          %    \"     $    \"     0         0  ( ;F\\   X    P    !@    @    $          4    (     0    (    !         !   @!N;P  #@   #     &    \"     0         !0    @    !     P    $         $  # 'EE<P .    ,     8    (    !          %    \"     $    \"     0         0  ( ;F\\   X    P    !@    @    $          4    (     0    (    !         !   @!N;P  #@   #     &    \"     0         !0    @    !     @    $         $  \" &YO   .    ,     8    (    !          %    \"     $    #     0         0  , >65S  X    P    !@    @    $          4    (     0    (    !         !   @!N;P  #@   #     &    \"     0         !0    @    !     P    $         $  # 'EE<P .      (   8    (     @         %    \"     $    !     0         %  0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   -     &    \"     $         !0    @    !     P    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" '-T   .    ,     8    (    !          %    \"     $    #     0         0  , ;65M  X    P    !@    @    $          4    (     0    ,    !         !   P!O=70 #@   -     &    \"     $         !0    @    !     P    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" &YO   .    ,     8    (    !          %    \"     $    \"     0         0  ( ;F\\   X    P    !@    @    $          4    (     0    ,    !         !   P!Y97, #@   \" !   &    \"     (         !0    @    !     0    $         !0 $  H    !    %    '!O<G1,86)E; !I<T5N86)L960       X   !@    !@    @    !          4    (     0    $    !          X    P    !@    @    $          4    (     0    (    !         !   @!)3@  #@   &     &    \"     $         !0    @    !     0    $         #@   #     &    \"     0         !0    @    !     @    $         $  \" &YO   .    ( $   8    (     @         %    \"     $    !     0         %  0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   &     &    \"     $         !0    @    !     0    $         #@   #     &    \"     0         !0    @    !     P    $         $  # $]55  .    8     8    (     0         %    \"     $    !     0         .    ,     8    (    !          %    \"     $    \"     0         0  ( ;F\\   X   !(    !@    @    $          4    (     0   !$    !         !     1    9V%T97-3:6=,871C:\"YJ<&<         #@   - \"   &    \"     (         !0    @    !     0    $         !0 $  H    !    6@   %!486=33     !3:61E        0V]N;E1A9P   $-O;FX       !/=&AE<D-O;FX 0V]N;E-,     %!#;VYN      !05&%G4T4     1W=A>0                X    P    !@    @    $          4    (     0    ,    !         !   P!O=70 #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !2:6=H=     X   !     !@    @    $          4    (     0    \\    !         !     /    4D-O;FY486=S4W1R:6YG  X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    .     8    (    !          %    \"     $    %     0         0    !0   $Q#;VYN    #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !O=71P=70   X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    ,     8    (    !          %    \"     $    \"     0         0  ( 1$\\   X    X    !@    @    $          4    (     0    8    !         !     &    1$53,E-,   .    R (   8    (     @         %    \"     $    !     0         %  0 \"@    $   !:    4%1A9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4TP     4$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     0         !0    @    !     @    $         $  \" &EN   .    ,     8    (    !          %    \"     $    $     0         0  0 3&5F= X   !     !@    @    $          4    (     0    \\    !         !     /    3$-O;FY486=S4W1R:6YG  X    X    !@    @    $          4    (     0    4    !         !     %    3$-O;FX    .    .     8    (    !          %    \"     $    %     0         0    !0   %)#;VYN    #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !I;G!U=     X    X    !@    @    $          4    (     0    4    !         !     %    4D-O;FX    .    ,     8    (    !          %    \"     $    \"     0         0  ( 1$D   X    X    !@    @    $          4    (     0    8    !         !     &    4TPR1$53   "
+  }
+  DataRecord {
+    Tag			    DataTag0
+    Data		    "  %)30     .    , $   8    (     @         %    \"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI=           :6Y?8FQO8VMU<&1A=&4     #@   $     &    \"     0         !0    @    !    $     $         $    !    !?7U-I9VYA;\"!,871C:%]?#@   #@    &    \"     8         !0    @    !     0    $         \"0    @               X    X    !@    @    &          4    (     0    $    !          D    (               "
+  }
+}

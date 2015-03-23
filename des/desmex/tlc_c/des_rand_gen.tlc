@@ -1,0 +1,583 @@
+%% $RCSfile: des_rand_gen.tlc,v $
+%% $Revision: 1.1.8.9 $  $Date: 2009/08/11 15:39:55 $
+%%
+%% Copyright 2005-2006 The MathWorks, Inc.
+%%
+%% Abstract: Error for code generation for the Event-Based Random Number block
+
+
+%implements des_rand_gen "C"
+
+%% Function: BlockTypeSetup ===============================================
+%% Abstract: Setup the S-function parameters
+%%
+%function BlockTypeSetup (block, system) void
+    %<LibAddToCommonIncludes("float.h")> 
+    %<LibAddToCommonIncludes("des_rand_gen_api.h")> 
+    %<LibAddToCommonIncludes("des_cg_rng_interface.h")>    
+%endfunction
+
+
+%% Function: BlockInstanceSetup ===========================================
+%% Abstract: Setup instance-specific S-function parameters
+%%
+%function BlockInstanceSetup (block, system) void
+{
+    %addtorecord block OUTPORT 0 
+    %addtorecord block WIDTH_OUTP LibBlockOutputSignalWidth(OUTPORT)   
+    
+    %addtorecord block Distribution     SFcnParamSettings.distArg
+    %addtorecord block CodeGenOpt       SFcnParamSettings.genCodeOpt
+    %addtorecord block Index            SFcnParamSettings.index
+    %addtorecord block PIndex           SFcnParamSettings.proxyIndex 
+    
+    %% Determination of input dimensions/data types
+    %addtorecord block OUT_DTYPE LibBlockOutputSignalDataTypeName(OUTPORT, tRealPart)
+
+    uint32_T dist = %<Distribution>;
+ 
+    %switch %<Distribution>
+    %case 1 %% exponential
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_EXP__
+            #define __PARAM_STRUCT_EXP__
+                typedef des_rng_param_exp SimEventsEBRNGParamStructExp;
+            #endif 
+        %closefile buffer
+        %break
+    %case 2 %% uniform
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_UNIF__
+            #define __PARAM_STRUCT_UNIF__
+                typedef des_rng_param_unif SimEventsEBRNGParamStructUnif;
+            #endif
+        %closefile buffer
+        %break
+    %case 3 %%BERNOULLI
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_BERN__
+            #define __PARAM_STRUCT_BERN__
+                typedef des_rng_param_bern SimEventsEBRNGParamStructBern;
+            #endif
+        %closefile buffer
+        %break
+    %case 4 %%BINOMIAL
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_BINO__
+            #define __PARAM_STRUCT_BINO__
+                typedef des_rng_param_bino SimEventsEBRNGParamStructBino;
+            #endif
+        %closefile buffer
+        %break
+    %case 5 %%TRIANGULAR
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_TRI__
+            #define __PARAM_STRUCT_TRI__
+                typedef des_rng_param_tri SimEventsEBRNGParamStructTri;
+            #endif
+        %closefile buffer
+        %break
+    %case 6 %%GAMMA
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_GAM__
+            #define __PARAM_STRUCT_GAM__
+                typedef des_rng_param_gam SimEventsEBRNGParamStructGam;
+            #endif
+        %closefile buffer
+        %break
+    %case 7 %%NORMAL
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_NORM__
+            #define __PARAM_STRUCT_NORM__
+                typedef des_rng_param_norm SimEventsEBRNGParamStructNorm;
+            #endif
+        %closefile buffer
+        %break
+    %case 8 %%GEOMETRIC
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_GEO__
+            #define __PARAM_STRUCT_GEO__
+                typedef des_rng_param_geo SimEventsEBRNGParamStructGeo;
+            #endif
+        %closefile buffer
+        %break
+    %case 9 %%POISSON
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_POISS__
+            #define __PARAM_STRUCT_POISS__
+                typedef des_rng_param_poiss SimEventsEBRNGParamStructPoiss;
+            #endif
+        %closefile buffer
+        %break
+    %case 10 %%LOGNORMAL
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_LOGN__
+            #define __PARAM_STRUCT_LOGN__
+                typedef des_rng_param_logn SimEventsEBRNGParamStructLogn;
+            #endif
+        %closefile buffer
+        %break
+    %case 11 %%LOG_LOGISTIC
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_LOGL__
+            #define __PARAM_STRUCT_LOGL__
+                typedef des_rng_param_logl SimEventsEBRNGParamStructLogl;
+            #endif
+        %closefile buffer
+        %break
+    %case 12 %%BETA
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_BETA__
+            #define __PARAM_STRUCT_BETA__
+                typedef des_rng_param_beta SimEventsEBRNGParamStructBeta;
+            #endif
+        %closefile buffer
+        %break
+    %case 13 %%DISCRETE_UNIFORM
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_UNID__
+            #define __PARAM_STRUCT_UNID__
+                typedef des_rng_param_unid SimEventsEBRNGParamStructUnid;
+            #endif
+        %closefile buffer
+        %break
+    %case 14 %%WEIBULL
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_WBL__
+            #define __PARAM_STRUCT_WBL__
+                typedef des_rng_param_wbl SimEventsEBRNGParamStructWbl;
+            #endif
+        %closefile buffer
+        %break
+    %case 15 %%ARBITRARY_CONTINUOUS
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_CONT__
+            #define __PARAM_STRUCT_CONT__
+                typedef des_rng_param_cont SimEventsEBRNGParamStructCont;
+            #endif
+        %closefile buffer
+        %break
+    %case 16 %%ARBITRARY_DISCRETE
+        %openfile buffer
+            #ifndef __PARAM_STRUCT_DISC__
+            #define __PARAM_STRUCT_DISC__
+                typedef des_rng_param_disc SimEventsEBRNGParamStructDisc;
+            #endif
+        %closefile buffer
+        %break
+    %default
+         LibBlockReportFatalError(block,"%<LibGetFormattedBlockPath(block)>: Illegal choice for the Distribution parameter\n")
+    %endswitch
+
+    %<LibCacheTypedefs(buffer)>
+    
+    %openfile buffer2
+        #ifndef __DIST_STRUCT__
+        #define __DIST_STRUCT__
+        typedef  des_rng_param SimEventsEBRNGDistStruct;        
+        #endif /*typedef for SimEventsEBRNGDistStruct; */
+    %closefile buffer2
+    %<LibCacheTypedefs(buffer2)>
+}
+%endfunction                                                                         
+
+%% Function: DesThrowIfInvalidParamAndReturn ==============================
+%% Abstract: Emit code that will throw error and return if there was
+%%           a parameter error seen
+%%
+%function DesThrowIfInvalidParamAndReturn( block, distribution, errVariable ) Output
+if ( %<errVariable> )
+{
+    %<LibSetRTModelErrorStatus("\"Invalid parameter for %<distribution> distribution in %<LibGetFormattedBlockPath(block)> block.\"")>;   
+    %<RTMSetStopRequested(1)>;
+    return;
+}
+%endfunction
+
+
+%% Function: InitializeConditions =========================================
+%% Abstract: Initialize the state vectors
+%%
+%function InitializeConditions(block, system) Output                                   
+{
+   %if !Accelerator  %%if not accelerator mode
+     %if block.SFcnParamSettings.genCodeOpt == 1 %% if code gen is turned on
+     {
+        real_T pseed = %<LibBlockParameter(rtpSeed, "", "", 0)>;
+        uint32_T seed;
+        const char *errMsg;        
+     
+        des_rng_param *p = %<LibBlockDWorkAddr(dwP,"","",0)>;
+     
+        p->pt2Param = %<LibBlockDWorkAddr(dwParam,"","",0)>;
+        p->unifState = %<LibBlockDWorkAddr(dwUnifStateVec,"","",0)>;
+        p->normState = %<LibBlockDWorkAddr(dwNormStateVec,"","",0)>;
+        p->pt2FuncRandGen = 0;
+        p->pt2FuncErr = &simevents_handleRNGErrorInCgExeEnv;
+       
+        /* seed must be positive */ 
+        if (pseed < 0.0) 
+        {
+            %<LibSetRTModelErrorStatus("\"Error in %<LibGetFormattedBlockPath(block)> block. The seed must be a nonnegative integer.\"")>; 
+            %<RTMSetStopRequested(1)>;
+            return;
+        }
+        /* seed must be an integer */
+        if ( fabs(pseed - (int)pseed) >= DBL_EPSILON )
+        {
+            %<LibSetRTModelErrorStatus("\"Error in %<LibGetFormattedBlockPath(block)> block. The seed must be a nonnegative integer.\"")>;
+            %<RTMSetStopRequested(1)>;
+            return;
+        }
+        
+        seed = (uint32_T)pseed;
+
+        %switch %<Distribution>
+        %case 1 %% exponential
+        {
+            (*%<LibBlockDWorkAddr(dwmpMeanExp,"","",0)>) =  %<LibBlockParameter(rtpMeanExp, "", "", 0)>;
+            
+            simevents_rngSetPExp(p->pt2Param, %<LibBlockDWorkAddr(dwmpMeanExp,"","",0)> );
+            errMsg = simevents_rngChkPExp(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "exponential", "errMsg")>
+            simevents_rngInitExp(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenExp;
+        }
+        %break
+        %case 2 %% uniform
+        {
+            (*%<LibBlockDWorkAddr(dwmpMinUnif,"","",0)>) =  %<LibBlockParameter(rtpMinUnif, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpMaxUnif,"","",0)>) = %<LibBlockParameter(rtpMaxUnif, "", "", 0)>;
+            
+            simevents_rngSetPUnif(p->pt2Param, %<LibBlockDWorkAddr(dwmpMinUnif,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpMaxUnif,"","",0)>);              
+            errMsg = simevents_rngChkPUnif(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "uniform", "errMsg")>
+            simevents_rngInitUnif(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenUnif;
+        }      
+        %break
+        %case 3 %%BERNOULLI
+        {
+            (*%<LibBlockDWorkAddr(dwmpPOneBern,"","",0)>) = %<LibBlockParameter(rtpPOneBern, "", "", 0)>;
+            
+            simevents_rngSetPBern(p->pt2Param, %<LibBlockDWorkAddr(dwmpPOneBern,"","",0)>);
+            errMsg = simevents_rngChkPBern(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "Bernoulli", "errMsg")>
+            simevents_rngInitBern(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenBern;
+        }
+        %break
+        %case 4 %%BINOMIAL
+        {
+            (*%<LibBlockDWorkAddr(dwmpPSuccess,"","",0)>) = %<LibBlockParameter(rtpPSuccess, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpNumTrial,"","",0)>) = %<LibBlockParameter(rtpNumTrial, "", "", 0)>;
+            
+            simevents_rngSetPBino(p->pt2Param, %<LibBlockDWorkAddr(dwmpPSuccess,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpNumTrial,"","",0)>);
+            errMsg = simevents_rngChkPBino(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "binomial", "errMsg")>
+            simevents_rngInitBino(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenBino;
+        }        
+        %break
+        %case 5 %%TRIANGULAR
+        {
+            (*%<LibBlockDWorkAddr(dwmpMinTri,"","",0)>)  = %<LibBlockParameter(rtpMinTri, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpMaxTri,"","",0)>)  = %<LibBlockParameter(rtpMaxTri, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpModeTri,"","",0)>) =  %<LibBlockParameter(rtpModeTri, "", "", 0)>;
+            
+            simevents_rngSetPTri(p->pt2Param, %<LibBlockDWorkAddr(dwmpMinTri,"","",0)>, 
+                                              %<LibBlockDWorkAddr(dwmpMaxTri,"","",0)>, 
+                                              %<LibBlockDWorkAddr(dwmpModeTri,"","",0)>);
+            errMsg = simevents_rngChkPTri(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "triangular", "errMsg")>
+            simevents_rngInitTri(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenTri;
+        }
+        %break
+        %case 6 %%GAMMA
+        {
+            (*%<LibBlockDWorkAddr(dwmpLocGam,"","",0)>)   = %<LibBlockParameter(rtpLocGam, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpScaleGam,"","",0)>) = %<LibBlockParameter(rtpScaleGam, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpShapeGam,"","",0)>) = %<LibBlockParameter(rtpShapeGam, "", "", 0)>;
+                    
+            simevents_rngSetPGam(p->pt2Param, %<LibBlockDWorkAddr(dwmpLocGam,"","",0)>, 
+                                              %<LibBlockDWorkAddr(dwmpScaleGam,"","",0)>,
+                                              %<LibBlockDWorkAddr(dwmpShapeGam,"","",0)>,  
+                                              %<LibBlockDWorkAddr(dwTempVar,"","",0)>); 
+            errMsg = simevents_rngChkPGam(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "gamma", "errMsg")>
+            simevents_rngInitGam(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenGam;
+        }
+        %break
+        %case 7 %%NORMAL
+        {
+            (*%<LibBlockDWorkAddr(dwmpMeanNorm,"","",0)>) =  %<LibBlockParameter(rtpMeanNorm, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpStdNorm,"","",0)>)  =  %<LibBlockParameter(rtpStdNorm, "", "", 0)>;
+            
+            simevents_rngSetPNorm(p->pt2Param, %<LibBlockDWorkAddr(dwmpMeanNorm,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpStdNorm,"","",0)>);
+            errMsg = simevents_rngChkPNorm(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "Gaussian (normal)", "errMsg")>
+            simevents_rngInitNorm(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenNorm;
+        }
+        %break
+        %case 8 %%GEOMETRIC
+        {
+            (*%<LibBlockDWorkAddr(dwmpPSuccessGeo,"","",0)>) = %<LibBlockParameter(rtpPSuccessGeo, "", "", 0)>;
+                         
+            simevents_rngSetPGeo(p->pt2Param, %<LibBlockDWorkAddr(dwmpPSuccessGeo,"","",0)>,
+                                              %<LibBlockDWorkAddr(dwTempVar,"","",0)>);
+            errMsg = simevents_rngChkPGeo(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "geometric", "errMsg")>
+            simevents_rngInitGeo(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenGeo;
+        }
+        %break
+        %case 9 %%POISSON
+        {
+            (*%<LibBlockDWorkAddr(dwmpMeanPoiss,"","",0)>) = %<LibBlockParameter(rtpMeanPoiss, "", "", 0)>;
+            
+            simevents_rngSetPPoiss(p->pt2Param, %<LibBlockDWorkAddr(dwmpMeanPoiss,"","",0)>);
+            errMsg = simevents_rngChkPPoiss(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "Poisson", "errMsg")>
+            simevents_rngInitPoiss(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenPoiss;
+        }
+        %break
+        %case 10 %%LOGNORMAL
+        {
+            (*%<LibBlockDWorkAddr(dwmpLocLogN,"","",0)>)   = %<LibBlockParameter(rtpLocLogN, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpScaleLogN,"","",0)>) = %<LibBlockParameter(rtpScaleLogN, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpShapeLogN,"","",0)>) = %<LibBlockParameter(rtpShapeLogN, "", "", 0)>;
+            
+            simevents_rngSetPLogn(p->pt2Param, %<LibBlockDWorkAddr(dwmpLocLogN,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpScaleLogN,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpShapeLogN,"","",0)>);
+            errMsg = simevents_rngChkPLogn(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "lognormal", "errMsg")>
+            simevents_rngInitLogn(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenLogn;
+        }
+        %break
+        %case 11 %%LOG_LOGISTIC
+        {
+            (*%<LibBlockDWorkAddr(dwmpLocLogl,"","",0)>)   = %<LibBlockParameter(rtpLocLogl, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpScaleLogl,"","",0)>) = %<LibBlockParameter(rtpScaleLogl, "", "", 0)>;
+                        
+            simevents_rngSetPLogl(p->pt2Param, %<LibBlockDWorkAddr(dwmpLocLogl,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwmpScaleLogl,"","",0)>, 
+                                               %<LibBlockDWorkAddr(dwTempVar,"","",0)>);                                            
+            errMsg = simevents_rngChkPLogl(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "log-logistic", "errMsg")>
+            simevents_rngInitLogl(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenLogl;
+        }
+        %break
+        %case 12 %%BETA
+        {
+            (*%<LibBlockDWorkAddr(dwmpMinBeta,"","",0)>)    = %<LibBlockParameter(rtpMinBeta, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpMaxBeta,"","",0)>)    = %<LibBlockParameter(rtpMaxBeta, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpShape1Beta,"","",0)>) = %<LibBlockParameter(rtpShape1Beta, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpShape2Beta,"","",0)>) = %<LibBlockParameter(rtpShape2Beta, "", "", 0)>;
+            
+            simevents_rngSetPBeta(p->pt2Param, %<LibBlockDWorkAddr(dwmpMinBeta,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpMaxBeta,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpShape1Beta,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpShape2Beta,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwTempVar,"","",0)>);                                    
+            errMsg = simevents_rngChkPBeta(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "beta", "errMsg")>
+            simevents_rngInitBeta(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenBeta;
+        }
+        %break
+        %case 13 %%DISCRETE_UNIFORM
+        {
+            (*%<LibBlockDWorkAddr(dwmpMinUnid,"","",0)>)    = %<LibBlockParameter(rtpMinUnid, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpMaxUnid,"","",0)>)    = %<LibBlockParameter(rtpMaxUnid, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpNumValUnid,"","",0)>) = %<LibBlockParameter(rtpNumValUnid, "", "", 0)>;
+                        
+            simevents_rngSetPUnid(p->pt2Param, %<LibBlockDWorkAddr(dwmpMinUnid,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpMaxUnid,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpNumValUnid,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwTempVar,"","",0)>);            
+            errMsg = simevents_rngChkPUnid(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "discrete uniform", "errMsg")>
+            simevents_rngInitUnid(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenUnid;    
+        }
+        %break        
+        %case 14 %%WEIBULL
+        {
+            (*%<LibBlockDWorkAddr(dwmpLocationWbl,"","",0)>) = %<LibBlockParameter(rtpLocationWbl, "", "", 0)>;
+            (*%<LibBlockDWorkAddr(dwmpScaleWbl,"","",0)>)    = %<LibBlockParameter(rtpScaleWbl, "", "", 0)>;            
+            (*%<LibBlockDWorkAddr(dwmpShapeWbl,"","",0)>)    = %<LibBlockParameter(rtpShapeWbl, "", "", 0)>;
+                    
+            simevents_rngSetPWbl(p->pt2Param, %<LibBlockDWorkAddr(dwmpLocationWbl,"","",0)>,
+                                              %<LibBlockDWorkAddr(dwmpScaleWbl,"","",0)>,
+                                              %<LibBlockDWorkAddr(dwmpShapeWbl,"","",0)>,
+                                              %<LibBlockDWorkAddr(dwTempVar,"","",0)>);
+            errMsg = simevents_rngChkPWbl(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "Weibull", "errMsg")>
+            simevents_rngInitWbl(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenWbl;
+        }
+        %break
+        %case 15 %%ARBITRARY_CONTINUOUS
+        {    
+            real64_T *cdfVecCont    = %<LibBlockDWorkAddr(dwmpCdfVecCont,"","",0)>;
+            real64_T *cdfVecRTP     = %<LibBlockMatrixParameterBaseAddr(rtpCdfVecCont)>;
+            real64_T *valueVecCont  = %<LibBlockDWorkAddr(dwmpValVecCont,"","",0)>;
+            real64_T *valueVecRTP   = %<LibBlockMatrixParameterBaseAddr(rtpValVecCont)>;
+            uint32_T sizeValVecCont = %<block.SFcnParamSettings.sizeValVecCont>;
+                        
+            %foreach k = block.SFcnParamSettings.sizeValVecCont
+                 *(valueVecCont+ %<k>) = *(valueVecRTP + %<k>);                 
+            %endforeach
+            
+            %foreach kk = block.SFcnParamSettings.sizeCdfVecCont
+                 *(cdfVecCont+ %<kk>) = *(cdfVecRTP + %<kk>);
+            %endforeach
+            
+            simevents_rngSetPCont(p->pt2Param, valueVecCont,
+                                               cdfVecCont,
+                                               sizeValVecCont);
+            errMsg = simevents_rngChkPCont(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "arbitrary continuous", "errMsg")>
+            simevents_rngInitCont(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenCont;
+        }
+        %break        
+        %case 16 %%ARBITRARY_DISCRETE
+        {
+            real64_T *valueVecDisc = %<LibBlockDWorkAddr(dwmpValVDisc,"","",0)>;     
+            real64_T *valueVecRTP  = %<LibBlockMatrixParameterBaseAddr(rtpValVDisc)>;
+            real64_T *probVecDisc  = %<LibBlockDWorkAddr(dwmpProbVDisc,"","",0)>;            
+            real64_T *probVecRTP   = %<LibBlockMatrixParameterBaseAddr(rtpProbVDisc)>;
+            uint32_T sizeValVecDis = %<block.SFcnParamSettings.sizeValVecDis>;
+                    
+            %foreach k = block.SFcnParamSettings.sizeValVecDis
+                 *(valueVecDisc+ %<k>) = *(valueVecRTP + %<k>);
+            %endforeach
+            
+            %foreach kk = block.SFcnParamSettings.sizeProbVec
+                 *(probVecDisc+ %<kk>) = *(probVecRTP + %<kk>);
+            %endforeach    
+            
+            simevents_rngSetPDisc(p->pt2Param, %<LibBlockDWorkAddr(dwmpValVDisc,"","",0)>,
+                                               %<LibBlockDWorkAddr(dwmpProbVDisc,"","",0)>,
+                                               sizeValVecDis,
+                                               %<LibBlockDWorkAddr(dwTempVar,"","",0)>);                                            
+            errMsg = simevents_rngChkPDisc(p->pt2Param);            
+            %<DesThrowIfInvalidParamAndReturn(block, "arbitrary discrete", "errMsg")>
+            simevents_rngInitDisc(&seed, p);
+            
+            p->pt2FuncRandGen = simevents_rngGenDisc;
+        }
+        %break
+        %default
+            LibBlockReportFatalError(block, "%<LibGetFormattedBlockPath(block)>: Illegal choice for the Distribution parameter\n")
+        %endswitch
+     }    
+     %endif
+   %endif  
+}
+%endfunction
+    
+
+%% Fucntion: Start ========================================================
+%% Abstract: For non accelarator mode, this function 
+%%           emits the call back function that is will
+%%           be called by the solver interface object when an output
+%%           signal needs to be updated. 
+%%           RSim target the connection check is disabled.
+%%
+%function Start(block,system) Output
+
+  %if !Accelerator  %%if not accelerator mode
+  
+    %if block.SFcnParamSettings.genCodeOpt == 1 %% if code gen is turned on
+    
+      %openfile funcbuf
+          void sigsrc_%<Index>(void)
+          { 
+              int_T i;
+              %<OUT_DTYPE> *y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;
+
+              void (*pt2Fcn) (real64_T *, des_rng_param *) = 0;
+              des_rng_param *p = %<LibBlockDWorkAddr(dwP,"","",0)>;
+
+              /* the actual function for random number generation */
+              pt2Fcn = p->pt2FuncRandGen;    
+              for (i=0; i < %<WIDTH_OUTP>; i++) 
+              {
+                  (*pt2Fcn)(y, p); 
+              }
+              %<SLibFcnComputeOutput(block, 0)>;
+          }
+      %closefile funcbuf
+      
+      %assign srcFile = LibGetModelDotCFile()   
+      %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)> 
+      
+      simevents_setSigSrcCallBackFcn("%<LibGetModelName()>",%<Index>, %<PIndex>, sigsrc_%<Index>);
+      
+    %endif %% Code gen is turned on  
+  %endif %% Not accelerator mode   
+%endfunction
+
+
+%% Function: Outputs ======================================================
+%% Abstract: Access the in/output data vectors and do the functions.
+%%
+%function Outputs(block, system) Output                                   
+{  
+    %if Accelerator
+       %if block.SFcnParamSettings.genCodeOpt == 1
+
+            int_T *isCallerDesED = %<LibBlockDWorkAddr(dwEdSfunCaller,"","",0)>;
+            int_T valueIsCallerDesED = *isCallerDesED;
+                    
+            if(*isCallerDesED == 1)
+            {
+                int_T i;
+                %<OUT_DTYPE> *y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;    
+
+                void (*pt2Fcn) (real64_T *, des_rng_param *) = 0;
+                des_rng_param *p = %<LibBlockDWorkAddr(dwP,"","",0)>;
+
+                /* the actual function for random number generation */
+                pt2Fcn = p->pt2FuncRandGen;    
+                for (i=0; i < %<WIDTH_OUTP>; i++) 
+                {
+                    (*pt2Fcn)(y, p); 
+                }
+                %<SLibFcnComputeOutput(block, 0)>;
+            }
+
+            *isCallerDesED  = 0;
+
+        %endif
+    %endif
+}
+%endfunction
+

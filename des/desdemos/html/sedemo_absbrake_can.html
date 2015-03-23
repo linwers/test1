@@ -1,0 +1,167 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Anti-Lock Braking System (ABS) Model Using CAN Communications</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_absbrake_can"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_absbrake_can.mdl</div><div class="right"><a href="matlab:sedemo_absbrake_can">Open this model</a></div></div><div class="content"><h1>Anti-Lock Braking System (ABS) Model Using CAN Communications</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Structure and Behavior of the Network</a></li><li><a href="#5">Transmission &amp; Reception in CAN Node Subsystems</a></li><li><a href="#8">CAN BUS Arbitration Subsystem</a></li><li><a href="#10">Results and Displays</a></li><li><a href="#12">Experimenting with the Model</a></li><li><a href="#13">References</a></li><li><a href="#14">See Also</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model (Fig 1) extends the <a href="matlab:showdemo('sedemo_absbrake_delay')">Anti-Lock Braking System (ABS) Model with Queuing Delay</a> demo by making the timing uncertainty representative of real-world timing conditions.</p><p>Refer to the <a href="matlab:showdemo('sedemo_absbrake_overview_m')">Design Workflow for an Anti-Lock Braking System (ABS)</a> demo to see where this model fits into the model-based design workflow.</p><p>In this model, the delay is primarily a function of traffic on a network that conveys data from the ABS controller and other components. This demo includes a model of a Control Area Network Bus (CANbus) ISO&reg; Standard 11898. To see the modeling of the network, refer to Fig 2.</p><img vspace="5" hspace="5" src="sedemo_absbrake_can_01.png" alt=""> <p><i>Fig 1: Anti-Lock Braking System (ABS) Model using CAN Communications</i></p><h2>Structure and Behavior of the Network<a name="3"></a></h2><p>The CANbus subsystem (Fig 2) includes a shared channel (labeled CAN BUS Arbitration) and multiple nodes that connect to it via TX and RX ports. The bus uses the priority values of simultaneously arriving messages to determine which message to convey.</p><p>The middle node generates messages that carry data from the bang-bang controller at the top level of the model. The CAN Node 2 subsystem governs this node's access to the shared channel. The destination of these messages is the top node.</p><p>The top node reads data stored in attributes of the messages it receives, and sends the data to the Hydraulic Lag block in the anti-lock braking system.</p><p>The top node also generates messages whose destination is the middle node. The Message Delivery Delay plot shows you how long each of these messages takes to arrive at their destination.</p><p>The bottom node generates messages that represent traffic from other users of the shared channel. The traffic becomes markedly heavier shortly after T=6.</p><img vspace="5" hspace="5" src="sedemo_absbrake_can_02.png" alt=""> <p><i>Fig 2: CAN Bus Network Subsystem</i></p><h2>Transmission &amp; Reception in CAN Node Subsystems<a name="5"></a></h2><p><b>Transmission Model</b></p><p>In the top portion of each CAN Node subsystem (Fig 3), a buffer holds messages waiting for transmission. When the transmission of the previous message is complete, the Send to Channel block forwards one copy of the message to the transmitter and keeps another copy until a signal called Ack reports the success or failure of the transmission. If the transmission fails, the copy of the message returns to the transmission buffer for another attempt.</p><img vspace="5" hspace="5" src="sedemo_absbrake_can_03.png" alt=""> <p><i>Fig 3: Transmission &amp; Reception</i></p><p><b>Reception Model</b></p><p>In the bottom portion of each CAN Node subsystem (shown in Fig 3), the Error Detection block checks the source and destination of the received message. A message from this node serves to confirm success of the transmission. A message from another node whose destination is this node advances to one of several mailboxes that represent different clients.</p><h2>CAN BUS Arbitration Subsystem<a name="8"></a></h2><p>The CAN BUS Arbitration subsystem (Fig 4) implements a CSMA/AMP (Carrier Sense Multiple Access with Arbitration by Message Priority) protocol. When the bus becomes free, all nodes that have pending messages send them to the bus. If multiple messages arrive at the same time, the Arbitration on Message Priority block uses their priority values to discard all but the highest priority message. This block also delays the remaining message by the time required to send the message over the bus. After this time elapses, the bus conveys a copy of the delayed message to each node.</p><img vspace="5" hspace="5" src="sedemo_absbrake_can_04.png" alt=""> <p><i>Fig 4: CAN BUS Arbitration Subsystem</i></p><h2>Results and Displays<a name="10"></a></h2><p>Scopes show these simulation results (Fig 5):</p><div><ul><li>Delay in the delivery of messages from one node to another</li><li>Utilization of the network</li><li>Normalized relative slip of the wheel</li><li>Speed of the vehicle and wheel</li></ul></div><img vspace="5" hspace="5" src="sedemo_absbrake_can_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_absbrake_can_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_absbrake_can_07.png" alt=""> <img vspace="5" hspace="5" src="sedemo_absbrake_can_08.png" alt=""> <p><i>Fig 5: Simulation results</i></p><p>You can see that the utilization increases steeply to reflect the heavier background traffic after T=6. The traffic also causes the delay to increase by approximately one order of magnitude after T=6.</p><h2>Experimenting with the Model<a name="12"></a></h2><p>Vary the arrival rate of background traffic on the network by changing the value of the Average Arrival Rate block at the top level of the model. Then observe changes in the plots. In general, increasing the arrival rate causes the network utilization and message delivery delay to increase and causes the performance of the anti-lock braking system to degrade. You might observe changes in performance via differences in the time it takes for the car to stop, and how much the car skids. When the normalized relative slip is 1 and the wheel speed is 0, the car is skidding.</p><h2>References<a name="13"></a></h2><p>[1] Lawrenz, Wolfhard, <i>CAN System Engineering: From Theory to Practical Applications</i>, New York, Springer, 1997.</p><p>[2] Voss, Wilfried, <i>A Comprehensible Guide to Controller Area Network</i>, Amherst, MA, Copperhill Technologies, 2005.</p><h2>See Also<a name="14"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_absbrake_overview_m')">Design Workflow for an Anti-Lock Braking System (ABS)</a></li><li><a href="matlab:showdemo('sedemo_absbrake_nodelay')">Anti-Lock Braking System (ABS) Model</a></li><li><a href="matlab:showdemo('sedemo_absbrake_delay')">Anti-Lock Braking System (ABS) Model with Queuing Delay</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Anti-Lock Braking System (ABS) Model Using CAN Communications
+%Copyright 2008 The MathWorks, Inc.
+
+%% Overview
+% 
+% This model (Fig 1) extends the 
+% <matlab:showdemo('sedemo_absbrake_delay')
+% Anti-Lock Braking System (ABS) Model with Queuing Delay> demo by making
+% the timing uncertainty representative of real-world timing conditions.
+%
+% Refer to the
+% <matlab:showdemo('sedemo_absbrake_overview_m')
+% Design Workflow for an Anti-Lock Braking System (ABS)> demo to see where
+% this model fits into the model-based design workflow.
+%
+% In this model, the delay is primarily a function of traffic on a network
+% that conveys data from the ABS controller and other components. This 
+% demo includes a model of a Control Area Network Bus (CANbus) ISO(R) 
+% Standard 11898. To see the modeling of the network, refer to Fig 2.
+
+modelname = 'sedemo_absbrake_can';
+open_system(modelname);
+
+%%
+% _Fig 1: Anti-Lock Braking System (ABS) Model using CAN Communications_
+%
+
+%% Structure and Behavior of the Network
+% 
+% The CANbus subsystem (Fig 2) includes a shared channel
+% (labeled CAN BUS Arbitration) and 
+% multiple nodes that connect to it via TX and RX ports. The bus uses the 
+% priority values of simultaneously arriving messages to determine which 
+% message to convey.
+% 
+% The middle node generates messages that carry data from the bang-bang 
+% controller at the top level of the model. The CAN Node 2 subsystem 
+% governs this node's access to the shared channel. The destination of 
+% these messages is the top node.
+% 
+% The top node reads data stored in attributes of the messages it receives, 
+% and sends the data to the Hydraulic Lag block in the anti-lock braking 
+% system.
+% 
+% The top node also generates messages whose destination is the middle 
+% node. The Message Delivery Delay plot shows you how long each of these 
+% messages takes to arrive at their destination.
+% 
+% The bottom node generates messages that represent traffic from other 
+% users of the shared channel. The traffic becomes markedly heavier shortly 
+% after T=6.
+
+open_system([modelname, '/CANbus'], 'force');
+
+%%
+% _Fig 2: CAN Bus Network Subsystem_
+%
+
+%% Transmission & Reception in CAN Node Subsystems
+% 
+% *Transmission Model*
+%
+% In the top portion of each CAN Node subsystem (Fig 3), a buffer holds 
+% messages waiting for transmission. When the transmission of the previous 
+% message is complete, the Send to Channel block forwards one copy of the 
+% message to the transmitter and keeps another copy until a signal called 
+% Ack reports the success or failure of the transmission. If the 
+% transmission fails, the copy of the message returns to the transmission 
+% buffer for another attempt.
+
+open_system([modelname, '/CANbus/CAN Node 1'], 'force');
+
+%%
+% _Fig 3: Transmission & Reception_
+%
+
+%% 
+% *Reception Model*
+% 
+% In the bottom portion of each CAN Node subsystem (shown in Fig 3), the Error 
+% Detection block checks the source and destination of the received 
+% message. A message from this node serves to confirm success of the 
+% transmission. A message from another node whose destination is this node 
+% advances to one of several mailboxes that represent different clients.
+%
+
+%% CAN BUS Arbitration Subsystem
+% 
+% The CAN BUS Arbitration subsystem (Fig 4) implements a CSMA/AMP (Carrier Sense Multiple 
+% Access with Arbitration by Message Priority) protocol. When the bus 
+% becomes free, all nodes that have pending messages send them to the bus. 
+% If multiple messages arrive at the same time, the Arbitration on Message 
+% Priority block uses their priority values to discard all but the highest 
+% priority message. This block also delays the remaining message by the 
+% time required to send the message over the bus. After this time elapses, 
+% the bus conveys a copy of the delayed message to each node.
+
+open_system([modelname, '/CANbus/CAN BUS Arbitration'], 'force');
+
+%%
+% _Fig 4: CAN BUS Arbitration Subsystem_
+%
+
+%% Results and Displays
+% 
+% Scopes show these simulation results (Fig 5):
+% 
+% * Delay in the delivery of messages from one node to another
+% * Utilization of the network
+% * Normalized relative slip of the wheel
+% * Speed of the vehicle and wheel
+
+sim(modelname);
+
+%%
+% _Fig 5: Simulation results_
+% 
+% You can see that the utilization increases steeply to reflect the 
+% heavier background traffic after T=6. The traffic also causes the delay 
+% to increase by approximately one order of magnitude after T=6.
+%
+
+%% Experimenting with the Model
+% 
+% Vary the arrival rate of background traffic on the network by changing 
+% the value of the Average Arrival Rate block at the top level of the 
+% model. Then observe changes in the plots. In general, increasing the 
+% arrival rate causes the network utilization and message delivery delay to 
+% increase and causes the performance of the anti-lock braking system to 
+% degrade. You might observe changes in performance via differences in the 
+% time it takes for the car to stop, and how much the car skids. When the 
+% normalized relative slip is 1 and the wheel speed is 0, the car is 
+% skidding.
+%
+
+%% References
+% 
+% [1] Lawrenz, Wolfhard, _CAN System Engineering: From Theory to Practical 
+% Applications_, New York, Springer, 1997.
+% 
+% [2] Voss, Wilfried, _A Comprehensible Guide to Controller Area Network_, 
+% Amherst, MA, Copperhill Technologies, 2005.
+%
+
+%% See Also
+%
+% * <matlab:showdemo('sedemo_absbrake_overview_m') Design Workflow for an Anti-Lock Braking System (ABS)>
+% * <matlab:showdemo('sedemo_absbrake_nodelay') Anti-Lock Braking System (ABS) Model>
+% * <matlab:showdemo('sedemo_absbrake_delay') Anti-Lock Braking System (ABS) Model with Queuing Delay>
+
+close_system(modelname, 0);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

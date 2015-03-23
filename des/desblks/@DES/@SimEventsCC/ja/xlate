@@ -1,0 +1,44 @@
+% toolbox/des/desblks/@DES/@SimEventsCC/getDialogSchema.m
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.10.1 $ $Date: 2008/04/21 16:22:19 $
+
+<(getDialogSchema)Attribute output delayed relative to entities:
+>(getDialogSchema)エンティティに対して遅延した属性の出力:
+<(getDialogSchema)Display events in event calendar
+>(getDialogSchema)イベントカレンダ内にイベントを表示
+<(getDialogSchema)Event log
+>(getDialogSchema)イベントログ
+<(getDialogSchema)Identical seeds for random number generators:
+>(getDialogSchema)乱数発生器に対する同一のシード:
+<(getDialogSchema)Log entities advancing from block to block 
+>(getDialogSchema)ブロックからブロックに進むエンティティのログ
+<(getDialogSchema)Log events when executed
+>(getDialogSchema)実行時のイベントのログ
+<(getDialogSchema)Log events when scheduled
+>(getDialogSchema)スケジュール時のイベントのログ
+<(getDialogSchema)Maximum events per block:
+>(getDialogSchema)ブロック単位の最大イベント:
+<(getDialogSchema)Maximum events per model:
+>(getDialogSchema)モデル単位の最大イベント:
+<(getDialogSchema)Modification of attribute values used for decision making:
+>(getDialogSchema)判定に使われる属性値の修正:
+<(getDialogSchema)Race conditions
+>(getDialogSchema)競合条件
+<(getDialogSchema)Random number generators
+>(getDialogSchema)乱数発生器
+<(getDialogSchema)Response to function call delayed relative to entities:
+>(getDialogSchema)エンティティに対して遅延した Function Call の応答:
+<(getDialogSchema)Simultaneous events
+>(getDialogSchema)同時イベント
+<(getDialogSchema)Statistical output delayed relative to entities:
+>(getDialogSchema)エンティティに対して遅延した統計的な出力:
+<(getDialogSchema)Arbitrary
+>(getDialogSchema)任意
+<(getDialogSchema)Randomized
+>(getDialogSchema)ランダム
+<(getDialogSchema)Seed for event randomization:
+>(getDialogSchema)イベントをランダムにするためのシード:
+<(getDialogSchema)Execution order:
+>(getDialogSchema)実行順序:
+<(getDialogSchema)Treat unconnected ports as:
+>(getDialogSchema)未接続端子を次のように扱う:

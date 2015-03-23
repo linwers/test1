@@ -1,0 +1,111 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Video Streaming Over Bandwidth-Limited Communication Channel</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_video_streaming"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_video_streaming.mdl</div><div class="right"><a href="matlab:sedemo_video_streaming">Open this model</a></div></div><div class="content"><h1>Video Streaming Over Bandwidth-Limited Communication Channel</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#3">Watching the Video Viewer</a></li><li><a href="#4">Results and Displays</a></li><li><a href="#5">Experimenting with the Model</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model illustrates a communication system that sends frames of video data over a channel. By dropping frames that wait too long to reach the end user, the model also illustrates how to use timeouts to implement point-to-point timing constraints.</p><h2>Structure of the Model<a name="2"></a></h2><p>The model includes the sections listed below.</p><div><ul><li>Video source &#8212; Attaches frames of video data to entities at a constant   rate using matrix-valued attributes of the entities. The source also   uses the Schedule Timeout block to establish each frame's time-to-live   (TTL) value, which is the duration until the channel drops that frame   if it has not yet reached the end user.</li></ul></div><div><ul><li>Bandwidth-limited communication channel &#8212; Buffers the incoming frames   and delays them for a period of time. If the TTL for a given frame   elapses before it has reached the end user, then the channel discards   the frame. Removing outdated video data from the system results in an   improved quality of service because the channel focuses on newer data   that is more relevant to the end user.</li></ul></div><div><ul><li>Video end-user &#8212; Buffers the received frames and forwards them to a   viewer block at a constant rate.</li></ul></div><img vspace="5" hspace="5" src="sedemo_video_streaming_01.png" alt=""> <h2>Watching the Video Viewer<a name="3"></a></h2><p>When you run the simulation, the Video Viewer block opens to display   the received video. You can observe the following behavior:</p><div><ul><li>The viewer is initially blank and does not start to display the video   until T=10. The reason is that the block labeled Flow Control changes its output     value from 0 to 1 at T=10, which enables the periodic release of frames     to the viewer.</li></ul></div><div><ul><li>The video repeats a few times, but has a discontinuity near T=37.     Also, between approximately T=31 and T=36, the plot of timed-out     entities rises steeply. Frames time out when they experience a delay     in the channel equal to their TTL value. Around T=31, accumulated     delays cause many consecutive frames to time out, leaving a gap in     the video data. Even when the channel resumes sending frames to the     end user, you notice the gap when you watch the video in the viewer.</li></ul></div><h2>Results and Displays<a name="4"></a></h2><p>Scopes in the model plot the following quantities to help you understand its performance:</p><div><ul><li>The size of the input buffer shows how many frames are waiting in the   channel. Frames accumulate in the input buffer until they either   progress through the channel or time out.</li></ul></div><div><ul><li>The size of the reception buffer shows how many frames are waiting in   the receiver. Before T=10, frames accumulate in the reception buffer   because the block labeled Flow Control keeps the path closed between   the receiver's buffer and the video viewer.</li></ul></div><div><ul><li>The status of underflow events in the receiver has a value of 1   whenever the Release Gate block permits a frame to advance from the   reception buffer to the video viewer, but no frame is present. For more   about this, see Experimenting with the Model below.</li></ul></div><div><ul><li>The communication delay per frame shows how long the channel delays   each frame that has advanced beyond the input buffer. In this model,   the delay is periodic.</li></ul></div><div><ul><li>The number of timed-out entities shows how many frames have timed out   in the channel. The end user does not receive these frames and can   observe a gap in the video if many consecutive frames time out.</li></ul></div><h2>Experimenting with the Model<a name="5"></a></h2><p>To vary the simulation behavior, decrease the initial delay in the end user's viewing by changing the Step time parameter from 10 to 3 in the block labeled Flow Control. As a result, the simulation has some instances at which the gate opens to let a frame advance, but the reception buffer is empty. You can see values of 0 in the plot of the reception buffer's size and values of 1 in the plot of underflow events.</p><p>Note: To run this simulation, you must have a license for the Video and Image Processing Blockset&#8482; product.</p><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Video Streaming Over Bandwidth-Limited Communication Channel
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:49 $
+
+%% Overview
+% This model illustrates a communication system that sends frames of video
+% data over a channel. By dropping frames that wait too long to reach the
+% end user, the model also illustrates how to use timeouts to implement
+% point-to-point timing constraints.
+
+%% Structure of the Model
+% The model includes the sections listed below.
+%
+% * Video source — Attaches frames of video data to entities at a constant
+%   rate using matrix-valued attributes of the entities. The source also
+%   uses the Schedule Timeout block to establish each frame's time-to-live
+%   (TTL) value, which is the duration until the channel drops that frame
+%   if it has not yet reached the end user.
+%
+% * Bandwidth-limited communication channel — Buffers the incoming frames
+%   and delays them for a period of time. If the TTL for a given frame
+%   elapses before it has reached the end user, then the channel discards
+%   the frame. Removing outdated video data from the system results in an
+%   improved quality of service because the channel focuses on newer data
+%   that is more relevant to the end user.
+%
+% * Video end-user — Buffers the received frames and forwards them to a
+%   viewer block at a constant rate.
+
+modelname = 'sedemo_video_streaming';
+open_system(modelname);
+
+%% Watching the Video Viewer
+%
+% When you run the simulation, the Video Viewer block opens to display
+%   the received video. You can observe the following behavior:
+%
+% * The viewer is initially blank and does not start to display the video
+%   until T=10. The reason is that the block labeled Flow Control changes its output
+%     value from 0 to 1 at T=10, which enables the periodic release of frames
+%     to the viewer.
+%
+% * The video repeats a few times, but has a discontinuity near T=37. 
+%     Also, between approximately T=31 and T=36, the plot of timed-out
+%     entities rises steeply. Frames time out when they experience a delay
+%     in the channel equal to their TTL value. Around T=31, accumulated
+%     delays cause many consecutive frames to time out, leaving a gap in
+%     the video data. Even when the channel resumes sending frames to the
+%     end user, you notice the gap when you watch the video in the viewer.
+
+%% Results and Displays
+%
+% Scopes in the model plot the following quantities to help you understand
+% its performance:
+%
+% * The size of the input buffer shows how many frames are waiting in the
+%   channel. Frames accumulate in the input buffer until they either
+%   progress through the channel or time out.
+%
+% * The size of the reception buffer shows how many frames are waiting in
+%   the receiver. Before T=10, frames accumulate in the reception buffer
+%   because the block labeled Flow Control keeps the path closed between
+%   the receiver's buffer and the video viewer.
+%
+% * The status of underflow events in the receiver has a value of 1
+%   whenever the Release Gate block permits a frame to advance from the
+%   reception buffer to the video viewer, but no frame is present. For more
+%   about this, see Experimenting with the Model below.
+%
+% * The communication delay per frame shows how long the channel delays
+%   each frame that has advanced beyond the input buffer. In this model,
+%   the delay is periodic.
+%
+% * The number of timed-out entities shows how many frames have timed out
+%   in the channel. The end user does not receive these frames and can
+%   observe a gap in the video if many consecutive frames time out.
+
+
+
+
+%% Experimenting with the Model
+% To vary the simulation behavior, decrease the initial delay in the end
+% user's viewing by changing the Step time parameter from 10 to 3 in the
+% block labeled Flow Control. As a result, the simulation has some
+% instances at which the gate opens to let a frame advance, but the
+% reception buffer is empty. You can see values of 0 in the plot of the
+% reception buffer's size and values of 1 in the plot of underflow events.
+%
+% Note: To run this simulation, you must have a license for the Video and
+% Image Processing Blockset™ product.
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

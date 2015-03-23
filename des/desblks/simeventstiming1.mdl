@@ -1,0 +1,920 @@
+Library {
+  Name			  "simeventstiming1"
+  Version		  6.6
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "ibm-5348_P100-1997"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  off
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Tue Nov 11 12:11:11 2003"
+  Creator		  "mclune"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "aapte"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Wed Nov 22 12:07:47 2006"
+  ModelVersionFormat	  "1.%<AutoIncrement:205>"
+  ConfigurationManager	  "None"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  AccelVerboseBuild	  off
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ProdHWDeviceType	  "32-bit Generic"
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      PMComponent
+      SubClassName	      "unknown"
+    }
+    Block {
+      BlockType		      PMIOPort
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      on
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "simeventstiming1"
+    Location		    [474, 240, 792, 505]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "Cancel Timeout"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [170, 162, 255, 218]
+      Priority		      "0"
+      UserDataPersistent      on
+      UserData		      "DataTag0"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskHideContents	      on
+      MaskType		      "Cancel Timeout"
+      MaskDescription	      "Cancel specified timeout event for each tagged "
+"entity."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Timeout tag:|If entity does not have tagged tim"
+"eout:|If tagged timeout is not scheduled:|Number of entities departed, #d:|Nu"
+"mber of entities departed with specified tag, #t:|Residual time, rt:|Average "
+"residual time, w:"
+      MaskStyleString	      "edit,popup(Error|Warn and continue|Continue),po"
+"pup(Error|Warn and continue|Continue),popup(Off|On|Upon stop or pause),popup("
+"Off|On|Upon stop or pause),popup(Off|On),popup(Off|On|Upon stop or pause)"
+      MaskTunableValueString  "off,off,off,off,off,off,off"
+      MaskCallbackString      "|||des_canceltimeoutmask(gcb,'cbStatNumberDepar"
+"ted','noapply');|des_canceltimeoutmask(gcb,'cbStatTimeoutNumberDeparted','noa"
+"pply');|des_canceltimeoutmask(gcb,'cbStatResidualTimeout','noapply');|des_can"
+"celtimeoutmask(gcb,'cbStatAverageResidualTimeout','noapply');"
+      MaskEnableString	      "on,off,on,on,on,on,on"
+      MaskVisibilityString    "on,off,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,"
+      MaskVariables	      "TimeoutTag=&1;TimeoutModeOption=@2;TimeoutCance"
+"lledOption=@3;StatNumberDeparted=@4;StatTimeoutNumberDeparted=@5;StatResidual"
+"Timeout=@6;StatAverageResidualTimeout=@7;"
+      MaskInitialization      "des_canceltimeoutmask(gcb,'init','apply');"
+      MaskDisplay	      "image(des_iconLoad('timeoutCancel.jpg'),'center"
+"');\nport_label('LConn',1,'IN');                       \nport_label('RConn',1"
+",'OUT');                      "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "TO1|Continue|Error|Off|Off|Off|Off"
+      MaskTabNameString	      "Cancel Timeout,Cancel Timeout,Cancel Timeout,St"
+"atistics,Statistics,Statistics,Statistics"
+      System {
+	Name			"Cancel Timeout"
+	Location		[93, 427, 551, 738]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Cancel Timeout__"
+	  Ports			  [0, 0, 0, 0, 0, 1, 5]
+	  Position		  [190, 60, 260, 130]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag1"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_CANCELTIMEOUT"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  IconImage		  "body_q.bmp"
+	  LConnTagsString	  "DI"
+	  RConnTagsString	  "DO|DO|DO|DO|DO"
+	  MaskDisplay		  "port_label('LConn',1,'IN'); \nport_label('R"
+"Conn',1,'#d'); \nport_label('RConn',2,'#t'); \nport_label('RConn',3,'rt'); \n"
+"port_label('RConn',4,'w');  \nport_label('RConn',5,'OUT');"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "autoscale"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [385, 118, 415, 132]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Cancel Timeout__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Cancel Timeout__"
+	  SrcPort		  RConn5
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Read Timer"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [170, 78, 255, 132]
+      Priority		      "0"
+      UserDataPersistent      on
+      UserData		      "DataTag2"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskHideContents	      on
+      MaskType		      "Read Timer"
+      MaskDescription	      "Report the instantaneous elapsed time for each "
+"tagged entity and average elapsed time for all tagged entities. The Timer tag"
+" parameter associates this block with the corresponding Start Timer block."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Timer tag:|If entity does not have tagged timer"
+":|Stop Timer:|Number of entities departed, #d:|Number of entities departed wi"
+"th specified tag, #t:|Elapsed time, et:|Average elapsed time, w:"
+      MaskStyleString	      "edit,popup(Error|Ignore),checkbox,popup(Off|On|"
+"Upon stop or pause),popup(Off|On|Upon stop or pause),popup(Off|On),popup(Off|"
+"On|Upon stop or pause)"
+      MaskTunableValueString  "off,off,off,off,off,off,off"
+      MaskCallbackString      "|||des_readtimermask(gcb,'cbStatNumberDeparted'"
+",'noapply');|des_readtimermask(gcb,'cbStatTimerNumberDeparted','noapply');|de"
+"s_readtimermask(gcb,'cbTimeElapsed','noapply');|des_readtimermask(gcb,'cbStat"
+"AverageTimeElapsed','noapply');"
+      MaskEnableString	      "on,on,off,on,on,on,on"
+      MaskVisibilityString    "on,on,off,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,"
+      MaskVariables	      "TimerTag=&1;TimerModeOption=@2;TimerStop=@3;Sta"
+"tNumberDeparted=@4;StatTimerNumberDeparted=@5;StatTimeElapsed=@6;StatAverageT"
+"imeElapsed=@7;"
+      MaskInitialization      "des_readtimermask(gcb,'init','apply');"
+      MaskDisplay	      "image(des_iconLoad('timerRead.jpg'),'center');"
+"\nport_label('LConn',1,'IN');                       \nport_label('RConn',1,'O"
+"UT');                      "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "T1|Error|off|Off|Off|Off|Off"
+      MaskTabNameString	      "Read Timer,Read Timer,Read Timer,Statistics,Sta"
+"tistics,Statistics,Statistics"
+      System {
+	Name			"Read Timer"
+	Location		[93, 427, 551, 738]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Read Timer__"
+	  Ports			  [0, 0, 0, 0, 0, 1, 5]
+	  Position		  [190, 60, 260, 130]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag3"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_READTIMER"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  IconImage		  "body_q.bmp"
+	  LConnTagsString	  "DI"
+	  RConnTagsString	  "DO|DO|DO|DO|DO"
+	  MaskDisplay		  "port_label('LConn',1,'IN'); \nport_label('R"
+"Conn',1,'#d'); \nport_label('RConn',2,'#t'); \nport_label('RConn',3,'et'); \n"
+"port_label('RConn',4,'w');  \nport_label('RConn',5,'OUT');"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "autoscale"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [125, 132, 205, 178]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Read Timer__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Read Timer__"
+	  SrcPort		  RConn5
+	  Points		  [-165, 0]
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Schedule Timeout"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [55, 162, 140, 218]
+      Priority		      "0"
+      UserDataPersistent      on
+      UserData		      "DataTag4"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskHideContents	      on
+      MaskType		      "Schedule Timeout"
+      MaskDescription	      "Define the beginning of a timeout region by sch"
+"eduling a timeout event for each passing entity."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Timeout tag:|Timeout interval from:|Timeout int"
+"erval:|Attribute name:|Timeout event priority:|If timeout is already schedule"
+"d:|If entity has no destination when timeout occurs:|Number of entities depar"
+"ted, #d:"
+      MaskStyleString	      "edit,popup(Dialog|Signal port ti|Attribute),edi"
+"t,edit,edit,popup(Error|Warn and reschedule|Reschedule),popup(Error|Warn and "
+"discard the entity),popup(Off|On|Upon stop or pause)"
+      MaskTunableValueString  "off,off,off,off,off,off,off,off"
+      MaskCallbackString      "|des_scheduletimeoutmask(gcb,'cbTimeoutInterval"
+"From','noapply');||||||"
+      MaskEnableString	      "on,on,on,off,on,on,on,on"
+      MaskVisibilityString    "on,on,on,off,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,,"
+      MaskVariables	      "TimeoutTag=&1;TimeoutIntervalFrom=@2;TimeoutInt"
+"erval=@3;AttributeName=&4;PriorityTimeout=@5;TimeoutScheduledOption=@6;Timeou"
+"tNoDestination=@7;StatNumberDeparted=@8;"
+      MaskInitialization      "des_scheduletimeoutmask(gcb,'init','apply');"
+      MaskDisplay	      "image(des_iconLoad('timeoutSchedule.jpg'),'cent"
+"er');\nport_label('LConn',1,'IN');                         \nport_label('RCon"
+"n',1,'OUT');                        "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "TO1|Dialog|1|TimeoutAttribute|1700|Error|Error|"
+"Off"
+      MaskTabNameString	      "Schedule Timeout,Schedule Timeout,Schedule Time"
+"out,Schedule Timeout,Schedule Timeout,Schedule Timeout,Schedule Timeout,Stati"
+"stics"
+      System {
+	Name			"Schedule Timeout"
+	Location		[93, 427, 551, 738]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Schedule Timeout__"
+	  Ports			  [0, 0, 0, 0, 0, 2, 2]
+	  Position		  [190, 89, 260, 131]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag5"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_SCHEDULETIMEOUT"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  IconImage		  "body_q.bmp"
+	  LConnTagsString	  "DI|DI"
+	  RConnTagsString	  "DO|DO"
+	  MaskDisplay		  "port_label('LConn',1,'ti'); \nport_label('L"
+"Conn',2,'IN'); \nport_label('RConn',1,'#d'); \nport_label('RConn',2,'OUT');"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "autoscale"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [385, 118, 415, 132]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Schedule Timeout__"
+	  DstPort		  LConn2
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Schedule Timeout__"
+	  SrcPort		  RConn2
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Start Timer"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [55, 78, 140, 132]
+      Priority		      "0"
+      UserDataPersistent      on
+      UserData		      "DataTag6"
+      CopyFcn		      "des_support('desCopyFcn',gcbh)"
+      DeleteFcn		      "des_support('desDeleteFcn',gcbh)"
+      UndoDeleteFcn	      "des_support('desUndoDeleteFcn',gcbh)"
+      LoadFcn		      "des_support('desLoadFcn',gcbh)"
+      ModelCloseFcn	      "des_support('desModelCloseFcn',gcbh)"
+      PreSaveFcn	      "des_support('desPreSaveFcn',gcbh)"
+      PostSaveFcn	      "des_support('desPostSaveFcn',gcbh)"
+      StartFcn		      "des_support('desStartFcn',gcbh)"
+      StopFcn		      "des_support('desStopFcn',gcbh)"
+      NameChangeFcn	      "des_support('desNameChangeFcn',gcbh)"
+      CloseFcn		      "des_support('desCloseFcn',gcbh)"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskHideContents	      on
+      MaskType		      "Start Timer"
+      MaskDescription	      "Define the beginning of a timer region for each"
+" entity. The Timer tag parameter associates this block with the corresponding"
+" Read Timer block."
+      MaskHelp		      "helpview(simeventsbhelp)"
+      MaskPromptString	      "Timer tag:|If timer has already started:|Number"
+" of entities departed, #d:"
+      MaskStyleString	      "edit,popup(Warn and continue|Continue|Restart),"
+"popup(Off|On|Upon stop or pause)"
+      MaskTunableValueString  "off,off,off"
+      MaskCallbackString      "||"
+      MaskEnableString	      "on,on,on"
+      MaskVisibilityString    "on,on,on"
+      MaskToolTipString	      "on,on,on"
+      MaskVarAliasString      ",,"
+      MaskVariables	      "TimerTag=&1;TimerStartedOption=@2;StatNumberDep"
+"arted=@3;"
+      MaskInitialization      "des_starttimermask(gcb,'init','apply');"
+      MaskDisplay	      "image(des_iconLoad('timerStart.jpg'),'center');"
+"\nport_label('LConn',1,'IN');                        \nport_label('RConn',1,'"
+"OUT');                       "
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "T1|Warn and continue|Off"
+      MaskTabNameString	      "Start Timer,Start Timer,Statistics "
+      System {
+	Name			"Start Timer"
+	Location		[93, 427, 551, 738]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  PMComponent
+	  Name			  "__Start Timer__"
+	  Ports			  [0, 0, 0, 0, 0, 1, 2]
+	  Position		  [190, 89, 260, 131]
+	  UserDataPersistent	  on
+	  UserData		  "DataTag7"
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "DES_STARTTIMER"
+	  LeftPortType		  "desPortIn"
+	  RightPortType		  "desPortOut"
+	  IconImage		  "body_q.bmp"
+	  LConnTagsString	  "DI"
+	  RConnTagsString	  "DO|DO"
+	  MaskDisplay		  "port_label('LConn',1,'IN'); \nport_label('R"
+"Conn',1,'#d'); \nport_label('RConn',2,'OUT');"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "autoscale"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 118, 45, 132]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [385, 118, 415, 132]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  DstBlock		  "__Start Timer__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__Start Timer__"
+	  SrcPort		  RConn2
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Annotation {
+      Name		      "SimEvents Timing Library"
+      Position		      [161, 34]
+      UseDisplayTextAsClickCallback off
+      FontName		      "Arial"
+      FontSize		      16
+      FontWeight	      "bold"
+    }
+  }
+}
+MatData {
+  NumRecords		  8
+  DataRecord {
+    Tag			    DataTag7
+    Data		    "  %)30     .    F H   8    (     @         %    "
+"\"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!"
+");F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"P    !@    @"
+"    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%"
+"B96P :7-%;F%B;&5D       .    *     8    (     0         %    \"              "
+"  0         .    *     8    (     0         %    \"                0         "
+".    ( $   8    (     @         %    \"     $    !     0         %  0 \"@    "
+"$    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   &     &    \"     $         !0"
+"    @    !     0    $         #@   #     &    \"     0         !0    @    !  "
+"   @    $         $  \" \"-D   .    8     8    (     0         %    \"     $ "
+"   !     0         .    ,     8    (    !          %    \"     $    \"     0 "
+"        0  ( ;F\\   X    @ 0  !@    @    \"          4    (     0    $    !  "
+"        4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8     8    "
+"(     0         %    \"     $    !     0         .    ,     8    (    !      "
+"    %    \"     $    \"     0         0  ( 24X   X   !@    !@    @    !      "
+"    4    (     0    $    !          X    P    !@    @    $          4    (   "
+"  0    ,    !         !   P!Y97, #@   \" !   &    \"     (         !0    @   "
+" !     0    $         !0 $  H    !    %    '!O<G1,86)E; !I<T5N86)L960       X"
+"   !@    !@    @    !          4    (     0    $    !          X    P    !@  "
+"  @    $          4    (     0    ,    !         !   P!/550 #@   &     &    "
+"\"     $         !0    @    !     0    $         #@   #     &    \"     0    "
+"     !0    @    !     P    $         $  # 'EE<P .    0     8    (    !       "
+"   %    \"     $    .     0         0    #@   '1I;65R4W1A<G0N:G!G   .    T ( "
+"  8    (     @         %    \"     $    !     0         %  0 \"@    $   !:   "
+" 4%1A9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4TP "
+"    4$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     0 "
+"        !0    @    !     P    $         $  # &]U=  .    .     8    (    !    "
+"      %    \"     $    %     0         0    !0   %)I9VAT    #@   $     &    "
+"\"     0         !0    @    !    #P    $         $     \\   !20V]N;E1A9W-3=')"
+"I;F< #@   #@    &    \"     0         !0    @    !    !0    $         $     4"
+"   !20V]N;@    X    X    !@    @    $          4    (     0    4    !        "
+" !     %    3$-O;FX    .    .     8    (    !          %    \"     $    &    "
+" 0         0    !@   &]U='!U=   #@   #@    &    \"     0         !0    @    !"
+"    !0    $         $     4   !20V]N;@    X    P    !@    @    $          4  "
+"  (     0    (    !         !   @!$3P  #@   #@    &    \"     0         !0   "
+" @    !    !@    $         $     8   !$15,R4TP   X   #( @  !@    @    \"     "
+"     4    (     0    $    !          4 !  *     0   %H   !05&%G4TP     4VED90"
+"       $-O;FY486<   !#;VYN        3W1H97)#;VYN $-O;FY33     !00V]N;@      4%1"
+"A9U-%     $=W87D                .    ,     8    (    !          %    \"     $"
+"    \"     0         0  ( :6X   X    P    !@    @    $          4    (     0 "
+"   0    !         !  ! !,969T#@   $     &    \"     0         !0    @    !   "
+" #P    $         $     \\   !,0V]N;E1A9W-3=')I;F< #@   #@    &    \"     0   "
+"      !0    @    !    !0    $         $     4   !,0V]N;@    X    X    !@    @"
+"    $          4    (     0    4    !         !     %    4D-O;FX    .    .   "
+"  8    (    !          %    \"     $    %     0         0    !0   &EN<'5T    "
+"#@   #@    &    \"     0         !0    @    !    !0    $         $     4   !2"
+"0V]N;@    X    P    !@    @    $          4    (     0    (    !         !   "
+"@!$20  #@   #@    &    \"     0         !0    @    !    !@    $         $    "
+" 8   !33#)$15,   "
+  }
+  DataRecord {
+    Tag			    DataTag6
+    Data		    "  %)30     .    , $   8    (     @         %    "
+"\"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI"
+"=           :6Y?8FQO8VMU<&1A=&4     #@   $     &    \"     0         !0    @ "
+"   !    #P    $         $     \\   !?7U-T87)T(%1I;65R7U\\ #@   #@    &    \" "
+"    8         !0    @    !     0    $         \"0    @               X    X  "
+"  !@    @    &          4    (     0    $    !          D    (               "
+  }
+  DataRecord {
+    Tag			    DataTag5
+    Data		    "  %)30     .    $ L   8    (     @         %    "
+"\"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!"
+");F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X    @ 0  !@    @ "
+"   \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%B"
+"96P :7-%;F%B;&5D       .    8     8    (     0         %    \"     $    !    "
+" 0         .    ,     8    (    !          %    \"     $    \"     0         "
+"0  ( =&D   X   !@    !@    @    !          4    (     0    $    !          X "
+"   P    !@    @    $          4    (     0    (    !         !   @!N;P  #@   "
+"\" !   &    \"     (         !0    @    !     0    $         !0 $  H    !    "
+"%    '!O<G1,86)E; !I<T5N86)L960       X   !@    !@    @    !          4    ( "
+"    0    $    !          X    P    !@    @    $          4    (     0    (   "
+" !         !   @ C9   #@   &     &    \"     $         !0    @    !     0    "
+"$         #@   #     &    \"     0         !0    @    !     @    $         $ "
+" \" &YO   .    ( $   8    (     @         %    \"     $    !     0         % "
+" 0 \"@    $    4    <&]R=$QA8F5L &ES16YA8FQE9       #@   &     &    \"     $ "
+"        !0    @    !     0    $         #@   #     &    \"     0         !0  "
+"  @    !     @    $         $  \" $E.   .    8     8    (     0         %    "
+"\"     $    !     0         .    ,     8    (    !          %    \"     $    "
+"#     0         0  , >65S  X    @ 0  !@    @    \"          4    (     0    $"
+"    !          4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8   "
+"  8    (     0         %    \"     $    !     0         .    ,     8    (    "
+"!          %    \"     $    #     0         0  , 3U54  X   !@    !@    @    !"
+"          4    (     0    $    !          X    P    !@    @    $          4  "
+"  (     0    ,    !         !   P!Y97, #@   $@    &    \"     0         !0   "
+" @    !    $P    $         $    !,   !T:6UE;W5T4V-H961U;&4N:G!G       .    T "
+"(   8    (     @         %    \"     $    !     0         %  0 \"@    $   !: "
+"   4%1A9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4T"
+"P     4$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     "
+"0         !0    @    !     P    $         $  # &]U=  .    .     8    (    !  "
+"        %    \"     $    %     0         0    !0   %)I9VAT    #@   $     &   "
+" \"     0         !0    @    !    #P    $         $     \\   !20V]N;E1A9W-3='"
+")I;F< #@   #@    &    \"     0         !0    @    !    !0    $         $     "
+"4   !20V]N;@    X    X    !@    @    $          4    (     0    4    !       "
+"  !     %    3$-O;FX    .    .     8    (    !          %    \"     $    &   "
+"  0         0    !@   &]U='!U=   #@   #@    &    \"     0         !0    @    "
+"!    !0    $         $     4   !20V]N;@    X    P    !@    @    $          4 "
+"   (     0    (    !         !   @!$3P  #@   #@    &    \"     0         !0  "
+"  @    !    !@    $         $     8   !$15,R4TP   X   #( @  !@    @    \"    "
+"      4    (     0    $    !          4 !  *     0   %H   !05&%G4TP     4VED9"
+"0       $-O;FY486<   !#;VYN        3W1H97)#;VYN $-O;FY33     !00V]N;@      4%"
+"1A9U-%     $=W87D                .    ,     8    (    !          %    \"     "
+"$    \"     0         0  ( :6X   X    P    !@    @    $          4    (     0"
+"    0    !         !  ! !,969T#@   $     &    \"     0         !0    @    !  "
+"  #P    $         $     \\   !,0V]N;E1A9W-3=')I;F< #@   #@    &    \"     0  "
+"       !0    @    !    !0    $         $     4   !,0V]N;@    X    X    !@    "
+"@    $          4    (     0    4    !         !     %    4D-O;FX    .    .  "
+"   8    (    !          %    \"     $    %     0         0    !0   &EN<'5T   "
+" #@   #@    &    \"     0         !0    @    !    !0    $         $     4   !"
+"20V]N;@    X    P    !@    @    $          4    (     0    (    !         !  "
+" @!$20  #@   #@    &    \"     0         !0    @    !    !@    $         $   "
+"  8   !33#)$15,   "
+  }
+  DataRecord {
+    Tag			    DataTag4
+    Data		    "  %)30     .    . $   8    (     @         %    "
+"\"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI"
+"=           :6Y?8FQO8VMU<&1A=&4     #@   $@    &    \"     0         !0    @ "
+"   !    %     $         $    !0   !?7U-C:&5D=6QE(%1I;65O=71?7P     .    .    "
+" 8    (    !@         %    \"     $    !     0         )    \"               "
+"#@   #@    &    \"     8         !0    @    !     0    $         \"0    @    "
+"           "
+  }
+  DataRecord {
+    Tag			    DataTag3
+    Data		    "  %)30     .    Z L   8    (     @         %    "
+"\"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!"
+");F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"P    !@    @"
+"    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%"
+"B96P :7-%;F%B;&5D       .    *     8    (     0         %    \"              "
+"  0         .    *     8    (     0         %    \"                0         "
+".    < (   8    (     @         %    \"     $    !     0         %  0 \"@    "
+"$    4    <&]R=$QA8F5L &ES16YA8FQE9       #@    @!   &    \"     $         !0"
+"    @    !    !     $         #@   #     &    \"     0         !0    @    !  "
+"   @    $         $  \" \"-D   .    ,     8    (    !          %    \"     $ "
+"   \"     0         0  ( (W0   X    P    !@    @    $          4    (     0  "
+"  (    !         !   @!E=   #@   #     &    \"     0         !0    @    !    "
+" 0    $         $  ! '<    .    \" $   8    (     0         %    \"     $    "
+"$     0         .    ,     8    (    !          %    \"     $    \"     0    "
+"     0  ( ;F\\   X    P    !@    @    $          4    (     0    (    !      "
+"   !   @!N;P  #@   #     &    \"     0         !0    @    !     @    $       "
+"  $  \" &YO   .    ,     8    (    !          %    \"     $    \"     0      "
+"   0  ( ;F\\   X    @ 0  !@    @    \"          4    (     0    $    !       "
+"   4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8     8    (    "
+" 0         %    \"     $    !     0         .    ,     8    (    !          %"
+"    \"     $    \"     0         0  ( 24X   X   !@    !@    @    !          4"
+"    (     0    $    !          X    P    !@    @    $          4    (     0  "
+"  ,    !         !   P!Y97, #@   \" !   &    \"     (         !0    @    !   "
+"  0    $         !0 $  H    !    %    '!O<G1,86)E; !I<T5N86)L960       X   !@"
+"    !@    @    !          4    (     0    $    !          X    P    !@    @  "
+"  $          4    (     0    ,    !         !   P!/550 #@   &     &    \"    "
+" $         !0    @    !     0    $         #@   #     &    \"     0         !"
+"0    @    !     P    $         $  # 'EE<P .    0     8    (    !          %  "
+"  \"     $    -     0         0    #0   '1I;65R4F5A9\"YJ<&<    .    T (   8  "
+"  (     @         %    \"     $    !     0         %  0 \"@    $   !:    4%1A"
+"9U-,     %-I9&4       !#;VYN5&%G    0V]N;@       $]T:&5R0V]N;@!#;VYN4TP     4"
+"$-O;FX      %!486=310    !'=V%Y                #@   #     &    \"     0      "
+"   !0    @    !     P    $         $  # &]U=  .    .     8    (    !         "
+" %    \"     $    %     0         0    !0   %)I9VAT    #@   $     &    \"    "
+" 0         !0    @    !    #P    $         $     \\   !20V]N;E1A9W-3=')I;F< #"
+"@   #@    &    \"     0         !0    @    !    !0    $         $     4   !20"
+"V]N;@    X    X    !@    @    $          4    (     0    4    !         !    "
+" %    3$-O;FX    .    .     8    (    !          %    \"     $    &     0    "
+"     0    !@   &]U='!U=   #@   #@    &    \"     0         !0    @    !    !0"
+"    $         $     4   !20V]N;@    X    P    !@    @    $          4    (   "
+"  0    (    !         !   @!$3P  #@   #@    &    \"     0         !0    @    "
+"!    !@    $         $     8   !$15,R4TP   X   #( @  !@    @    \"          4"
+"    (     0    $    !          4 !  *     0   %H   !05&%G4TP     4VED90      "
+" $-O;FY486<   !#;VYN        3W1H97)#;VYN $-O;FY33     !00V]N;@      4%1A9U-% "
+"    $=W87D                .    ,     8    (    !          %    \"     $    \""
+"     0         0  ( :6X   X    P    !@    @    $          4    (     0    0  "
+"  !         !  ! !,969T#@   $     &    \"     0         !0    @    !    #P   "
+" $         $     \\   !,0V]N;E1A9W-3=')I;F< #@   #@    &    \"     0         "
+"!0    @    !    !0    $         $     4   !,0V]N;@    X    X    !@    @    $ "
+"         4    (     0    4    !         !     %    4D-O;FX    .    .     8   "
+" (    !          %    \"     $    %     0         0    !0   &EN<'5T    #@   #"
+"@    &    \"     0         !0    @    !    !0    $         $     4   !20V]N;@"
+"    X    P    !@    @    $          4    (     0    (    !         !   @!$20 "
+" #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !"
+"33#)$15,   "
+  }
+  DataRecord {
+    Tag			    DataTag2
+    Data		    "  %)30     .    , $   8    (     @         %    "
+"\"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI"
+"=           :6Y?8FQO8VMU<&1A=&4     #@   $     &    \"     0         !0    @ "
+"   !    #@    $         $     X   !?7U)E860@5&EM97)?7P  #@   #@    &    \"   "
+"  8         !0    @    !     0    $         \"0    @               X    X    "
+"!@    @    &          4    (     0    $    !          D    (               "
+  }
+  DataRecord {
+    Tag			    DataTag1
+    Data		    "  %)30     .    \\ L   8    (     @         %    "
+"\"     $    !     0         %  0 \"0    $    _    :7!);F9O4TP ;W!);F9O4TP :7!"
+");F9O4T4 ;W!);F9O4T4 :6-O;@      9&]P        9&EP          X   \"P    !@    @"
+"    \"          4    (     0    $    !          4 !  *     0   !0   !P;W)T3&%"
+"B96P :7-%;F%B;&5D       .    *     8    (     0         %    \"              "
+"  0         .    *     8    (     0         %    \"                0         "
+".    < (   8    (     @         %    \"     $    !     0         %  0 \"@    "
+"$    4    <&]R=$QA8F5L &ES16YA8FQE9       #@    @!   &    \"     $         !0"
+"    @    !    !     $         #@   #     &    \"     0         !0    @    !  "
+"   @    $         $  \" \"-D   .    ,     8    (    !          %    \"     $ "
+"   \"     0         0  ( (W0   X    P    !@    @    $          4    (     0  "
+"  (    !         !   @!R=   #@   #     &    \"     0         !0    @    !    "
+" 0    $         $  ! '<    .    \" $   8    (     0         %    \"     $    "
+"$     0         .    ,     8    (    !          %    \"     $    \"     0    "
+"     0  ( ;F\\   X    P    !@    @    $          4    (     0    (    !      "
+"   !   @!N;P  #@   #     &    \"     0         !0    @    !     @    $       "
+"  $  \" &YO   .    ,     8    (    !          %    \"     $    \"     0      "
+"   0  ( ;F\\   X    @ 0  !@    @    \"          4    (     0    $    !       "
+"   4 !  *     0   !0   !P;W)T3&%B96P :7-%;F%B;&5D       .    8     8    (    "
+" 0         %    \"     $    !     0         .    ,     8    (    !          %"
+"    \"     $    \"     0         0  ( 24X   X   !@    !@    @    !          4"
+"    (     0    $    !          X    P    !@    @    $          4    (     0  "
+"  ,    !         !   P!Y97, #@   \" !   &    \"     (         !0    @    !   "
+"  0    $         !0 $  H    !    %    '!O<G1,86)E; !I<T5N86)L960       X   !@"
+"    !@    @    !          4    (     0    $    !          X    P    !@    @  "
+"  $          4    (     0    ,    !         !   P!/550 #@   &     &    \"    "
+" $         !0    @    !     0    $         #@   #     &    \"     0         !"
+"0    @    !     P    $         $  # 'EE<P .    2     8    (    !          %  "
+"  \"     $    1     0         0    $0   '1I;65O=71#86YC96PN:G!G          X   "
+"#0 @  !@    @    \"          4    (     0    $    !          4 !  *     0   %"
+"H   !05&%G4TP     4VED90       $-O;FY486<   !#;VYN        3W1H97)#;VYN $-O;FY"
+"33     !00V]N;@      4%1A9U-%     $=W87D                .    ,     8    (    "
+"!          %    \"     $    #     0         0  , ;W5T  X    X    !@    @    $"
+"          4    (     0    4    !         !     %    4FEG:'0    .    0     8  "
+"  (    !          %    \"     $    /     0         0    #P   %)#;VYN5&%G<U-T<"
+"FEN9P .    .     8    (    !          %    \"     $    %     0         0    !"
+"0   %)#;VYN    #@   #@    &    \"     0         !0    @    !    !0    $      "
+"   $     4   !,0V]N;@    X    X    !@    @    $          4    (     0    8   "
+" !         !     &    ;W5T<'5T   .    .     8    (    !          %    \"     "
+"$    %     0         0    !0   %)#;VYN    #@   #     &    \"     0         !0"
+"    @    !     @    $         $  \" $1/   .    .     8    (    !          %  "
+"  \"     $    &     0         0    !@   $1%4S)33   #@   ,@\"   &    \"     ( "
+"        !0    @    !     0    $         !0 $  H    !    6@   %!486=33     !3:"
+"61E        0V]N;E1A9P   $-O;FX       !/=&AE<D-O;FX 0V]N;E-,     %!#;VYN      "
+"!05&%G4T4     1W=A>0                X    P    !@    @    $          4    (   "
+"  0    (    !         !   @!I;@  #@   #     &    \"     0         !0    @    "
+"!    !     $         $  $ $QE9G0.    0     8    (    !          %    \"     $"
+"    /     0         0    #P   $Q#;VYN5&%G<U-T<FEN9P .    .     8    (    !   "
+"       %    \"     $    %     0         0    !0   $Q#;VYN    #@   #@    &    "
+"\"     0         !0    @    !    !0    $         $     4   !20V]N;@    X    X"
+"    !@    @    $          4    (     0    4    !         !     %    :6YP=70  "
+"  .    .     8    (    !          %    \"     $    %     0         0    !0   "
+"%)#;VYN    #@   #     &    \"     0         !0    @    !     @    $         $"
+"  \" $1)   .    .     8    (    !          %    \"     $    &     0         0"
+"    !@   %-,,D1%4P  "
+  }
+  DataRecord {
+    Tag			    DataTag0
+    Data		    "  %)30     .    . $   8    (     @         %    "
+"\"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI"
+"=           :6Y?8FQO8VMU<&1A=&4     #@   $@    &    \"     0         !0    @ "
+"   !    $@    $         $    !(   !?7T-A;F-E;\"!4:6UE;W5T7U\\        .    .  "
+"   8    (    !@         %    \"     $    !     0         )    \"             "
+"  #@   #@    &    \"     8         !0    @    !     0    $         \"0    @  "
+"             "
+  }
+}

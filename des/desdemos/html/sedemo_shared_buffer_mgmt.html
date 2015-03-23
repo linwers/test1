@@ -1,0 +1,134 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Shared Communication Buffer Management</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_shared_buffer_mgmt"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_shared_buffer_mgmt.mdl</div><div class="right"><a href="matlab:sedemo_shared_buffer_mgmt">Open this model</a></div></div><div class="content"><h1>Shared Communication Buffer Management</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#5">Throttling of Messages</a></li><li><a href="#7">Receive Buffer</a></li><li><a href="#10">Transmit Buffer</a></li><li><a href="#12">Delays in Managing Messages</a></li><li><a href="#13">Results and Displays</a></li><li><a href="#14">Experimenting with the Model</a></li><li><a href="#15">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model illustrates the modeling of a buffer shared between the transmit and receive buffering functions in a low-cost device for efficient use of memory.</p><h2>Structure of the Model<a name="2"></a></h2><img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_01.png" alt=""> <p>The upper part of the model describes a receive buffer, where messages arrive from an I/O device such as a UART (Universal Asynchronous Receiver Transmitter) chip. The lower part of the model describes a transmit buffer, where messages arrive over the computer bus that connects to the rest of the components of the computer, such as the CPU or DMA (Direct Memory Access) controller. Each of the parts models these processes:</p><div><ul><li>Generation of messages, or traffic</li></ul></div><div><ul><li>Throttling, or regulation, of the messages that can be stored in the buffer</li></ul></div><div><ul><li>Storage of the data from the messages in a buffer</li></ul></div><div><ul><li>Service of messages for a time interval</li></ul></div><h2>Throttling of Messages<a name="5"></a></h2><p>The Rx Priority Throttling subsystem drops some messages based on their priority, threshold values that you set in the dialog box of the Receive Buffer subsystem, and the amount of available memory in the buffer.</p><p>When the traffic load increases the high priority messages are preferred and the lower priority messages are more likely to be dropped. The messages that are not dropped advance to the Receive Buffer subsystem. A similar throttling mechanism is implemented in the Tx Priority Throttling subsystem.</p><h2>Receive Buffer<a name="7"></a></h2><p>The Receive Buffer is modeled with variable space per entity and flushing capabilities. This subsystem uses the <tt>Space</tt> attribute of each message to model the buffering of variable-sized messages. The subsystem flushes the oldest message upon reaching the high threshold. This flushing capability models the behavior of a ring buffer.</p><img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_02.png" alt=""> <p>The key components of the subsystem are:</p><div><ul><li>The input signal 'cap' that sets the maximum capacity of the buffer. This remains constant during simulation.</li></ul></div><div><ul><li>The FIFO Queue block, which stores messages</li></ul></div><div><ul><li>The Enabled Gate block, which regulates the flushing of older messages when the queue reaches the high threshold</li></ul></div><div><ul><li>The Space Allocated and Space Freed subsystems, which compute the cumulative memory of messages that have entered and exited the queue throughout the simulation</li></ul></div><div><ul><li>The Compare to Thresholds subsystem, which computes the amount of memory currently in use and determines whether the queue has crossed the high-priority threshold or the low-priority threshold</li></ul></div><h2>Transmit Buffer<a name="10"></a></h2><p>The Transmit Buffer subsystem is similar to the Receive Buffer subsystem, except that the Transmit Buffer subsystem doesn't flush older messages. Instead, it forbids the entry of the new messages from CPU or DMA controller when full. The capacity of this buffer is represented by the input signal to the port 'cap'. Its value varies throughout the simulation depending on how much memory is left unused by the Receive Buffer. That is, the receive and transmit buffers share memory and the receive buffer has preference.</p><img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_03.png" alt=""> <p>The key differences between the Transmit Buffer and Receive Buffer subsystems are:</p><div><ul><li>The capacity of Receive Buffer subsystem is constant throughout the simulation whereas that of the Transmit Buffer subsystem varies throughout the simulation.</li></ul></div><div><ul><li>Upon reaching its capacity, the Enabled Gate block in the Receive Buffer system flushes older messages whereas in the Transmit Buffer subsystem, the Enabled Gate block prevents any new messages from entering the subsystem.</li></ul></div><h2>Delays in Managing Messages<a name="12"></a></h2><p>The block labeled Rx Message Server models the delay in forwarding messages over the I/O bus that connects to the CPU or DMA controller. The block labeled Flushing Server models the delay in flushing messages. These server blocks let you see how the buffer behaves if managing messages takes significant time compared to the message inter-arrival time.</p><p>The block labeled Tx Message Server models the delay in transmitting messages.</p><h2>Results and Displays<a name="13"></a></h2><p>The model includes these visual ways to understand its performance:</p><div><ul><li>Number of messages in the receive buffer and transmit buffer as shown in plot Messages in Receive Buffer.</li></ul></div><div><ul><li>Amount of memory used in the receive buffer and transmit buffer as shown in plots Receive Memory Used and Transmit Memory Used respectively.</li></ul></div><div><ul><li>Total memory used by both the receive buffer and transmit buffer as shown in plot Memory Used.</li></ul></div><div><ul><li>Threshold for transmit memory used, which is the memory available for transmitting messages as shown in plot Transmit Memory.</li></ul></div><p>The Receive Instrumentation and Transmit Instrumentation subsystems also contain additional scope blocks whose plots you can display by double-clicking the blocks.</p><img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_07.png" alt=""> <img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_08.png" alt=""> <img vspace="5" hspace="5" src="sedemo_shared_buffer_mgmt_09.png" alt=""> <h2>Experimenting with the Model<a name="14"></a></h2><div><ul><li>You can modify the Constant value parameter in the Shared Memory Size block to change the size of the shared buffer.</li></ul></div><div><ul><li>You can turn off priority throttling by changing the setting of the Enable Priority Throttling block. Without priority throttling, the memory used can exceed the available memory, which causes memory corruption. Priority throttling ensures that the memory used does not exceed the available memory.</li></ul></div><div><ul><li>You can change the thresholds that affect the dropping and flushing of messages at the receiver, by changing the Low threshold or High threshold parameter of the Receive Buffer subsystem. The high-priority threshold also affects the flushing of messages that wait too long in the Receive Buffer subsystem. Each threshold value is a real number between 0 and 1.</li></ul></div><div><ul><li>You can change the thresholds that affect the dropping of messages at the transmitter, by changing the Low threshold or High threshold parameter of the Transmit Buffer subsystem. Each threshold value is a real number between 0 and 1.</li></ul></div><h2>Related Demos<a name="15"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_variable_size_entity');">Buffering for Variable-Size Messages</a></li><li><a href="matlab:showdemo('sedemo_flushing_queue');">Queue with Flushing Capability</a></li><li><a href="matlab:showdemo('sedemo_variable_capacity_queue');">Variable-Capacity Queue</a></li></ul></div><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Shared Communication Buffer Management
+%Copyright 2005-2008 The MathWorks, Inc.
+%% Overview
+% This model illustrates the modeling of a buffer shared between the transmit and receive buffering functions
+% in a low-cost device for efficient use of memory.
+
+%% Structure of the Model
+model_name = 'sedemo_shared_buffer_mgmt';
+open_system(model_name);
+%%
+% The upper part of the model describes a receive buffer, where messages arrive from an I/O device such as a UART (Universal Asynchronous Receiver Transmitter)
+% chip. The lower part of the model describes a transmit buffer, where messages arrive over the computer bus that connects to the rest of the components of the
+% computer, such as the CPU or DMA (Direct Memory Access) controller. 
+% Each of the parts models these processes:
+%% 
+% * Generation of messages, or traffic
+% 
+% * Throttling, or regulation, of the messages that can be stored in the buffer
+% 
+% * Storage of the data from the messages in a buffer
+% 
+% * Service of messages for a time interval
+
+%% Throttling of Messages
+% The Rx Priority Throttling subsystem drops some messages based on their priority, threshold values that you set in the dialog box of the Receive Buffer
+% subsystem, and the amount of available memory in the buffer. 
+%% 
+% When the traffic load increases the high priority messages are preferred and the lower priority messages are more likely to be dropped. 
+% The messages that are not dropped advance to the Receive Buffer
+% subsystem. A similar throttling mechanism is implemented in the Tx Priority Throttling subsystem.
+
+%% Receive Buffer
+% The Receive Buffer is modeled with variable space per entity and flushing capabilities. This subsystem uses the |Space| attribute of each message to model the buffering of variable-sized messages. The subsystem flushes the oldest
+% message upon reaching the high threshold. This flushing capability models the behavior of a ring buffer.
+%
+open_system([model_name,'/Receive Buffer'],'force');
+
+%%
+% The key components of the subsystem are:
+%%
+% * The input signal 'cap' that sets the maximum capacity of the buffer.
+% This remains constant during simulation.
+%
+% * The FIFO Queue block, which stores messages
+% 
+% * The Enabled Gate block, which regulates the flushing of older messages when the queue reaches the high threshold
+% 
+% * The Space Allocated and Space Freed subsystems, which compute the cumulative memory of messages that have entered and exited the queue throughout the simulation
+% 
+% * The Compare to Thresholds subsystem, which computes the amount of memory currently in use and determines whether the queue has crossed the high-priority threshold or the low-priority threshold
+
+%% Transmit Buffer
+% The Transmit Buffer subsystem is similar to the Receive Buffer subsystem,
+% except that the Transmit Buffer subsystem doesn't flush older messages.
+% Instead, it forbids the entry of the new messages from CPU or DMA
+% controller when full. The capacity of this buffer is represented by the
+% input signal to the port 'cap'. Its value varies throughout the
+% simulation depending on how much memory is left unused by the Receive
+% Buffer. That is, the receive and transmit buffers share memory and the
+% receive buffer has preference.
+
+open_system([model_name,'/Transmit Buffer'],'force');
+%% 
+% The key differences between the Transmit Buffer and Receive Buffer
+% subsystems are: 
+% 
+% * The capacity of Receive Buffer subsystem is constant throughout the simulation whereas that of the Transmit Buffer subsystem varies throughout the simulation.
+%  
+% * Upon reaching its capacity, the Enabled Gate block in the Receive Buffer
+% system flushes older messages whereas in the Transmit Buffer subsystem,
+% the Enabled Gate block prevents any new messages from entering the
+% subsystem.
+%  
+%% Delays in Managing Messages
+% The block labeled Rx Message Server models the delay in forwarding messages over the I/O bus that connects to the CPU or DMA controller. The block labeled
+% Flushing Server models the delay in flushing messages. These server blocks let you see how the buffer behaves if managing messages takes significant time
+% compared to the message inter-arrival time.
+% 
+% The block labeled Tx Message Server models the delay in transmitting messages.
+
+%% Results and Displays
+% The model includes these visual ways to understand its performance:
+% 
+% * Number of messages in the receive buffer and transmit buffer as shown in
+% plot Messages in Receive Buffer.
+% 
+% * Amount of memory used in the receive buffer and transmit buffer as shown
+% in plots Receive Memory Used and Transmit Memory Used respectively.
+% 
+% * Total memory used by both the receive buffer and transmit buffer as shown
+% in plot Memory Used.
+% 
+% * Threshold for transmit memory used, which is the memory available for
+% transmitting messages as shown in plot Transmit Memory.
+% 
+% The Receive Instrumentation and Transmit Instrumentation subsystems also contain additional scope blocks whose plots you can display by double-clicking the
+% blocks.
+
+sim(model_name);
+
+%% Experimenting with the Model
+% 
+% * You can modify the Constant value parameter in the Shared Memory Size
+% block to change the size of the shared buffer. 
+% 
+% * You can turn off priority throttling by changing the setting of the
+% Enable Priority Throttling block. Without priority throttling, the memory used can exceed the available memory, which causes memory corruption. Priority throttling ensures that the memory used does not exceed the available memory. 
+%
+% * You can change the thresholds that affect the dropping and flushing of messages at the receiver, by changing the Low threshold or High threshold parameter of the Receive Buffer subsystem. The high-priority threshold also affects the flushing of messages that wait too long in the Receive Buffer subsystem. Each threshold value is a real number between 0 and 1. 
+%
+% * You can change the thresholds that affect the dropping of messages at the transmitter, by changing the Low threshold or High threshold parameter of the Transmit Buffer subsystem. Each threshold value is a real number between 0 and 1. 
+ 
+%% Related Demos
+% * <matlab:showdemo('sedemo_variable_size_entity'); Buffering for Variable-Size Messages>
+% * <matlab:showdemo('sedemo_flushing_queue'); Queue with Flushing Capability>
+% * <matlab:showdemo('sedemo_variable_capacity_queue'); Variable-Capacity Queue>
+% 
+%%
+clear (model_name);
+bdclose all;
+displayEndOfDemoMessage(mfilename)
+##### SOURCE END #####
+--></body></html>

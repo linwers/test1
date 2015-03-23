@@ -1,0 +1,66 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>F-14 Flight Control Over a Network</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_f14_control_over_network"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_f14_control_over_network.mdl</div><div class="right"><a href="matlab:sedemo_f14_control_over_network">Open this model</a></div></div><div class="content"><h1>F-14 Flight Control Over a Network</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Results And Displays</a></li><li><a href="#4">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model modifies the time-based F-14 flight control demo by adding a network between the controller and the plant that models the aircraft dynamics.</p><img vspace="5" hspace="5" src="sedemo_f14_control_over_network_01.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_02.png" alt=""> <h2>Structure<a name="2"></a></h2><p>The network model is similar to the one in the Shared Access Communications Media demonstration.</p><p>In the subsystem (Shared Access Network Double-click to view network), double-click the Average Arrival Rate block (red) and use the slider to change the background traffic level. You can examine the impact of background traffic on the accuracy of the flight control loop. At low traffic volume, the delays have little effect. However, at moderate volume, the increased delay causes the control loop to oscillate when the control stick is moved quickly. At higher volume, the delays are sufficient to render the control loop ineffective.</p><h2>Results And Displays<a name="3"></a></h2><img vspace="5" hspace="5" src="sedemo_f14_control_over_network_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_07.png" alt=""> <img vspace="5" hspace="5" src="sedemo_f14_control_over_network_08.png" alt=""> <h2>Related Demos<a name="4"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_shared_access_media');">Shared Access Communications Media</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% F-14 Flight Control Over a Network
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:08 $
+
+%% Overview
+% This model modifies the time-based F-14 flight control demo by adding a
+% network between the controller and the plant that models the aircraft
+% dynamics.
+
+  modelname = 'sedemo_f14_control_over_network';
+  open_system(modelname);
+  set_param([modelname '/Pilot G force Scope'],'open', 'off' );
+  set_param([modelname '/Angle of  Attack'],'open', 'off' );
+  set_param([modelname '/Instrumentation/Number in  Output Buffer Queues'],'open', 'off' );
+  set_param([modelname '/Instrumentation/Average wait time  in Output Buffer Queues'],'open', 'off' );
+  set_param([modelname '/Instrumentation/Utilization'],'open', 'off' );
+  set_param([modelname '/Instrumentation/Number of  Dropped Packets'],'open', 'off' );
+  open_system([modelname '/Shared Access Network Double-click to view network']);
+  
+%% Structure
+% The network model is similar to the one in the Shared Access
+% Communications Media demonstration.
+%
+% In the subsystem (Shared Access Network Double-click to view network),
+% double-click the Average Arrival Rate block (red) and use the slider to
+% change the background traffic level. You can examine the impact of
+% background traffic on the accuracy of the flight control loop. At low
+% traffic volume, the delays have little effect. However, at moderate
+% volume, the increased delay causes the control loop to oscillate when the
+% control stick is moved quickly. At higher volume, the delays are
+% sufficient to render the control loop ineffective.
+
+%% Results And Displays
+  set_param([modelname '/Pilot G force Scope'],'open', 'on' );
+  set_param([modelname '/Angle of  Attack'],'open', 'on' );
+  set_param([modelname '/Instrumentation/Number in  Output Buffer Queues'],'open', 'on' );
+  set_param([modelname '/Instrumentation/Average wait time  in Output Buffer Queues'],'open', 'on' );
+  set_param([modelname '/Instrumentation/Utilization'],'open', 'on' );
+  set_param([modelname '/Instrumentation/Number of  Dropped Packets'],'open', 'on' );
+  sim(modelname);
+  
+%% Related Demos
+% * <matlab:showdemo('sedemo_shared_access_media'); Shared Access 
+% Communications Media>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

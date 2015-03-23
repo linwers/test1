@@ -1,0 +1,95 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Markov-Modulated Poisson Process</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_mod_markov_poisson"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_mod_markov_poisson.mdl</div><div class="right"><a href="matlab:sedemo_mod_markov_poisson">Open this model</a></div></div><div class="content"><h1>Markov-Modulated Poisson Process</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Results and Displays</a></li><li><a href="#5">Related Examples</a></li></ul></div><h2>Description<a name="1"></a></h2><p>This model generates entities using a Markov-modulated Poisson process, which is a Poisson process whose rate depends on the state of a Markov chain. In particular, the process is an interrupted Poisson process because the &#8220;off&#8221; state prevents entity generation. The model includes three independent on-off modulated Markov sources so you can see how their behavior depends on the rate of the Poisson process when the Markov chain is in the &#8220;on&#8221; state. The Path Combiner block aggregates the outputs of all the On-Off Modulated Markov Source subsystems.</p><p>Each of the On-Off Modulated Markov Source subsystems behaves as follows:</p><div><ul><li>The Time-Based Entity Generator block models the Markov chain by generating an entity each time the chain changes state.</li></ul></div><div><ul><li>The Entity Departure Event to Function-Call Event conveys the state       change to the Create Generator Selection Variable subsystem, whose       output changes from 0 to 1 or vice versa.</li></ul></div><div><ul><li>The block labeled Generator 1 models the Poisson process by       generating entities that attempt to depart from this On-Off       Modulated Markov Source subsystem. (By contrast, the entities that       represent the state changes of the Markov chain do not depart from       this subsystem.)</li></ul></div><div><ul><li>The Enabled Gate block regulates departures from the subsystem. If       the state of the Markov chain is &#8220;off,&#8221; the gate is closed and       entities cannot depart.</li></ul></div><img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_01.png" alt=""> <h2>Results and Displays<a name="2"></a></h2><p><b>Average Time between On-Off Points = 5 and Average Intergeneration Time = 1</b></p><img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_04.png" alt=""> <p><b>Average Time between On-Off Points = 15 and Average Intergeneration Time = 4</b></p><img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_07.png" alt=""> <p><b>Average Time between On-Off Points = 50 and Average Intergeneration Time = 10</b></p><img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_08.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_09.png" alt=""> <img vspace="5" hspace="5" src="sedemo_mod_markov_poisson_10.png" alt=""> <h2>Related Examples<a name="5"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5');">Example: M/M/5 Queuing System</a></li><li><a href="matlab:showdemo('sedemo_md1');">M/D/1 Queuing System</a></li><li><a href="matlab:showdemo('sedemo_mm1');">M/M/1 Queuing System</a></li><li><a href="matlab:showdemo('sedemo_gg1');">G/G/1 Queuing System and Little's Law</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Markov-Modulated Poisson Process
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:38 $
+
+%% Description
+% This model generates entities using a Markov-modulated Poisson process,
+% which is a Poisson process whose rate depends on the state of a Markov
+% chain. In particular, the process is an interrupted Poisson process
+% because the “off” state prevents entity generation. The model includes
+% three independent on-off modulated Markov sources so you can see how
+% their behavior depends on the rate of the Poisson process when the Markov
+% chain is in the “on” state. The Path Combiner block aggregates the
+% outputs of all the On-Off Modulated Markov Source subsystems.
+% 
+% Each of the On-Off Modulated Markov Source subsystems behaves as follows:
+% 
+% * The Time-Based Entity Generator block models the Markov chain by
+% generating an entity each time the chain changes state.
+%        
+% * The Entity Departure Event to Function-Call Event conveys the state
+%       change to the Create Generator Selection Variable subsystem, whose
+%       output changes from 0 to 1 or vice versa.
+%        
+% * The block labeled Generator 1 models the Poisson process by
+%       generating entities that attempt to depart from this On-Off
+%       Modulated Markov Source subsystem. (By contrast, the entities that
+%       represent the state changes of the Markov chain do not depart from
+%       this subsystem.)
+%      
+% * The Enabled Gate block regulates departures from the subsystem. If
+%       the state of the Markov chain is “off,” the gate is closed and
+%       entities cannot depart.     
+
+modelname = 'sedemo_mod_markov_poisson';
+open_system(modelname);
+set_param([modelname '/Signal Scope #2'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Instantaneous Entity Counting Scope #2'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Signal Scope #3'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Instantaneous Entity Counting Scope #3'],'OpenScopeAtSimStart', 'off' );
+
+
+%% Results and Displays
+% *Average Time between On-Off Points = 5 and Average Intergeneration Time = 1*
+sim(modelname);
+
+%%
+% *Average Time between On-Off Points = 15 and Average Intergeneration Time = 4*
+des_scope_support('desScopeCloseFig',[modelname '/Signal Scope #1']);
+des_scope_support('desScopeCloseFig',[modelname '/Instantaneous Entity Counting Scope #1']);
+set_param([modelname '/Signal Scope #1'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Instantaneous Entity Counting Scope #1'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Signal Scope #2'],'OpenScopeAtSimStart', 'on' );
+set_param([modelname '/Instantaneous Entity Counting Scope #2'],'OpenScopeAtSimStart', 'on' );
+sim(modelname);
+
+%%
+% *Average Time between On-Off Points = 50 and Average Intergeneration Time
+% = 10*
+des_scope_support('desScopeCloseFig',[modelname '/Signal Scope #2']);
+des_scope_support('desScopeCloseFig',[modelname '/Instantaneous Entity Counting Scope #2']);
+set_param([modelname '/Signal Scope #2'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Instantaneous Entity Counting Scope #2'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Signal Scope #3'],'OpenScopeAtSimStart', 'on' );
+set_param([modelname '/Instantaneous Entity Counting Scope #3'],'OpenScopeAtSimStart', 'on' );
+sim(modelname);
+
+
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5'); Example: M/M/5 Queuing System>
+% * <matlab:showdemo('sedemo_md1'); M/D/1 Queuing System>
+% * <matlab:showdemo('sedemo_mm1'); M/M/1 Queuing System>
+% * <matlab:showdemo('sedemo_gg1'); G/G/1 Queuing System and Little's Law>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

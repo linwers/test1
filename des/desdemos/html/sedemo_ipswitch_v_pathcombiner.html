@@ -1,0 +1,73 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Path Combiner Versus Input Switch</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_ipswitch_v_pathcombiner"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_ipswitch_v_pathcombiner.mdl</div><div class="right"><a href="matlab:sedemo_ipswitch_v_pathcombiner">Open this model</a></div></div><div class="content"><h1>Path Combiner Versus Input Switch</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Results and Displays</a></li><li><a href="#4">Related Examples</a></li></ul></div><h2>Description<a name="1"></a></h2><p>This model contrasts the Path Combiner block and the Input Switch block. The <b>Path Combiner</b> block accepts entities as they arrive at any port. The <b>Input Switch</b> accepts entities only from the port that is selected, where the selection changes in a round-robin fashion with the passage of each entity.</p><p>In the upper part of the model, entities from the high-priority entity generator arrive at the Path Combiner block before simultaneously generated entities having a lower priority. The plots from the Path Combiner block reflect the prioritized order in which the entities arrive at and pass through the Path Combiner block.</p><p>In the lower part of the model, the Input Switch block permits arrival only at the selected port. The prioritization of entity generation events does not influence the switch block. The plots from the Input Switch block reflect the ascending (round-robin) order in which the entities are selected by the Input Switch block.</p><img vspace="5" hspace="5" src="sedemo_ipswitch_v_pathcombiner_01.png" alt=""> <h2>Results and Displays<a name="2"></a></h2><p><b>Selected Ports vs. Index</b></p><img vspace="5" hspace="5" src="sedemo_ipswitch_v_pathcombiner_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_ipswitch_v_pathcombiner_03.png" alt=""> <p><b>Selected Ports vs. Time</b></p><img vspace="5" hspace="5" src="sedemo_ipswitch_v_pathcombiner_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_ipswitch_v_pathcombiner_05.png" alt=""> <h2>Related Examples<a name="4"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_warmup');">First Entity as a Special Case</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_packet_switch');">A Packet Switch</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_roundrobin');">Round-Robin Approach to Choosing Inputs</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_race_conditions_switch');">Choices of Values for Event Priorities</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Path Combiner Versus Input Switch
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2009/08/11 15:39:13 $
+
+%% Description
+% This model contrasts the Path Combiner block and the Input Switch block.
+% The *Path Combiner* block accepts entities as they arrive at any port.
+% The *Input Switch* accepts entities only from the port that is selected,
+% where the selection changes in a round-robin fashion with the passage of
+% each entity.
+%
+% In the upper part of the model, entities from the high-priority entity
+% generator arrive at the Path Combiner block before simultaneously
+% generated entities having a lower priority. The plots from the Path
+% Combiner block reflect the prioritized order in which the entities arrive
+% at and pass through the Path Combiner block.
+%
+% In the lower part of the model, the Input Switch block permits arrival
+% only at the selected port. The prioritization of entity generation events
+% does not influence the switch block. The plots from the Input Switch block
+% reflect the ascending (round-robin) order in which the entities are
+% selected by the Input Switch block.
+
+modelname = 'sedemo_ipswitch_v_pathcombiner';
+open_system(modelname);
+set_param([modelname '/Path Combiner  Arrival Port  vs. Time'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Input Switch  Selected Port  vs. Time'],'OpenScopeAtSimStart', 'off' );
+
+
+
+%% Results and Displays
+% *Selected Ports vs. Index*
+sim(modelname);
+
+%%
+% *Selected Ports vs. Time*
+des_scope_support('desScopeCloseFig',[modelname '/Path Combiner  Arrival Port vs. Index']);
+des_scope_support('desScopeCloseFig',[modelname '/Input Switch  Selected Port vs. Index']);
+set_param([modelname '/Path Combiner  Arrival Port vs. Index'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Input Switch  Selected Port vs. Index'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Input Switch  Selected Port  vs. Time'],'OpenScopeAtSimStart', 'on' );
+set_param([modelname '/Path Combiner  Arrival Port  vs. Time'],'OpenScopeAtSimStart', 'on' );
+sim(modelname);
+
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_releasegate_warmup'); First Entity as a 
+% Special Case> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_packet_switch'); A Packet Switch> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_roundrobin'); Round-Robin Approach to Choosing Inputs>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_race_conditions_switch'); Choices of Values for Event Priorities>
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

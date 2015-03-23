@@ -1,0 +1,168 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Distributed Processing Resource Modeling</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_dist_processing_nominal"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_dist_processing_nominal.mdl</div><div class="right"><a href="matlab:sedemo_dist_processing_nominal">Open this model</a></div></div><div class="content"><h1>Distributed Processing Resource Modeling</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Experimenting with the Model</a></li><li><a href="#11">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model describes the architecture resources for processing a series of jobs using distributed computed resources. The model, building on the ideas in the <a href="matlab:showdemo('sedemo_videoframeprocessing');">Distributed Video Processing</a> explore the resource constraints associated with a selected architecture.</p><p>The figure below illustrates the job and multiprocessor system.</p><p><img vspace="5" hspace="5" src="../dist_processing_nominal_small.png" alt=""> </p><p>You can interpret the system as a way to perform</p><div><ul><li>Signal processing of audio or video frames</li></ul></div><div><ul><li>Processing and routing of communication data packets or frames</li></ul></div><div><ul><li>Rendering of animation data</li></ul></div><div><ul><li>Routing and completion of service requests</li></ul></div><p>The system generates jobs regularly. Assume that the complexity of a particular job forces the system to partition the job, process the partitions independently, and later reassemble the results into one block of data.</p><h2>Structure<a name="2"></a></h2><p>The model includes these components:</p><div><ul><li>The Job Generation subsystem, which generates jobs at a fixed rate and   assigns each job several pieces of data that represent the processing   time constants. In this part of the model, each entity represents a   job.</li></ul></div><div><ul><li>A front-end processor, which partitions jobs using multiple blocks. The elabration of the processor is given below the list.</li></ul></div><div><ul><li>The Prepare Partitioned Task for Aggregation subsystem, which copies   the Aggregation_Time attribute's value to the Partitioning_Time   attribute. As a result, when the partition reaches the server at the   top of the model, the service time reflects aggregation time. This   subsystem also changes the value of a flag attribute that indicates   that the entity needs to be aggregated, not partitioned.</li></ul></div><div><ul><li>A feedback connection in which the entities representing partitions   arrive at the same server (Partitioning &amp; Aggregation Processing) that   models the initial delay for newly generated jobs.</li></ul></div><div><ul><li>A sink block labeled Processed Jobs that absorbs each partition that   departs from the server. A given partition does not need to wait for   the other partitions of the same job to complete their processing.</li></ul></div><p>The front-end processor mentioned before uses the following blocks to partition jobs.</p><div><ul><li>The block labeled Partitioning &amp; Aggregation Processing is a        server that models an initial delay before the first partition is        available</li></ul></div><div><ul><li>The Generate N Partitioned Tasks subsystem creates a stream of        partitions at a given rate. The number of partitions per job is        the value of the job's Partition_Count attribute. In this        subsystem, the input entities represent jobs and the output        entities represent partitions.</li></ul></div><div><ul><li>The block labeled Task Queue stores the partitions that are        waiting for processing.</li></ul></div><div><ul><li>The block labeled Task Processing Delay processes the partitions.</li></ul></div><img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_01.png" alt=""> <h2>Experimenting with the Model<a name="3"></a></h2><p>To explore the resource constraints associated with the architecture in this model, try the following:</p><p>1) Run the simulation with default settings. From the plots labeled    Partitions Waiting For Aggregation and Jobs Waiting In Queue, you can    see that both jobs and partitions accumulate in the queues while the    processors are always busy.</p><img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_04.png" alt=""> <p>2) To attempt to resolve the congestion, increase the number of    processors that represent overhead in the partitioning and aggregation    process. To do this, open the dialog box of the block labeled    Partitioning &amp; Aggregation Processing and change the Number of servers    parameter from 1 to 16.</p><p>3) Run the simulation again. The plots indicate that the queues now    remain empty.</p><img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_07.png" alt=""> <p>4) Run the simulation for 2 seconds. The plots indicate that adding more    processors merely delays the congestion instead of resolving it.</p><img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_08.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_09.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_10.png" alt=""> <p>5) Undo step 2 by setting the Number of servers parameter in the block    labeled Partitioning &amp; Aggregation Processing to 1.</p><p>6) Increase the number of processors that represent the time to process    each partition. To do this, open the dialog box of the block labeled    Task Processing Delay and change the Number of servers parameter from    128 to 256.</p><p>7) Run the simulation again. The plots indicate that the queues remain    empty for a long time. The congestion has been resolved.</p><img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_11.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_12.png" alt=""> <img vspace="5" hspace="5" src="sedemo_dist_processing_nominal_13.png" alt=""> <p><b>Experimenting Further</b></p><p>To expand on the architecture, you can refine the model in any of these ways:</p><div><ul><li>Include delays due to data access over a network</li></ul></div><div><ul><li>Introduce probabilistic values for various processing times to assess   the robustness of the solution</li></ul></div><div><ul><li>Include details of the processors' algorithms or hardware architecture</li></ul></div><h2>Related Demos<a name="11"></a></h2><div><ul><li><a href="matlab:showdemo('sedemo_videoframeprocessing');">Distributed Video Processing</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Distributed Processing Resource Modeling
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:31 $
+
+%% Overview
+% This model describes the architecture resources for processing a series
+% of jobs using distributed computed resources. The model, building on the
+% ideas in the <matlab:showdemo('sedemo_videoframeprocessing'); Distributed
+% Video Processing> explore the resource constraints associated with a
+% selected architecture.
+%
+% The figure below illustrates the job and multiprocessor system.
+%
+% <<../dist_processing_nominal_small.png>>
+%
+% You can interpret the system as a way to perform
+%
+% * Signal processing of audio or video frames
+%
+% * Processing and routing of communication data packets or frames
+%
+% * Rendering of animation data
+%
+% * Routing and completion of service requests
+%
+% The system generates jobs regularly. Assume that the complexity of a
+% particular job forces the system to partition the job, process the
+% partitions independently, and later reassemble the results into one block
+% of data.
+
+
+%% Structure
+% The model includes these components:
+%
+% * The Job Generation subsystem, which generates jobs at a fixed rate and
+%   assigns each job several pieces of data that represent the processing
+%   time constants. In this part of the model, each entity represents a
+%   job.
+%
+% * A front-end processor, which partitions jobs using multiple blocks. The
+% elabration of the processor is given below the list. 
+%
+% * The Prepare Partitioned Task for Aggregation subsystem, which copies
+%   the Aggregation_Time attribute's value to the Partitioning_Time
+%   attribute. As a result, when the partition reaches the server at the
+%   top of the model, the service time reflects aggregation time. This
+%   subsystem also changes the value of a flag attribute that indicates
+%   that the entity needs to be aggregated, not partitioned.
+% 
+% * A feedback connection in which the entities representing partitions
+%   arrive at the same server (Partitioning & Aggregation Processing) that
+%   models the initial delay for newly generated jobs.
+%
+% * A sink block labeled Processed Jobs that absorbs each partition that
+%   departs from the server. A given partition does not need to wait for
+%   the other partitions of the same job to complete their processing.
+%
+%
+% The front-end processor mentioned before uses the following blocks to partition jobs. 
+% 
+% * The block labeled Partitioning & Aggregation Processing is a
+%        server that models an initial delay before the first partition is
+%        available
+%
+% * The Generate N Partitioned Tasks subsystem creates a stream of
+%        partitions at a given rate. The number of partitions per job is
+%        the value of the job's Partition_Count attribute. In this
+%        subsystem, the input entities represent jobs and the output
+%        entities represent partitions.
+%     
+% * The block labeled Task Queue stores the partitions that are
+%        waiting for processing.
+%
+% * The block labeled Task Processing Delay processes the partitions.
+%
+
+modelname = 'sedemo_dist_processing_nominal';
+open_system(modelname);
+
+%% Experimenting with the Model
+% To explore the resource constraints associated with the architecture in
+% this model, try the following:
+%
+% 1) Run the simulation with default settings. From the plots labeled
+%    Partitions Waiting For Aggregation and Jobs Waiting In Queue, you can
+%    see that both jobs and partitions accumulate in the queues while the
+%    processors are always busy.
+sim(modelname);
+
+%%
+%
+% 2) To attempt to resolve the congestion, increase the number of
+%    processors that represent overhead in the partitioning and aggregation
+%    process. To do this, open the dialog box of the block labeled
+%    Partitioning & Aggregation Processing and change the Number of servers
+%    parameter from 1 to 16.
+
+set_param([modelname '/Partitioning & Aggregation Processing'],'NumberOfServers','16')
+
+%%
+% 3) Run the simulation again. The plots indicate that the queues now
+%    remain empty.
+
+sim(modelname);
+
+%%
+% 4) Run the simulation for 2 seconds. The plots indicate that adding more
+%    processors merely delays the congestion instead of resolving it.
+
+set_param(modelname,'StopTime','2')
+sim(modelname);
+
+%%
+% 5) Undo step 2 by setting the Number of servers parameter in the block
+%    labeled Partitioning & Aggregation Processing to 1.
+
+set_param([modelname '/Partitioning & Aggregation Processing'],'NumberOfServers','1')
+
+%%
+% 6) Increase the number of processors that represent the time to process
+%    each partition. To do this, open the dialog box of the block labeled
+%    Task Processing Delay and change the Number of servers parameter from
+%    128 to 256.
+
+set_param([modelname '/Task Processing Delay'],'NumberOfServers','256')
+
+%%
+% 7) Run the simulation again. The plots indicate that the queues remain
+%    empty for a long time. The congestion has been resolved.
+
+sim(modelname);
+
+%%
+% *Experimenting Further*
+%
+% To expand on the architecture, you can refine the model in any of these
+% ways:
+%
+% * Include delays due to data access over a network
+%
+% * Introduce probabilistic values for various processing times to assess
+%   the robustness of the solution
+%
+% * Include details of the processors' algorithms or hardware architecture
+
+%% Related Demos
+% * <matlab:showdemo('sedemo_videoframeprocessing'); Distributed Video Processing>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,99 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Distributed Processing for Multi-Class Jobs</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_star_routing"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_star_routing.mdl</div><div class="right"><a href="matlab:sedemo_star_routing">Open this model</a></div></div><div class="content"><h1>Distributed Processing for Multi-Class Jobs</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Multiple-Class Job Generation Subsystem</a></li><li><a href="#4">Distribution Center Subsystem</a></li><li><a href="#5">Service Station Subsystems</a></li><li><a href="#6">Results and Displays</a></li><li><a href="#8">Experimenting with the Model</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates how to model a central resource that manages distributed processing according to an explicit formula. The terminology in the model describes a distribution center that manages a series of processes that each job undergoes, where each job carries information about the series of processes that it must undergo. One of the applications where it could be useful is a central dispatcher that routes each call from one call processing station to another.</p><img vspace="5" hspace="5" src="sedemo_star_routing_01.png" alt=""> <h2>Multiple-Class Job Generation Subsystem<a name="3"></a></h2><p>This subsystem produces jobs that possess these attributes:</p><div><ul><li> <tt>JobClass</tt> - A value of 1, 2, or 3, which determines the value of <tt>ServiceProcess</tt> and <tt>ServiceTime</tt></li></ul></div><div><ul><li> <tt>JobID</tt> - An integer between 1 and 15. This acts as an identifier for each job. This can be used to track a job as it moves through the different service stations.</li></ul></div><div><ul><li> <tt>LastServiceLocation</tt> - 0 initially, to be modified during the simulation as the job visits different service stations</li></ul></div><div><ul><li> <tt>JobServiceStatus</tt> - A vector of 0s initially, to be modified during the simulation as the job completes different processes</li></ul></div><div><ul><li> <tt>ServiceProcess</tt> - A vector that lists the processes that the job undergoes</li></ul></div><div><ul><li> <tt>ServiceTime</tt> - A vector that lists the duration of each process that appears in <tt>ServiceProcess</tt></li></ul></div><div><ul><li> <tt>CurrentStep</tt> - 1 initially, to be modified during the simulation as the job progresses through its series of processes</li></ul></div><img vspace="5" hspace="5" src="sedemo_star_routing_02.png" alt=""> <h2>Distribution Center Subsystem<a name="4"></a></h2><p>This subsystem uses the vector elements of each job's  <tt>ServiceProcess</tt> attribute to route the entity to the correct service station. The distribution center also updates information that the job carries about its current state.</p><p>During the simulation, each job follows a trajectory from the distribution center to a service station, back to the distribution center, to a (possibly different) service station, and so on. The particular trajectory depends on the  <tt>ServiceProcess</tt> attribute value.</p><h2>Service Station Subsystems<a name="5"></a></h2><p>Each of multiple Service Station subsystems models a particular process abstractly using an Infinite Server block. Upon the completion of service, the job returns to the distribution center.</p><h2>Results and Displays<a name="6"></a></h2><p>The model includes these visual ways to understand its performance:</p><div><ul><li> A scope showing the service locations for jobs whose <tt>JobID</tt> attribute has a particular value.</li></ul></div><img vspace="5" hspace="5" src="sedemo_star_routing_03.png" alt=""> <div><ul><li> Scopes showing the load at each service station.</li></ul></div><img vspace="5" hspace="5" src="sedemo_star_routing_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_star_routing_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_star_routing_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_star_routing_07.png" alt=""> <h2>Experimenting with the Model<a name="8"></a></h2><p>You can set the particular value in the Display service history for jobs with ID parameter in the Distribution Center subsystem dialog box. Valid values are integers between 1 and 15.</p><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Distributed Processing for Multi-Class Jobs
+% Copyright 2005-2008 The MathWorks, Inc.
+%% Overview
+% This model demonstrates how to model a central resource that manages distributed processing according to an explicit formula. The terminology in the model
+% describes a distribution center that manages a series of processes that each job undergoes, where each job carries information about the series of processes
+% that it must undergo. One of the applications where it could be useful is a central dispatcher that routes each call from one call processing station to another.
+
+%%
+model_name = 'sedemo_star_routing';
+open_system(model_name);
+%%  Multiple-Class Job Generation Subsystem
+% This subsystem produces jobs that possess these attributes:
+%
+% *  |JobClass| - A value of 1, 2, or 3, which determines the value of
+% |ServiceProcess| and |ServiceTime|
+% 
+% *  |JobID| - An integer between 1 and 15. This acts as an identifier for each
+% job. This can be used to track a job as it moves through the different
+% service stations.
+% 
+% *  |LastServiceLocation| - 0 initially, to be modified during the simulation as the job visits different service stations
+% 
+% *  |JobServiceStatus| - A vector of 0s initially, to be modified during the simulation as the job completes different processes
+% 
+% *  |ServiceProcess| - A vector that lists the processes that the job undergoes
+% 
+% *  |ServiceTime| - A vector that lists the duration of each process that
+% appears in |ServiceProcess|
+% 
+% *  |CurrentStep| - 1 initially, to be modified during the simulation as
+% the job progresses through its series of processes
+
+open_system([model_name,'/Multiple-Class Job Generation']);
+
+%% Distribution Center Subsystem
+% This subsystem uses the vector elements of each job's  |ServiceProcess| attribute to route the entity to the correct service station. The
+% distribution center also updates information that the job carries about its current state.
+% 
+% During the simulation, each job follows a trajectory from the distribution center to a service station, back to the distribution center, to a (possibly
+% different) service station, and so on. The particular trajectory depends on the  |ServiceProcess| attribute value.
+
+%% Service Station Subsystems
+% Each of multiple Service Station subsystems models a particular process abstractly using an Infinite Server block. Upon the completion of service, the job
+% returns to the distribution center.
+
+%setup
+set_param([model_name,'/Scopes/Signal Scope1'],'OpenScopeAtSimStart','off');
+set_param([model_name,'/Scopes/Signal Scope2'],'OpenScopeAtSimStart','off');
+set_param([model_name,'/Scopes/Signal Scope3'],'OpenScopeAtSimStart','off');
+set_param([model_name,'/Scopes/Signal Scope4'],'OpenScopeAtSimStart','off');
+set_param([model_name,'/Scopes/Display Service History'],'OpenScopeAtSimStart','off');
+
+%% Results and Displays
+% The model includes these visual ways to understand its performance:
+%
+% *  A scope showing the service locations for jobs whose |JobID| attribute has
+% a particular value.
+sim(model_name);
+scope_fig = [model_name,'/Scopes/Display Service History'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig ,'OpenFig');
+
+%%
+% *  Scopes showing the load at each service station. 
+scope_fig1 = [model_name,'/Scopes/Signal Scope1'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig1 ,'OpenFig');
+scope_fig2 = [model_name,'/Scopes/Signal Scope2'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig2 ,'OpenFig'); 
+scope_fig3 = [model_name,'/Scopes/Signal Scope3'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig3 ,'OpenFig'); 
+scope_fig4 = [model_name,'/Scopes/Signal Scope4'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig4 ,'OpenFig'); 
+
+%% Experimenting with the Model
+% You can set the particular value in the Display service history for jobs
+% with ID parameter in the Distribution Center subsystem dialog box. Valid values are integers between 1 and 15.
+
+%%
+clear(model_name);
+des_scope2([],[],[],'ScopeUpdate',scope_fig1 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig2 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig3 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig4 ,'CloseFig');
+clear -regexp ^scope_fig\d{1}$
+bdclose all;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

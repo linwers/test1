@@ -1,0 +1,875 @@
+Library {
+  Name			  "des_sfun_lib"
+  Version		  7.2
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "ibm-5348_P100-1997"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  Created		  "Tue Jun 10 23:24:02 2003"
+  Creator		  "mclune"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "ywu"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Mon Apr 14 17:48:09 2008"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:133>"
+  ConfigurationManager	  "None"
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Actuator
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      From
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Goto
+      IconDisplay	      "Tag"
+    }
+    Block {
+      BlockType		      Ground
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      Sensor
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      TriggerPort
+      TriggerType	      "rising"
+      StatesWhenEnabling      "inherit"
+      ShowOutputPort	      off
+      OutputDataType	      "auto"
+      SampleTimeType	      "triggered"
+      SampleTime	      "1"
+      ZeroCross		      on
+    }
+    Block {
+      BlockType		      PMIOPort
+    }
+  }
+  System {
+    Name		    "des_sfun_lib"
+    Location		    [266, 170, 1264, 898]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      Inport
+      Name		      "in"
+      Position		      [15, 43, 45, 57]
+      IconDisplay	      "Port number"
+      PortDimensions	      "1"
+      DataType		      "double"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+      OutDataTypeStr	      "double"
+      SignalType	      "real"
+      SamplingMode	      "Sample based"
+    }
+    Block {
+      BlockType		      Inport
+      Name		      "SL In1"
+      Position		      [30, 288, 60, 302]
+      CopyFcn		      "des_support('desCopySLPort',gcb,'in')"
+      DeleteFcn		      "des_support('desDeleteSLPort',gcb,'in')"
+      LoadFcn		      "des_support('desLoadSLPort',gcb,'in')"
+      NameChangeFcn	      "des_support('desNameChangeSLPort',gcb,'in')"
+      Port		      "2"
+      IconDisplay	      "Port number"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+    }
+    Block {
+      BlockType		      Inport
+      Name		      "in1"
+      Position		      [25, 228, 55, 242]
+      Port		      "3"
+      IconDisplay	      "Port number"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "DES2SL"
+      Ports		      [0, 1, 0, 0, 0, 1]
+      Position		      [305, 43, 355, 87]
+      CopyFcn		      "des_support('desGatewayCopyFcn',gcbh)"
+      NameChangeFcn	      "des_support('desGatewayNameChangeFcn',gcbh)"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      on
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      MaskType		      "msb"
+      MaskDescription	      "Transfers data from Entities received in the SimEvents domain to Simulink"
+      MaskHelp		      "web(mech_help('bodysensor'))"
+      MaskPromptString	      "PortType|PhysicalDomain|SubClassName|Timing Control:|Execution Index:|Allow Multiple Outputs per Time Instant:|Attribute:|Require update before read|Default value:|Sample Time:|Offset Time:|Index of Connected MR Block|Is monitor only|Dimensions (-1 for inherited)"
+      MaskStyleString	      "edit,edit,edit,popup(Simulink|SimEvents|FunctionCall),edit,checkbox,edit,checkbox,edit,edit,edit,edit,checkbox,edit"
+      MaskTunableValueString  "off,off,off,off,off,off,off,off,off,off,off,on,on,off"
+      MaskCallbackString      "|||||||||||||"
+      MaskEnableString	      "off,off,off,on,on,on,on,on,on,on,on,on,on,on"
+      MaskVisibilityString    "off,off,off,on,on,on,on,on,on,on,on,off,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on,on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,,,,,,,,"
+      MaskVariables	      "PortType=&1;PhysicalDomain=&2;SubClassName=&3;timingControl=@4;execIndex=@5;multipleOutputs=@6;attribute=&7;updateBeforeRead=@8;InitValue=@9;sampleTime=@10;offsetTime=@11;idxBlockMR=@12;IsMonitorOnly=@13;dimsInfo=@14;"
+      MaskInitialization      "des_initgateway(gcb, 'out')"
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      MaskValueString	      "desPortIn|simevents|DES_DES2SL|SimEvents|0|off||off|0|-1|0|0|off|1"
+      MaskTabNameString	      ",,,,,,,,,,,,,"
+      System {
+	Name			"DES2SL"
+	Location		[802, 566, 1148, 843]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  From
+	  Name			  "DES_SIGNAL_BLOCK"
+	  Position		  [35, 36, 155, 64]
+	  GotoTag		  "simeventstag9ad91986eff3912f"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Terminator"
+	  Position		  [230, 115, 250, 135]
+	}
+	Block {
+	  BlockType		  Sensor
+	  Name			  "sensor"
+	  Tag			  "__orphan__"
+	  Position		  [125, 97, 195, 153]
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "Unknown"
+	  PortType		  "desPortIn"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "pmioport"
+	  Position		  [65, 115, 95, 135]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  Position		  [255, 43, 285, 57]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "pmioport"
+	  SrcPort		  RConn1
+	  DstBlock		  "sensor"
+	  DstPort		  LConn1
+	}
+	Line {
+	  SrcBlock		  "sensor"
+	  SrcPort		  1
+	  DstBlock		  "Terminator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "DES_SIGNAL_BLOCK"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "DES_Fcn-Call_SS"
+      Ports		      [1, 1]
+      Position		      [75, 148, 135, 182]
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      System {
+	Name			"DES_Fcn-Call_SS"
+	Location		[320, 378, 525, 511]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  Position		  [60, 25, 90, 40]
+	  Orientation		  "down"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "__DES_Fcn-Call_SS__"
+	  Ports			  [0, 1, 0, 1]
+	  Position		  [25, 64, 125, 106]
+	  TreatAsAtomicUnit	  on
+	  MinAlgLoopOccurrences	  off
+	  PropExecContextOutsideSubsystem on
+	  RTWSystemCode		  "Auto"
+	  FunctionWithSeparateData off
+	  Opaque		  off
+	  RequestExecContextInheritance	off
+	  MaskHideContents	  off
+	  System {
+	    Name		    "__DES_Fcn-Call_SS__"
+	    Location		    [466, 598, 720, 741]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "usletter"
+	    PaperUnits		    "inches"
+	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    Block {
+	      BlockType		      TriggerPort
+	      Name		      "function"
+	      Ports		      []
+	      Position		      [85, 15, 105, 35]
+	      TriggerType	      "function-call"
+	      StatesWhenEnabling      "held"
+	    }
+	    Block {
+	      BlockType		      Ground
+	      Name		      "Ground"
+	      Position		      [35, 85, 55, 105]
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out1"
+	      Position		      [135, 88, 165, 102]
+	      IconDisplay	      "Port number"
+	      OutDataType	      "sfix(16)"
+	      OutScaling	      "2^0"
+	    }
+	    Line {
+	      SrcBlock		      "Ground"
+	      SrcPort		      1
+	      DstBlock		      "Out1"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  Position		  [150, 78, 180, 92]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "__DES_Fcn-Call_SS__"
+	  DstPort		  trigger
+	}
+	Line {
+	  SrcBlock		  "__DES_Fcn-Call_SS__"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "Prop-Helper-S-Function"
+      Ports		      [0, 1]
+      Position		      [285, 180, 345, 210]
+      FunctionName	      "prop_helper"
+      Parameters	      "1, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Initial value|Exception Free Code"
+      MaskStyleString	      "edit,edit"
+      MaskTunableValueString  "on,on"
+      MaskCallbackString      "|"
+      MaskEnableString	      "on,on"
+      MaskVisibilityString    "on,on"
+      MaskToolTipString	      "on,on"
+      MaskVarAliasString      ","
+      MaskVariables	      "InitValue=@1;exceptFreeCode=@2;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "1|0"
+      MaskTabNameString	      ","
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "Prop-Mediator-S-Function"
+      Ports		      [1, 1]
+      Position		      [285, 319, 375, 361]
+      FunctionName	      "prop_mediator"
+      Parameters	      "num_inports, num_outports, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Number of input ports:|Number of output ports:|Exception Free Code"
+      MaskStyleString	      "edit,edit,edit"
+      MaskTunableValueString  "off,off,on"
+      MaskCallbackString      "||"
+      MaskEnableString	      "on,on,on"
+      MaskVisibilityString    "on,on,on"
+      MaskToolTipString	      "on,on,on"
+      MaskVarAliasString      ",,"
+      MaskVariables	      "num_inports=@1;num_outports=@2;exceptFreeCode=@3;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "1|1|0"
+      MaskTabNameString	      ",,"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "SL2DES"
+      Ports		      [1, 0, 0, 0, 0, 0, 1]
+      Position		      [80, 39, 130, 81]
+      CopyFcn		      "des_support('desGatewayCopyFcn',gcbh)"
+      NameChangeFcn	      "des_support('desGatewayNameChangeFcn',gcbh)"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      on
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      MaskType		      "msb"
+      MaskDescription	      "Transfers data from Simulink  to Entities created by this block in the SimEvents domain. "
+      MaskHelp		      "web(mech_help('bodyactuator'))"
+      MaskPromptString	      "PortType|PhysicalDomain|SubClassName|Timing Control:|Execution Index:|Trigger:|Filter:|Entity|Attribute:|Require update before read:|Default value:|Initialize to Factory Value:|Sample Time:|Offset Time:|Index of Connected MR Block|Is Monitor only|Dimensions (-1 for inherited):"
+      MaskStyleString	      "edit,edit,edit,popup(Simulink|SimEvents),edit,popup(None|Rising|Falling|Either),edit,edit,edit,checkbox,edit,checkbox,edit,edit,edit,checkbox,edit"
+      MaskTunableValueString  "off,off,off,off,off,off,off,off,off,off,off,off,off,off,on,off,off"
+      MaskCallbackString      "||||||||||||||||"
+      MaskEnableString	      "off,off,off,on,on,on,on,on,on,off,off,on,on,on,on,on,on"
+      MaskVisibilityString    "off,off,off,on,on,on,on,on,on,off,off,on,on,on,off,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on,on,on,on,on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,,,,,,,,,,,"
+      MaskVariables	      "PortType=&1;PhysicalDomain=&2;SubClassName=&3;timingControl=@4;execIndex=@5;trigger=@6;filter=&7;entity=&8;attribute=&9;updateBeforeRead=@10;InitValue=@11;initToFactVal=@12;sampleTime=@13;offsetTime=@14;idxBlockMR=@15;IsMonitorOnly=@16;dimsInfo=@17;"
+      MaskInitialization      "des_initgateway(gcb, 'in')"
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      MaskValueString	      "desPortOut|simevents|DES_SL2DES|SimEvents|1|None|0|||off|0|off|-1|0|0|off|1"
+      MaskTabNameString	      ",,,,,,,,,,,,,,,,"
+      System {
+	Name			"SL2DES"
+	Location		[449, 350, 816, 556]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "SIZED_INPUT_PORT"
+	  Position		  [45, 48, 75, 62]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "DES_SIGNAL_BLOCK"
+	  Position		  [300, 280, 360, 310]
+	  GotoTag		  "simeventstagcb6c7572be5538d8"
+	  TagVisibility		  "global"
+	}
+	Block {
+	  BlockType		  Ground
+	  Name			  "Ground"
+	  Position		  [70, 125, 90, 145]
+	}
+	Block {
+	  BlockType		  Actuator
+	  Name			  "actuator"
+	  Tag			  "DES_SL2DES"
+	  Position		  [140, 108, 210, 162]
+	  PhysicalDomain	  "simevents"
+	  SubClassName		  "Unknown"
+	  PortType		  "desPortOut"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "pmioport"
+	  Position		  [250, 125, 290, 145]
+	  Orientation		  "left"
+	  Port			  "1"
+	  Side			  "Right"
+	}
+	Line {
+	  SrcBlock		  "Ground"
+	  SrcPort		  1
+	  DstBlock		  "actuator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "SIZED_INPUT_PORT"
+	  SrcPort		  1
+	  Points		  [205, 0]
+	  DstBlock		  "DES_SIGNAL_BLOCK"
+	  DstPort		  1
+	}
+	Line {
+	  LineType		  "Connection"
+	  Labels		  [1, 0]
+	  SrcBlock		  "actuator"
+	  SrcPort		  RConn1
+	  DstBlock		  "pmioport"
+	  DstPort		  RConn1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Solver_Subsystem"
+      Ports		      []
+      Position		      [165, 454, 265, 496]
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      on
+      MaskPromptString	      "dump parameter:"
+      MaskStyleString	      "edit"
+      MaskTunableValueString  "on"
+      MaskEnableString	      "off"
+      MaskVisibilityString    "off"
+      MaskToolTipString	      "on"
+      MaskVariables	      "dumbPara=@1;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "0"
+      System {
+	Name			"Solver_Subsystem"
+	Location		[433, 403, 931, 703]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+      }
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "VS-S-Function"
+      Ports		      [1]
+      Position		      [180, 20, 240, 50]
+      FunctionName	      "vs_sl2des"
+      Parameters	      "IsProcessed, numBlocksMR, sl2desCEC_numBlks,des2slCEC_numBlks, numBlocksFC, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of MR blocks|Number of SL to DES CEC blocks|Number of DES to SL CEC blocks|Number of FC blocks|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on,on,on"
+      MaskCallbackString      "|||||"
+      MaskEnableString	      "on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,"
+      MaskVariables	      "IsProcessed=@1;numBlocksMR=@2;sl2desCEC_numBlks=@3;des2slCEC_numBlks=@4;numBlocksFC=@5;exceptFreeCode=@6;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|-1|-1|-1|-1|0"
+      MaskTabNameString	      ",,,,,"
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "last_MR-S-Function"
+      Ports		      []
+      Position		      [170, 290, 250, 319]
+      FunctionName	      "mr_sl2des_last"
+      Parameters	      "IsProcessed,numInPorts,numOutPorts,numInPortsSL,numOutPortsSL,idxBlockMR, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of Input Ports:|Number of Output Ports:|Number of Simulink Input Ports:|Number of Simulink Output Ports:|MR Block Index|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on,on,on,on"
+      MaskCallbackString      "||||||"
+      MaskEnableString	      "on,on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,"
+      MaskVariables	      "IsProcessed=@1;numInPorts=@2;numOutPorts=@3;numInPortsSL=@4;numOutPortsSL=@5;idxBlockMR=@6;exceptFreeCode=@7;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|-1|-1|-1|-1|-1|0"
+      MaskTabNameString	      ",,,,,,"
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "z_CEC-S-Function"
+      Ports		      [1]
+      Position		      [180, 145, 240, 175]
+      FunctionName	      "cec_des2sl"
+      Parameters	      "IsProcessed, numInPorts, numOutPorts, idxBlockCEC, dimsInfo, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of Input Ports|Number of Output Ports|CEC Block Index|Dimensions (-1 for inherited):|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on,on,on"
+      MaskCallbackString      "|||||"
+      MaskEnableString	      "on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,"
+      MaskVariables	      "IsProcessed=@1;numInPorts=@2;numOutPorts=@3;idxBlockCEC=@4;dimsInfo=@5;exceptFreeCode=@6;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|-1|-1|-1|0|0"
+      MaskTabNameString	      ",,,,,"
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "z_ED-S-Function"
+      Ports		      [1]
+      Position		      [170, 345, 230, 375]
+      FunctionName	      "ed_sl2des"
+      Parameters	      "IsProcessed, numInPorts, numOutPorts, idxBlockCEC, dimsInfo, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of Input Ports|Number of Output Ports|CEC Block Index|Dimensions (-1 for inherited):|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on,on,on"
+      MaskCallbackString      "|||||"
+      MaskEnableString	      "on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,"
+      MaskVariables	      "IsProcessed=@1;numInPorts=@2;numOutPorts=@3;idxBlockCEC=@4;dimsInfo=@5;exceptFreeCode=@6;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|-1|-1|-1|0|0"
+      MaskTabNameString	      ",,,,,"
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "z_FC-S-Function"
+      Ports		      [0, 1]
+      Position		      [180, 214, 240, 246]
+      FunctionName	      "fc_sl2des"
+      Parameters	      "IsProcessed, numElements, idxBlockFC, numInPorts, numOutPorts, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of Elements:|FC Block Idx|Number of Input Ports|Number of Output Ports|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on,on,on"
+      MaskCallbackString      "|||||"
+      MaskEnableString	      "on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,"
+      MaskVariables	      "IsProcessed=@1;numElements=@2;idxBlockFC=@3;numInPorts=@4;numOutPorts=@5;exceptFreeCode=@6;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|1|-1|-1|-1|0"
+      MaskTabNameString	      ",,,,,"
+    }
+    Block {
+      BlockType		      "S-Function"
+      Name		      "z_MR-S-Function"
+      Ports		      []
+      Position		      [180, 90, 240, 120]
+      FunctionName	      "mr_sl2des"
+      Parameters	      "IsProcessed,numInPorts,numOutPorts,numInPortsSL,numOutPortsSL,idxBlockMR,IsMonitorOnly, exceptFreeCode"
+      EnableBusSupport	      off
+      MaskPromptString	      "Is Processed|Number of Input Ports:|Number of Output Ports:|Number of Simulink Input Ports:|Number of Simulink Output Ports:|MR Block Index|Is Monitor only|Exception Free Code"
+      MaskStyleString	      "checkbox,edit,edit,edit,edit,edit,checkbox,edit"
+      MaskTunableValueString  "on,on,on,on,on,on,on,on"
+      MaskCallbackString      "|||||||"
+      MaskEnableString	      "on,on,on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,on,on,on,on"
+      MaskToolTipString	      "on,on,on,on,on,on,on,on"
+      MaskVarAliasString      ",,,,,,,"
+      MaskVariables	      "IsProcessed=@1;numInPorts=@2;numOutPorts=@3;numInPortsSL=@4;numOutPortsSL=@5;idxBlockMR=@6;IsMonitorOnly=@7;exceptFreeCode=@8;"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "off|-1|-1|-1|-1|-1|off|0"
+      MaskTabNameString	      ",,,,,,,"
+    }
+    Block {
+      BlockType		      PMIOPort
+      Name		      "DI"
+      Position		      [15, 118, 45, 132]
+      Port		      "1"
+      Side		      "Left"
+    }
+    Block {
+      BlockType		      PMIOPort
+      Name		      "DO"
+      Position		      [385, 118, 415, 132]
+      Orientation	      "left"
+      Port		      "2"
+      Side		      "Right"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "out"
+      Position		      [380, 43, 410, 57]
+      IconDisplay	      "Port number"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "SL Out1"
+      Position		      [375, 283, 405, 297]
+      CopyFcn		      "des_support('desCopySLPort',gcb,'out')"
+      DeleteFcn		      "des_support('desDeleteSLPort',gcb,'out')"
+      LoadFcn		      "des_support('desLoadSLPort',gcb,'out')"
+      NameChangeFcn	      "des_support('desNameChangeSLPort',gcb,'out')"
+      Port		      "2"
+      IconDisplay	      "Port number"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "out1"
+      Position		      [385, 218, 415, 232]
+      Port		      "3"
+      IconDisplay	      "Port number"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+    }
+  }
+}

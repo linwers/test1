@@ -1,0 +1,17 @@
+%if EXISTS("_DES_TLC_UTIL_") == 0
+%assign _DES_TLC_UTIL_ = 1
+
+%% Function: DesThrowIfInvalidParamAndReturn ==============================
+%% Abstract: Emit code that will throw error and return if there was
+%%           a parameter error seen
+%%
+%function DesThrowIfErrorAndReturn( block, errVariable ) Output
+if ( %<errVariable> )
+{
+    %<LibSetRTModelErrorStatus(errVariable)>;
+    %<RTMSetStopRequested(1)>;
+    return;
+}
+%endfunction
+
+%endif %%_DES_TLC_UTIL_

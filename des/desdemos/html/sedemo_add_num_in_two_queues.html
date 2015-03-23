@@ -1,0 +1,48 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Time-Driven and Event-Driven Addition</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_add_num_in_two_queues"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_add_num_in_two_queues.mdl</div><div class="right"><a href="matlab:sedemo_add_num_in_two_queues">Open this model</a></div></div><div class="content"><h1>Time-Driven and Event-Driven Addition</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates the difference between time-based blocks and the event-based operations inside a discrete event subsystem.</p><img vspace="5" hspace="5" src="sedemo_add_num_in_two_queues_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>In this model, the two FIFO Queue blocks independently update their #n signals when entities arrive or depart. The model adds the #n signals in two ways:</p><div><ul><li>A Sum block at the top level of the model adds the #n signals at       times determined by the time-based solver. This block's output is       temporarily inaccurate between a change in #n and the next time       step. Furthermore, this block adds the signals at all time steps,       even when neither of the #n signals has been updated.</li></ul></div><div><ul><li>A Sum block inside a discrete event subsystem adds the #n signals       precisely upon each update of either signal. The subsystem's       awareness of events makes the sum accurate at all times.</li></ul></div><img vspace="5" hspace="5" src="sedemo_add_num_in_two_queues_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_add_num_in_two_queues_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_add_num_in_two_queues_04.png" alt=""> <img vspace="5" hspace="5" src="sedemo_add_num_in_two_queues_05.png" alt=""> <p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Time-Driven and Event-Driven Addition
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:24 $
+
+%% Overview
+% This model demonstrates the difference between time-based blocks and the
+% event-based operations inside a discrete event subsystem.
+
+modelname = 'sedemo_add_num_in_two_queues';
+open_system(modelname);
+
+%% Structure
+% In this model, the two FIFO Queue blocks independently update their #n
+% signals when entities arrive or depart. The model adds the #n signals in
+% two ways:
+%
+% * A Sum block at the top level of the model adds the #n signals at
+%       times determined by the time-based solver. This block's output is
+%       temporarily inaccurate between a change in #n and the next time
+%       step. Furthermore, this block adds the signals at all time steps,
+%       even when neither of the #n signals has been updated.
+%       
+% * A Sum block inside a discrete event subsystem adds the #n signals
+%       precisely upon each update of either signal. The subsystem's
+%       awareness of events makes the sum accurate at all times.
+
+  sim(modelname);
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

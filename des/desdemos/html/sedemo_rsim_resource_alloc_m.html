@@ -1,0 +1,388 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Batch Discrete-Event Simulations Using Rapid Simulation Target</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_rsim_resource_alloc_m"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left"><a href="matlab:edit sedemo_rsim_resource_alloc_m">Open sedemo_rsim_resource_alloc_m.m in the Editor</a></div><div class="right"><a href="matlab:echodemo sedemo_rsim_resource_alloc_m">Run in the Command Window</a></div></div><div class="content"><h1>Batch Discrete-Event Simulations Using Rapid Simulation Target</h1><!--introduction--><p>In this demo the Rapid Simulation (RSim) target in Real-Time Workshop&reg; is used to run a discrete-event simulation with different sets of parameter values in order to estimate the best parameter set.</p><p>Using this method you can generate an executable for your discrete-event simulation and efficiently change simulation parameters such as entity attributes, service times etc. for the model without regenerating code and recompiling the model.</p><p>We will use a simplified version of the demo model used in the <a href="matlab:showdemo('sedemo_resource_allocation')">Resource Allocation from Multiple Pools</a> demo.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Background</a></li><li><a href="#2">Application Scenario</a></li><li><a href="#3">Structure of the Model</a></li><li><a href="#4">Prepare the Model for Batch Simulations</a></li><li><a href="#6">Identify Parameters to Tune</a></li><li><a href="#7">Mark Identified Parameters as Tunable</a></li><li><a href="#8">Build the Model</a></li><li><a href="#9">Create Parameter Sets for the Estimation Experiment</a></li><li><a href="#11">Run the Executable with Each Parameter Set</a></li><li><a href="#12">Analyze Results</a></li><li><a href="#15">Conclusion</a></li></ul></div><h2>Background<a name="1"></a></h2><p>This demo assumes some familiarity with Real-Time Workshop's Rapid Simulation Target. Refer to <a href="matlab:helpview(fullfile(docroot,'toolbox','rtw','helptargets.map'),'rtw_rsimtarget')">Testing and Refining Concept Models with Standalone Rapid Simulations</a> in the Real-Time Workshop help for more information about Rapid Simulation Target.</p><h2>Application Scenario<a name="2"></a></h2><p>This model shows customers approaching cashiers in a store. When a customer is ready to check out he/she enters a queue. When it is the customer's turn to check out, an employee from the pool is assigned to the customer. This assignment decreases the number of available employees. When the checkout process is completed, the employee returns to the pool and is now available to serve other customers.</p><p>In this example, it is of interest to know the optimal number of employees in the pool. Ideally, we would want no customer to wait too long for an employee and at the same time, no employee to have too much idle time. Hence, we would like to try this model with different pool sizes.</p><p>For other application scenarios of this model, refer to the table below:</p><pre>----------------------------------------------------------------
+ Application Area   Jobs         Backlog             Servers
+----------------------------------------------------------------
+ Store              Customers    Line at checkout    Cashiers
+ Computers          Tasks        Task queue          Processors
+ Production         Parts        Work in progress    Machines
+ Communications     Messages     Message queue       Channel
+----------------------------------------------------------------</pre><pre class="codeinput">model = <span class="string">'sedemo_rsim_resource_alloc'</span>;
+open_system( model );
+</pre><img vspace="5" hspace="5" src="sedemo_rsim_resource_alloc_m_01.png" alt=""> <h2>Structure of the Model<a name="3"></a></h2><p>In this model, customers (entities) arrive at the cashier counters and are queued up by the FIFO Queue block. The inter-generation time between customer arrivals is taken from an exponential distribution with mean 1.</p><p>Arriving customers are served by employees in the order of their arrival into the queue. The Employee Pool subsystem has a mask parameter named <tt>PoolSize</tt> which specifies the total number of employees in the pool. At time 0, <tt>PoolSize</tt> entities are generated and stored in the Employee Pool subsystem.</p><p>When both, a customer and an employee are available, the Entity Combiner block effectively "assigns" the employee to serve a customer. Service takes place in the Infinite Server block, and when it is completed, the employee returns to the pool and is now available to serve other customers.</p><h2>Prepare the Model for Batch Simulations<a name="4"></a></h2><p>Ensure that the current directory is writable because we will be creating MAT-files which will be used to pass in new parameter sets.</p><pre class="codeinput">[~, msg] = fileattrib( pwd );
+<span class="keyword">if</span> ~msg.UserWrite
+    disp(<span class="string">'This script must be run in a writable directory'</span>);
+    <span class="keyword">return</span>;
+<span class="keyword">end</span>
+</pre><p>Set the model's system target file to <tt>rsim.tlc</tt>. This configures Real-Time Workshop to generate code for a rapid simulation workflow. Refer to <a href="matlab:helpview(fullfile(docroot,'toolbox','rtw','helptargets.map'),'config_target')">Selecting a Target</a> in the Real-Time Workshop help for information about how to do this graphically using the Configuration Parameter dialog.</p><pre class="codeinput">configSet = getActiveConfigSet( model );
+configSet.switchTarget( <span class="string">'rsim.tlc'</span>, [] );
+</pre><h2>Identify Parameters to Tune<a name="6"></a></h2><p>In our experiment, we would like to vary the parameter <tt>PoolSize</tt> to simulate different employee pool sizes. This is a parameter of the Employee Pool subsystem block. For each pool size, we would like to see how long customers have to wait in the queue (<tt>customer_wait</tt>) and how long employees remain idle (<tt>employee_idle</tt>).</p><p>To do this, create a MATLAB variable called <tt>TrialPoolSize</tt>, assign it an arbitrary value and set this to be the subsystem's <tt>PoolSize</tt> parameter.</p><pre class="codeinput">TrialPoolSize = 3;
+set_param( [model, <span class="string">'/Employee Pool'</span>], <span class="string">'PoolSize'</span>, <span class="string">'TrialPoolSize'</span> );
+</pre><h2>Mark Identified Parameters as Tunable<a name="7"></a></h2><p>Set the Inline Parameters option to 'on' and mark <tt>TrialPoolSize</tt> as the tunable parameter. For information on doing this graphically using the Configuration Parameters dialog, refer to the Real-Time Workshop help.</p><pre class="codeinput">set_param( model, <span class="string">'RTWInlineParameters'</span>,      <span class="string">'on'</span> );
+set_param( model, <span class="string">'TunableVars'</span>,              <span class="string">'TrialPoolSize'</span> );
+set_param( model, <span class="string">'TunableVarsStorageClass'</span>,  <span class="string">'Auto'</span> );
+set_param( model, <span class="string">'TunableVarsTypeQualifier'</span>, <span class="string">''</span> );
+</pre><h2>Build the Model<a name="8"></a></h2><p>Build the RSim executable for the model. During the build process, a structural checksum is calculated for the model and embedded into the generated executable. The executable uses the checksum to check that any parameter set passed in is compatible with it.</p><pre class="codeinput">rtwbuild( model );
+</pre><pre class="codeoutput">### Starting Real-Time Workshop build procedure for model: sedemo_rsim_resource_alloc
+### Generating code for SimEvents
+### Include SimEvents directories : desmex/rtwmakecfg.m
+### Successful completion of Real-Time Workshop build procedure for model: sedemo_rsim_resource_alloc
+</pre><h2>Create Parameter Sets for the Estimation Experiment<a name="9"></a></h2><p>Let us create five sets for the tunable parameter <tt>TrialPoolSize</tt>. This means that we will try out our model with 6, 7, 8, 9 and 10 employees in the pool and compare the results.</p><p>First, get the default parameter set of the model using the function <tt>rsimgetrtp</tt>. The additional option 'AddTunableParamInfo' = 'on' will generate an <tt>rtP</tt> structure with an entry for the named tunable variable <tt>NumPoolEmployees</tt> in the model.</p><pre class="codeinput">rtP = rsimgetrtp( model, <span class="string">'AddTunableParamInfo'</span>, <span class="string">'on'</span> )
+</pre><pre class="codeoutput">rtP = 
+    modelChecksum: [3.9394e+009 226389045 2.1770e+009 1.7448e+009]
+       parameters: [1x1 struct]
+</pre><p>The modelChecksum field in the <tt>rtP</tt> structure is the structural checksum of the model. This must match the checksum embedded in the RSim executable (generated earlier). If the two checksums do not match, the executable will generate an error.</p><p>Next, the function <tt>rsimsetrtpparam</tt> is used to add additional parameter sets to the rtP structure. Finally, save the rtP structure into a MAT-file.</p><pre class="codeinput">PoolSize = [6, 7, 8, 9, 10];
+NumIterations = length( PoolSize );
+
+<span class="keyword">for</span> idx = 1 : NumIterations
+    rtP = rsimsetrtpparam( rtP, idx, <span class="string">'TrialPoolSize'</span>, PoolSize(idx) );
+    disp( [<span class="string">'Added parameter set '</span>, num2str(idx), <span class="keyword">...</span>
+        <span class="string">' with TrialPoolSize = '</span>, num2str( rtP.parameters{idx}.values )] );
+<span class="keyword">end</span>
+
+save( <span class="string">'params.mat'</span>, <span class="string">'rtP'</span> );
+</pre><pre class="codeoutput">Added parameter set 1 with TrialPoolSize = 6
+Added parameter set 2 with TrialPoolSize = 7
+Added parameter set 3 with TrialPoolSize = 8
+Added parameter set 4 with TrialPoolSize = 9
+Added parameter set 5 with TrialPoolSize = 10
+</pre><h2>Run the Executable with Each Parameter Set<a name="11"></a></h2><p>We will now run the generated executable file (model.exe on Windows) with each parameter set. We use the MATLAB's <tt>system</tt> command which will run the executable outside of the MATLAB environment.</p><p>To manually run the generated executable from the DOS command window, or from a Terminal window, refer to the <a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'running_rsim_executable');">requirements for running generated executables</a>.</p><p>Each run reads the specified parameter set from the parameter MAT-file and writes the results to the specified output MAT-file.</p><p>An example command is:</p><pre>    sedemo_rsim_resource_alloc -p params.mat@3 -o output3.mat</pre><p>This command will run the generated executable file with the 3rd parameter set from the MAT-file param.mat, and save the output of the simulation in the specified MAT-file output3.mat.</p><pre class="codeinput"><span class="keyword">for</span> i = 1 : NumIterations
+    cmd = [model, <span class="keyword">...</span>
+        <span class="string">' -p params.mat@'</span>, num2str(i), <span class="keyword">...</span>
+        <span class="string">' -o output'</span>, num2str(i), <span class="string">'.mat &gt; logfile'</span>];
+    disp( [<span class="string">'Running iteration '</span>, num2str(i), <span class="string">': '</span>, cmd] );
+    system( cmd );
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Running iteration 1: sedemo_rsim_resource_alloc -p params.mat@1 -o output1.mat &gt; logfile
+Running iteration 2: sedemo_rsim_resource_alloc -p params.mat@2 -o output2.mat &gt; logfile
+Running iteration 3: sedemo_rsim_resource_alloc -p params.mat@3 -o output3.mat &gt; logfile
+Running iteration 4: sedemo_rsim_resource_alloc -p params.mat@4 -o output4.mat &gt; logfile
+Running iteration 5: sedemo_rsim_resource_alloc -p params.mat@5 -o output5.mat &gt; logfile
+</pre><h2>Analyze Results<a name="12"></a></h2><p>In order to analyze the results of these simulations, we load the generated output MAT-files and collect the variables in them.</p><pre class="codeinput">Cwait = repmat( struct(<span class="string">'time'</span>, [], <span class="string">'values'</span>, []), 1, NumIterations );
+Eidle = repmat( struct(<span class="string">'time'</span>, [], <span class="string">'values'</span>, []), 1, NumIterations );
+
+<span class="keyword">for</span> i = 1: NumIterations
+    load( [<span class="string">'output'</span>, num2str(i), <span class="string">'.mat'</span>] );
+    <span class="comment">% this loads the variables rt_customer_wait and rt_employee_wait</span>
+
+    Cwait(i).time   = rt_customer_wait.time;
+    Cwait(i).values = rt_customer_wait.signals.values;
+    Eidle(i).time   = rt_employee_idle.time;
+    Eidle(i).values = rt_employee_idle.signals.values;
+<span class="keyword">end</span>
+</pre><p>Plot the instantaneous average wait times for customers and employees for the various employee pool sizes.</p><pre class="codeinput">color = { <span class="string">'b-'</span>, <span class="string">'r--'</span>, <span class="string">'k-.'</span>, <span class="string">'m:'</span>, <span class="string">'g-'</span> };
+options = { <span class="string">'LineWidth'</span>, 2 };
+
+<span class="keyword">for</span> i = 1 : NumIterations
+    subplot( 211 ); hold <span class="string">on</span>;
+    plot( Cwait(i).time, Cwait(i).values, color{i}, options{:} );
+
+    subplot( 212 ); hold <span class="string">on</span>;
+    plot( Eidle(i).time, Eidle(i).values, color{i}, options{:} );
+<span class="keyword">end</span>
+
+subplot( 211 ); title( <span class="string">'Customer Wait Time'</span> ); grid <span class="string">on</span>; box <span class="string">on</span>;
+legend(<span class="string">'6'</span>,<span class="string">'7'</span>,<span class="string">'8'</span>,<span class="string">'9'</span>,<span class="string">'10'</span>, <span class="string">'Location'</span>, <span class="string">'EastOutside'</span>);
+xlabel(<span class="string">'Simulation Time'</span>); ylabel(<span class="string">'Wait Time'</span>);
+
+subplot( 212 ); title( <span class="string">'Employee Idle Time'</span> ); grid <span class="string">on</span>; box <span class="string">on</span>;
+legend(<span class="string">'6'</span>,<span class="string">'7'</span>,<span class="string">'8'</span>,<span class="string">'9'</span>,<span class="string">'10'</span>, <span class="string">'Location'</span>, <span class="string">'EastOutside'</span>);
+xlabel(<span class="string">'Simulation Time'</span>); ylabel(<span class="string">'Idle Time'</span>);
+</pre><img vspace="5" hspace="5" src="sedemo_rsim_resource_alloc_m_02.png" alt=""> <p>Another way to look at the results is to take the average of the wait times for each pool size and compare the corresponding times for customers and employees.</p><pre class="codeinput">avgCwait = zeros(NumIterations, 1);
+avgEidle = zeros(NumIterations, 1);
+
+<span class="keyword">for</span> i = 1 : NumIterations
+    avgCwait(i) = mean( timeseries( Cwait(i).values, Cwait(i).time ));
+    avgEidle(i) = mean( timeseries( Eidle(i).values, Eidle(i).time ));
+<span class="keyword">end</span>
+
+f = figure;
+bar( [avgCwait, avgEidle], 1, <span class="string">'grouped'</span> );
+title( <span class="string">'Average wait time for customers and idle time for employees'</span> );
+set(gca, <span class="string">'XTickLabel'</span>, {<span class="string">'6'</span> <span class="string">'7'</span> <span class="string">'8'</span> <span class="string">'9'</span> <span class="string">'10'</span>});
+legend( <span class="string">'Customer Wait Time'</span>, <span class="string">'Employee Idle Time'</span> );
+xlabel( <span class="string">'Number of Employees'</span> );
+ylabel( <span class="string">'Average Wait/Idle Time'</span> ); hold <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="sedemo_rsim_resource_alloc_m_03.png" alt=""> <h2>Conclusion<a name="15"></a></h2><p>From a visual inspection of the results, we can conclude that for the assumed customer traffic, an employee pool size of 7-8 would be optimum.</p><pre class="codeinput">bdclose( model );
+close <span class="string">all</span>;
+system( <span class="string">'rm logfile'</span> );
+</pre><p class="footer"><br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Batch Discrete-Event Simulations Using Rapid Simulation Target
+%
+% In this demo the Rapid Simulation (RSim) target in Real-Time Workshop(R) 
+% is used to run a discrete-event simulation with different sets of 
+% parameter values in order to estimate the best parameter set. 
+%
+% Using this method you can generate an executable for your
+% discrete-event simulation and efficiently change simulation parameters
+% such as entity attributes, service times etc. for the model without
+% regenerating code and recompiling the model.
+%
+% We will use a simplified version of the demo model used in the 
+% <matlab:showdemo('sedemo_resource_allocation') Resource Allocation from 
+% Multiple Pools> demo.
+
+%% Background
+%
+% This demo assumes some familiarity with Real-Time Workshop's Rapid
+% Simulation Target. Refer to 
+% <matlab:helpview(fullfile(docroot,'toolbox','rtw','helptargets.map'),'rtw_rsimtarget')
+% Testing and Refining Concept Models with Standalone Rapid Simulations>
+% in the Real-Time Workshop help for more information about Rapid
+% Simulation Target.
+
+%% Application Scenario
+%
+% This model shows customers approaching cashiers in a
+% store. When a customer is ready to check out he/she enters a queue. When 
+% it is the customer's turn to check out, an employee from the pool is
+% assigned to the customer. This assignment decreases the number of available
+% employees. When the checkout process is completed, the employee returns
+% to the pool and is now available to serve other customers.
+%
+% In this example, it is of interest to know the 
+% optimal number of employees in the pool. Ideally, we would want no 
+% customer to wait too 
+% long for an employee and at the same time, no employee
+% to have too much idle time. Hence, we would like to
+% try this model with different pool sizes.
+%
+% For other application scenarios of this model, refer to the table below:
+%
+%  REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH 
+%   Application Area   Jobs         Backlog             Servers
+%  REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%   Store              Customers    Line at checkout    Cashiers
+%   Computers          Tasks        Task queue          Processors
+%   Production         Parts        Work in progress    Machines
+%   Communications     Messages     Message queue       Channel
+%  REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+model = 'sedemo_rsim_resource_alloc';
+open_system( model );
+
+%% Structure of the Model
+%
+% In this model, customers (entities) arrive at the cashier counters and 
+% are queued up by the FIFO Queue block. The inter-generation time between
+% customer arrivals is taken from an exponential distribution with mean 1.
+%
+% Arriving customers are served by employees in the order of their 
+% arrival into the queue. The Employee Pool subsystem
+% has a mask parameter named |PoolSize| which specifies the total 
+% number of employees in the pool. At time 0, |PoolSize| entities
+% are generated and stored in the Employee Pool subsystem.
+%
+% When both, a customer and an employee are available, the Entity Combiner
+% block effectively "assigns" the employee to serve a customer. Service
+% takes place in the Infinite Server block, and when it is completed, the
+% employee returns to the pool and is now available to serve other
+% customers.
+
+%% Prepare the Model for Batch Simulations
+%
+% Ensure that the current directory is writable because we will be
+% creating MAT-files which will be used to pass in new parameter sets.
+
+[~, msg] = fileattrib( pwd );
+if ~msg.UserWrite
+    disp('This script must be run in a writable directory');
+    return;
+end
+
+%%
+% Set the model's system target file to |rsim.tlc|. This configures Real-Time
+% Workshop to generate code for a rapid simulation workflow. Refer to
+% <matlab:helpview(fullfile(docroot,'toolbox','rtw','helptargets.map'),'config_target')
+% Selecting a Target> in the Real-Time Workshop help for
+% information about how to do this graphically using the Configuration
+% Parameter dialog.
+
+configSet = getActiveConfigSet( model );
+configSet.switchTarget( 'rsim.tlc', [] );
+
+%% Identify Parameters to Tune
+%
+% In our experiment, we would like to vary the parameter |PoolSize|
+% to simulate different employee pool sizes. This is a parameter of the
+% Employee Pool subsystem block. For each pool size, we would like to
+% see how long customers have to wait in the queue (|customer_wait|) and
+% how long employees remain idle (|employee_idle|).
+%
+% To do this, create a MATLAB variable called |TrialPoolSize|, assign it an
+% arbitrary value and set this to be the subsystem's |PoolSize| parameter.
+
+TrialPoolSize = 3;
+set_param( [model, '/Employee Pool'], 'PoolSize', 'TrialPoolSize' );
+
+%% Mark Identified Parameters as Tunable
+%
+% Set the Inline Parameters option to 'on' and mark |TrialPoolSize| as the 
+% tunable parameter. For information on doing this graphically using the
+% Configuration Parameters dialog, refer to the Real-Time Workshop help.
+
+set_param( model, 'RTWInlineParameters',      'on' );
+set_param( model, 'TunableVars',              'TrialPoolSize' );
+set_param( model, 'TunableVarsStorageClass',  'Auto' );
+set_param( model, 'TunableVarsTypeQualifier', '' );
+
+%% Build the Model
+%
+% Build the RSim executable for the model. During the build process, a
+% structural checksum is calculated for the model and embedded into the 
+% generated executable. The executable uses the checksum to check that any 
+% parameter set passed in is compatible with it.
+
+rtwbuild( model );
+
+%% Create Parameter Sets for the Estimation Experiment
+%
+% Let us create five sets for the tunable parameter |TrialPoolSize|. This
+% means that we will try out our model with 6, 7, 8, 9 and 10 employees in
+% the pool and compare the results.
+%
+% First, get the default parameter set of the model using the function 
+% |rsimgetrtp|. The additional option 'AddTunableParamInfo' = 'on'
+% will generate an |rtP| structure with an entry for the named tunable 
+% variable |NumPoolEmployees| in the model.
+
+rtP = rsimgetrtp( model, 'AddTunableParamInfo', 'on' )
+
+%%
+% The modelChecksum field in
+% the |rtP| structure is the structural checksum of the model. This must 
+% match the checksum embedded in the RSim executable (generated earlier). 
+% If the two checksums do not match, the executable will generate an 
+% error. 
+%
+% Next, the function |rsimsetrtpparam| is used to add additional parameter 
+% sets to the rtP structure. Finally, save the rtP structure into a 
+% MAT-file.
+
+PoolSize = [6, 7, 8, 9, 10];
+NumIterations = length( PoolSize );
+
+for idx = 1 : NumIterations
+    rtP = rsimsetrtpparam( rtP, idx, 'TrialPoolSize', PoolSize(idx) );
+    disp( ['Added parameter set ', num2str(idx), ...
+        ' with TrialPoolSize = ', num2str( rtP.parameters{idx}.values )] );
+end
+
+save( 'params.mat', 'rtP' );
+
+%% Run the Executable with Each Parameter Set
+%
+% We will now run the generated executable file (model.exe on Windows) with
+% each parameter set. We use the MATLAB's |system| command which will run 
+% the executable outside of the MATLAB environment.
+%
+% To manually run the generated executable from the DOS command window, or
+% from a Terminal window, refer to the 
+% <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'running_rsim_executable');
+% requirements for running generated executables>.
+%
+% Each run reads the specified parameter set from the parameter MAT-file 
+% and writes the results to the specified output MAT-file. 
+%
+% An example command is:
+%
+%      sedemo_rsim_resource_alloc -p params.mat@3 -o output3.mat
+%
+% This command will run the generated executable file with the 3rd 
+% parameter set from the MAT-file param.mat, and save the output of the 
+% simulation in the specified MAT-file output3.mat.
+
+for i = 1 : NumIterations
+    cmd = [model, ...
+        ' -p params.mat@', num2str(i), ...
+        ' -o output', num2str(i), '.mat > logfile'];
+    disp( ['Running iteration ', num2str(i), ': ', cmd] );
+    system( cmd );
+end
+
+%% Analyze Results
+%
+% In order to analyze the results of these simulations, we load the 
+% generated output MAT-files and collect the variables in them.
+
+Cwait = repmat( struct('time', [], 'values', []), 1, NumIterations );
+Eidle = repmat( struct('time', [], 'values', []), 1, NumIterations );
+
+for i = 1: NumIterations
+    load( ['output', num2str(i), '.mat'] );
+    % this loads the variables rt_customer_wait and rt_employee_wait
+    
+    Cwait(i).time   = rt_customer_wait.time;
+    Cwait(i).values = rt_customer_wait.signals.values;
+    Eidle(i).time   = rt_employee_idle.time;
+    Eidle(i).values = rt_employee_idle.signals.values;
+end
+
+%%
+% Plot the instantaneous average wait times for customers and employees for
+% the various employee pool sizes.
+
+color = { 'b-', 'rREPLACE_WITH_DASH_DASH', 'k-.', 'm:', 'g-' };
+options = { 'LineWidth', 2 };
+
+for i = 1 : NumIterations
+    subplot( 211 ); hold on;
+    plot( Cwait(i).time, Cwait(i).values, color{i}, options{:} );
+    
+    subplot( 212 ); hold on;
+    plot( Eidle(i).time, Eidle(i).values, color{i}, options{:} );
+end
+
+subplot( 211 ); title( 'Customer Wait Time' ); grid on; box on;
+legend('6','7','8','9','10', 'Location', 'EastOutside');
+xlabel('Simulation Time'); ylabel('Wait Time');
+
+subplot( 212 ); title( 'Employee Idle Time' ); grid on; box on;
+legend('6','7','8','9','10', 'Location', 'EastOutside');
+xlabel('Simulation Time'); ylabel('Idle Time');
+
+%%
+% Another way to look at the results is to take the average of the wait
+% times for each pool size and compare the corresponding times for 
+% customers and employees.
+
+avgCwait = zeros(NumIterations, 1);
+avgEidle = zeros(NumIterations, 1);
+
+for i = 1 : NumIterations
+    avgCwait(i) = mean( timeseries( Cwait(i).values, Cwait(i).time ));
+    avgEidle(i) = mean( timeseries( Eidle(i).values, Eidle(i).time ));
+end
+
+f = figure;
+bar( [avgCwait, avgEidle], 1, 'grouped' );
+title( 'Average wait time for customers and idle time for employees' );
+set(gca, 'XTickLabel', {'6' '7' '8' '9' '10'});
+legend( 'Customer Wait Time', 'Employee Idle Time' );
+xlabel( 'Number of Employees' );
+ylabel( 'Average Wait/Idle Time' ); hold on;
+
+%% Conclusion
+%
+% From a visual inspection of the results, we can conclude that for the
+% assumed customer traffic, an employee pool size of 7-8 would be
+% optimum.
+
+bdclose( model );
+close all;
+system( 'rm logfile' );
+
+
+displayEndOfDemoMessage(mfilename)
+
+
+##### SOURCE END #####
+--></body></html>

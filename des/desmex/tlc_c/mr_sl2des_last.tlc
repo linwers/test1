@@ -1,0 +1,72 @@
+
+%% $Revision: 1.1.10.4 $  $Date: 2009/07/14 03:52:47 $
+%% Copyright 2004-2008 The MathWorks, Inc.
+%%
+%% Abstract: TLC Code generation for SimEvents
+%%           MR sl2des block (for mr_sl2des_last.c)
+%%
+
+%implements mr_sl2des_last "C"
+
+%include "des_tlc_util.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%% Abstract: Do nothing.
+%%
+%function BlockTypeSetup (block, system) void
+%endfunction %%BlockTypeSetup
+
+
+%% Function: BlockInstanceSetup ===========================================
+%% Abstract: Called once per block instance before generating code.
+%%           Do nothing
+%%
+%function BlockInstanceSetup(block,system) void   
+%endfunction %%BlockInstanceSetup
+
+
+%% Function: InitializeConditions =========================================
+%% Abstract: Do nothing
+%%           
+%function InitializeConditions(block,system) Output
+%endfunction %%InitializeConditions
+
+
+%% Function: Start ========================================================
+%% Abstract: Do nothing.
+%%           
+%function Start(block,system) Output  
+%endfunction %%Start
+
+
+%% Function: Outputs ======================================================
+%% Abstract: Call into SLDes to excute event calendar.
+%%           Update the VS sfuntion time of next hit if needed. 
+%%           The prototype code updates thie time based on some
+%%           local calculations instead of learning it from SLDES.
+%%
+%function Outputs(block, system) Output
+{
+    const char* errMsg        =  0;
+    real_T engineNextHitTime  =  0;
+    const char* mdlName       =  "%<LibGetModelName()>";
+    real_T slTimeNow          =  %<LibGetT()>;
+    real_T minorStep          =  0;
+                
+    if ( %<LibIsMinorTimeStep()> ) return;
+
+    errMsg = simevents_getNextEngineHitTime(mdlName, slTimeNow, &engineNextHitTime, false);
+    %<DesThrowIfErrorAndReturn(block, "errMsg" )>
+
+    %with system
+        %foreach i = system.NumBlocks
+             %with Block[i]
+                %if(EXISTS(SFcnParamSettings.vsIdentifier))
+                    %<LibSetVarNextHitTime(Block[i],"engineNextHitTime")>;
+                    %break 
+                %endif
+            %endwith
+        %endforeach
+    %endwith
+}
+%endfunction  %% Outputs

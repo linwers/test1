@@ -1,0 +1,50 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Start Timer and Read Timer Blocks</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_start_timer_read_timer"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_start_timer_read_timer.mdl</div><div class="right"><a href="matlab:sedemo_start_timer_read_timer">Open this model</a></div></div><div class="content"><h1>Start Timer and Read Timer Blocks</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Results and Displays</a></li><li><a href="#3">Related Examples</a></li></ul></div><h2>Description<a name="1"></a></h2><p>This model shows how to use the <b>Start Timer</b> and <b>Read Timer</b> blocks to measure entity-based delays. The Start Timer block starts a specified timer (equivalent to time-stamping an entity) for each arriving entity. The Read Timer block reads this timer for each entity and computes the delay that the entity incurred between the two timer blocks.</p><img vspace="5" hspace="5" src="sedemo_start_timer_read_timer_01.png" alt=""> <h2>Results and Displays<a name="2"></a></h2><img vspace="5" hspace="5" src="sedemo_start_timer_read_timer_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_start_timer_read_timer_03.png" alt=""> <h2>Related Examples<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timer_prototype');">Basic Example Using Timer Blocks</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_restart_timer');">Restarting a Timer from Zero</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_two_timers');">Timing Multiple Processes Independently</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Start Timer and Read Timer Blocks
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:45 $
+
+%% Description
+% This model shows how to use the *Start Timer* and *Read Timer* blocks to
+% measure entity-based delays. The Start Timer block starts
+% a specified timer (equivalent to time-stamping an entity) for each
+% arriving entity. The Read Timer block reads this timer for each entity
+% and computes the delay that the entity incurred between the two timer
+% blocks. 
+
+modelname = 'sedemo_start_timer_read_timer';
+open_system(modelname);
+set_param([modelname '/Number of Entities Received'],'OpenScopeAtSimStart', 'off' );
+set_param([modelname '/Number of Entities Time-Stamped'],'OpenScopeAtSimStart', 'off' );
+
+
+%% Results and Displays
+
+sim(modelname);
+
+%% Related Examples
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_timer_prototype'); Basic Example
+% Using Timer Blocks> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_restart_timer'); Restarting a Timer from Zero> 
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_two_timers'); Timing Multiple Processes 
+% Independently> 
+
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

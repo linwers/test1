@@ -1,0 +1,125 @@
+%% $RCSfile: cec_des2sl.tlc,v $
+
+%% $Revision: 1.1.8.5 $  $Date: 2009/07/14 03:52:45 $
+%% Copyright 2005 The MathWorks, Inc.
+%%
+%% Abstract: Conditional Execution block (for cec_des2sl.c)
+%%
+
+%implements cec_des2sl "C"
+
+%%%%%%%%%%%%%%%%%%%
+%% Fucntion : BlockTypeSetup
+%% Description: Do nothing
+%%%%%%%%%%%%%%%%%%%
+
+%function BlockTypeSetup(block, system) void
+
+%endfunction
+
+%%%%%%%%%%%%%%%%%%%
+%% Fucntion : BlockInstanceSetup
+%% Description: For non accelarator mode, this function writes
+%% the index associated with this instance of CEC sfunction into
+%% the mdl.rtw file.
+%%%%%%%%%%%%%%%%%%%
+
+%function BlockInstanceSetup (block, system) Output
+  
+  %if !Accelerator
+    
+   %addtorecord block OUTPORT 0    
+    %addtorecord block outIndex SFcnParamSettings.outIndex
+    
+  %endif
+  
+%endfunction
+
+%%%%%%%%%%%%%%%%%%%
+%% Fucntion : For non accelarator mode, this function 
+%% emits the call back registration code
+%% in the MdlInitialize() function in the generated code.
+%% 
+%%%%%%%%%%%%%%%%%%%
+%function InitializeConditions(block,system) Output
+   
+%endfunction 
+
+%%%%%%%%%%%%%%%%%%%
+%% Fucntion : Start
+%% Description: For non accelarator mode, this function 
+%% emits the call back function that is will
+%% be called by the solver interface object when an output
+%% signal needs to be updated.
+%%%%%%%%%%%%%%%%%%%
+
+%function Start(block,system) Output
+
+  %if !Accelerator
+   
+    %openfile funcbuf
+      void cec_outputs_%<outIndex>(const real_T *newValue, size_t dataSize, int_T flag)
+      { 
+         real_T     *y = (real_T*)%<LibBlockOutputSignalAddr(0, "", "", 0)>;
+         
+         memcpy(y,newValue, dataSize);
+         
+         if(flag == 0) 
+         {
+	    return;
+	 } 
+         
+       %% TLC code for ssCompute 
+
+         %assign sysToCall   = SLibBlockSystemToCallForOutput(0)
+         %assign sysIdx      = sysToCall[0]
+         %assign callSiteIdx = sysToCall[1]
+         %if sysIdx >= 0
+           %assign ss = CompiledModel.System[sysIdx]
+           %if !LibSystemFcnIsEmpty(ss, "Output")
+             %<LibGenSystemFcnCall(ss, "Output", callSiteIdx)>
+           %else
+             %%printf("output system is empty \n");
+           %endif
+         %endif
+      }
+        
+      %closefile funcbuf
+      %assign srcFile = LibGetModelDotCFile()
+   
+      %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)> 
+     {
+     
+      %<LibBlockOutputSignalDataTypeName(OUTPORT, "")> * y;
+      simevents_setCecCallBackFcn("%<LibGetModelName()>",(int_T)(%<outIndex>),cec_outputs_%<outIndex>);
+  
+      %%Do what simevents_init_cec_signal_values(..) would do in the engine
+
+      y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;
+            %if LibBlockOutputSignalIsComplex(OUTPORT)
+                %roll sigIdx = RollRegions, lcv = RollThreshold, block, "Roller", ["Y"]
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)>.re = \
+                    %<block.SFcnParamSettings.icVal[2*sigIdx]>;
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)>.im = \
+                    %<block.SFcnParamSettings.icVal[2*sigIdx+1]>;        
+                %endroll
+            %else
+                %roll sigIdx = RollRegions, lcv = RollThreshold, block, "Roller", ["Y"]
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)> = \
+                    %<block.SFcnParamSettings.icVal[sigIdx]>;
+                %endroll
+      %endif
+       }
+    %endif 
+    
+ %endfunction
+
+%%%%%%%%%%%%%%%%%%%%%
+%% Function: Outputs 
+%% Description: Do nothing. This blocks outputs will be called by SE blocks via
+%% the generated function
+%%%%%%%%%%%%%%%%%%%%%
+
+%function Outputs(block, system) Output
+
+%endfunction  %% Outputs

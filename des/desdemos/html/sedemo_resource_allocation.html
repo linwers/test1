@@ -1,0 +1,132 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Resource Allocation from Multiple Pools</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_resource_allocation"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_resource_allocation.mdl</div><div class="right"><a href="matlab:sedemo_resource_allocation">Open this model</a></div></div><div class="content"><h1>Resource Allocation from Multiple Pools</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#3">Request Generation and Queueing</a></li><li><a href="#5">Resource Pools and Resource Allocation</a></li><li><a href="#6">Results and Displays</a></li><li><a href="#12">Experimenting with the Model</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model demonstrates a technique for allocating resources from a resource pool. It also shows how to choose a pool from which to draw a resource based on a given criteria.</p><h2>Structure of the Model<a name="2"></a></h2><p>There are two main components of the model.</p><div><ul><li> Request Generation and Queueing</li><li> Resource Pools and Resource Allocation</li></ul></div><img vspace="5" hspace="5" src="sedemo_resource_allocation_01.png" alt=""> <h2>Request Generation and Queueing<a name="3"></a></h2><p>The Entity Generator block generates requests using a Uniform distribution. In order for these requests to be acted upon, they require a resource from one of the two resource pools. Each of the requests has an attribute that specifies the kind of resource it requires. The requests move to one of the queues dedicated for each type of resource pool.</p><h2>Resource Pools and Resource Allocation<a name="5"></a></h2><p>The model has two resource pools,Type 1 and Type 2, as shown in the blue and yellow regions. The Type 1 and Type 2 Pool subsystems model the pools. These pools hold the resources before and after their use. The size of each pool is defined in the corresponding subsystem's mask dialog. The resources are created and stored using the preloaded queue technique; see the <a href="matlab:showdemo('sedemo_preload_queue');">Preloaded Queue with Entities</a> demo for details.</p><img vspace="5" hspace="5" src="sedemo_resource_allocation_02.png" alt=""> <h2>Results and Displays<a name="6"></a></h2><p>This model includes the following plots.</p><div><ul><li> The Pending Type 1 Requests and Pending Type 2 Requests plots show the number of requests waiting for resources from the corresponding pools. You can see that more requests for Type 1 resources wait compared to requests for Type 2 resources.</li></ul></div><img vspace="5" hspace="5" src="sedemo_resource_allocation_03.png" alt=""> <img vspace="5" hspace="5" src="sedemo_resource_allocation_04.png" alt=""> <div><ul><li> The Type 1 Resources Available and the Type 2 Resources Available plots show the instantaneous values of the number of resources available for use in the corresponding resource pools.</li></ul></div><img vspace="5" hspace="5" src="sedemo_resource_allocation_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_resource_allocation_06.png" alt=""> <div><ul><li> The average wait times for requests for each of the resource pools are captured in workspace variables from the statistics of the Type 1 Request Queue and Type 2 Request Queue blocks.</li></ul></div><pre class="codeoutput">Average Wait Time for Type 1 Resources:
+ans =
+  9.3810e-004
+Average Wait Time for Type 2 Resources:
+ans =
+  2.2609e-004
+Average Number of Available Type 1 Resources:
+ans =
+    2.1182
+Average Number of Available Type 2 Resources:
+ans =
+    3.8357
+</pre><p>The model has the following configuration:</p><div><ul><li> Resource request distribution: Type 1 = 0.4, Type 2 = 0.6</li><li> Duration of Type 1 resource use      : 0.05</li><li> Duration of Type 2 resource use      : 0.07</li><li> Type 1 pool size                     : 4</li><li> Type 2 pool size                     : 8</li></ul></div><p>From the above results, you can see that the larger pool size of Type 2 resources results in a lower average wait time even with a higher request rate and longer duration of resource use.</p><h2>Experimenting with the Model<a name="12"></a></h2><p>To vary system behaviors, like the number of resources available and wait times for resources, change the following settings:</p><div><ul><li> The <b>Probability vector</b> parameter in the Event-Based Random Number Resource Type Required block for changing the generation rate of the requests.</li><li> The <b>Service time</b> parameter of the Infinite    Server blocks in the Resource Pool and Resource Allocation regions of the model for changing the duration of the resource usage.</li><li> The <b>Size of resource pool</b> parameter in the Type 1 Pool and Type 2    Pool subsystems to change the number of resources in the pool.</li></ul></div><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Resource Allocation from Multiple Pools
+%Copyright 2005-2008 The MathWorks, Inc.
+
+%% Overview
+% 
+% This model demonstrates a technique for allocating resources from
+% a resource pool. It also shows how to choose a pool from which to draw a resource based on a
+% given criteria.
+
+%% Structure of the Model
+% There are two main components of the model.
+%
+% *  Request Generation and Queueing
+% *  Resource Pools and Resource Allocation
+model = 'sedemo_resource_allocation';
+open_system(model);
+
+%% Request Generation and Queueing
+% The Entity Generator block generates requests using a Uniform distribution. In order for
+% these requests to be acted upon, they require a resource from one of the two resource pools. 
+% Each of the requests has an attribute that specifies the kind of resource it requires. The requests move to one of the queues dedicated for each type of resource pool. 
+%%
+set_param([model '/Scopes and Displays/Type 1 Pending' sprintf('\n') 'Requests'],'OpenScopeAtSimStart','off');
+set_param([model '/Scopes and Displays/Type 2 Pending' sprintf('\n') 'Requests'],'OpenScopeAtSimStart','off');
+set_param([model '/Scopes and Displays/Type 1 Resources' sprintf('\n') 'Available'],'OpenScopeAtSimStart','off');
+set_param([model '/Scopes and Displays/Type 2 Resources' sprintf('\n') 'Available'],'OpenScopeAtSimStart','off');
+
+%% Resource Pools and Resource Allocation
+% The model has two resource pools,Type 1 and Type 2, as shown in the blue and yellow regions.
+% The Type 1 and Type 2 Pool subsystems model the pools. These pools hold the resources before and after their use.
+% The size of each pool is defined in the corresponding subsystem's mask
+% dialog. The resources are created and stored using the preloaded queue
+% technique; see the
+% <matlab:showdemo('sedemo_preload_queue'); Preloaded Queue with Entities>
+% demo for details.
+open_system([model '/Type 1 Pool'],'force');
+
+% The Entity Combiner and Entity Splitter blocks, in the Resource Pool and Resource Allocation region of the top-level model, manage the acquisition and the return of the resource. 
+% The Infinite Server blocks in that region model the duration for which the resources may be
+% used. 
+% 
+%% Results and Displays
+% This model includes the following plots.
+%
+sim(model);
+%
+%%
+% *  The Pending Type 1 Requests and Pending Type 2 Requests plots show the
+% number of requests waiting for resources from the corresponding pools.
+% You can see that more requests for Type 1 resources wait compared to requests for Type
+% 2 resources.
+scope_fig3 = [model '/Scopes and Displays/Type 1 Pending Requests'];
+scope_fig4 = [model '/Scopes and Displays/Type 2 Pending Requests'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig3 ,'OpenFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig4 ,'OpenFig');
+%%
+% *  The Type 1 Resources Available and the Type 2 Resources Available
+% plots show the instantaneous values of the number of resources available for use in the corresponding resource pools.
+scope_fig1 = [model '/Scopes and Displays/Type 1 Resources Available'];
+scope_fig2 = [model '/Scopes and Displays/Type 2 Resources Available'];
+des_scope2([],[],[],'ScopeUpdate',scope_fig1,'OpenFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig2,'OpenFig');
+%
+%% 
+% *  The average wait times for requests for each of the resource pools are captured in workspace variables from the statistics of the Type 1 Request Queue and Type 2 Request Queue blocks.
+format compact;
+disp('Average Wait Time for Type 1 Resources:');AvgWaitTimeReqsType1.signals.values(377)
+disp('Average Wait Time for Type 2 Resources:');AvgWaitTimeReqsType2.signals.values(377)
+
+% *  The average number of resources available at each resource pool is captured in workspace variables from
+%    the average length statistics of the FIFO Queue blocks in the Type 1 Pool and Type 2 Pool subsystems. 
+format compact;
+disp('Average Number of Available Type 1 Resources:');AvgResourcesAvailType1.signals.values(717)
+disp('Average Number of Available Type 2 Resources:');AvgResourcesAvailType2.signals.values(717)
+%%
+% The model has the following configuration:
+%
+% *  Resource request distribution: Type 1 = 0.4, Type 2 = 0.6
+% *  Duration of Type 1 resource use      : 0.05
+% *  Duration of Type 2 resource use      : 0.07
+% *  Type 1 pool size                     : 4
+% *  Type 2 pool size                     : 8
+
+%%
+% From the above results, you can see that the larger pool size of Type 2
+% resources results in a lower average wait time even with a higher request rate and longer duration of resource use.
+
+%% Experimenting with the Model
+% To vary system behaviors, like the number of resources available and wait times
+% for resources, change the following settings:
+%
+% *  The *Probability vector* parameter in the Event-Based Random Number
+% Resource Type Required block for changing the generation rate of the requests.
+% *  The *Service time* parameter of the Infinite
+%    Server blocks in the Resource Pool and Resource Allocation regions of the model for changing the duration of the resource usage.
+% *  The *Size of resource pool* parameter in the Type 1 Pool and Type 2
+%    Pool subsystems to change the number of resources in the pool.
+%%
+clear model;
+des_scope2([],[],[],'ScopeUpdate',scope_fig1 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig2 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig3 ,'CloseFig');
+des_scope2([],[],[],'ScopeUpdate',scope_fig4 ,'CloseFig');
+clear -regexp ^scope_fig\d{1}$
+clear AvgWaitTimeReqsType1 AvgWaitTimeReqsType2 AvgResourcesAvailType1 AvgResourcesAvailType2;
+bdclose all;
+displayEndOfDemoMessage(mfilename)
+##### SOURCE END #####
+--></body></html>

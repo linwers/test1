@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<!-- $Revision: 1.1.6.17 $  $Date: 2009/11/13 04:15:13 $ -->
+<demos>
+   <name>SimEvents</name>
+   <type>simulink</type>
+   <icon>$toolbox/matlab/icons/simulinkicon.gif</icon>
+   <label>SimEvents</label>
+   <description isCdata="no">
+       <p>SimEvents(R)extends Simulink(R)with tools            for discrete-event simulation of the transactions between components in a            system architecture. You can use the architecture model to analyze            performance characteristics such as end-to-end latencies, throughput, and            packet loss. SimEvents can also be used to simulate a process, such as a            mission plan or a manufacturing process, to determine resource requirements            or identify bottlenecks. Libraries of predefined blocks, such as queues,            servers, and switches, enable you to represent the components in your            system architecture or process flow diagram. You can accurately represent            your system by customizing operations such as routing, processing delays,        and prioritization.</p>
+       <p>SimEvents works with Stateflow(R)(available separately)            to represent systems containing detailed state-transition charts that may            produce or be controlled by discrete events. SimEvents and Simulink provide            an integrated environment for modeling hybrid dynamic systems containing            continuous-time, discrete-time, and discrete event components. Typical            examples occur in communications, automotive, electronic systems, sensor        networks, and other distributed control applications.</p>
+   </description>
+<demosection>
+<label>チュートリアルデモ</label>
+   <demoitem>
+      <label>Attributes: Data Within Entities</label>
+      <type>model</type>
+      <source>sedemo_count_attributes</source>
+      <file>html/sedemo_count_attributes.html</file>
+   </demoitem>
+  <demoitem>
+     <label>Transporting Multidimensional Data Using Attributes</label>
+     <type>model</type>
+     <source>sedemo_nd_attributes</source>
+     <file>html/sedemo_nd_attributes.html</file>
+  </demoitem>
+   <demoitem>
+      <label>Server Blocks and Service Time</label>
+      <type>model</type>
+      <source>sedemo_server_service_time</source>
+      <file>html/sedemo_server_service_time.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Input and Output Switching</label>
+      <type>model</type>
+      <source>sedemo_inputoutputswitch</source>
+      <file>html/sedemo_inputoutputswitch.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Release Gate: Value Change Versus Trigger</label>
+      <type>model</type>
+      <source>sedemo_triggergate_v_valuechangegate</source>
+      <file>html/sedemo_triggergate_v_valuechangegate.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Start Timer and Read Timer Blocks</label>
+      <type>model</type>
+      <source>sedemo_start_timer_read_timer</source>
+      <file>html/sedemo_start_timer_read_timer.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Schedule Timeout and Cancel Timeout Blocks</label>
+      <type>model</type>
+      <source>sedemo_timeout</source>
+      <file>html/sedemo_timeout.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Entity Combiner for Assembling Components</label>
+       <type>model</type>
+       <source>sedemo_aggregation</source>
+      <file>html/sedemo_aggregation.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Path Combiner Versus Input Switch</label>
+      <type>model</type>
+      <source>sedemo_ipswitch_v_pathcombiner</source>
+      <file>html/sedemo_ipswitch_v_pathcombiner.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Translating Events to Functions Calls</label> 
+     <type>model</type> 
+     <source>sedemo_event_translation</source> 
+     <file>html/sedemo_event_translation.html</file> 
+   </demoitem>     
+   <demoitem>
+       <label>Time-Driven and Event-Driven Addition</label>
+       <type>model</type>
+       <source>sedemo_add_num_in_two_queues</source>
+      <file>html/sedemo_add_num_in_two_queues.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Event Priorities</label>
+      <type>M-file</type>
+      <source>sedemo_event_priorities_m</source>
+   </demoitem>
+   <demoitem>
+      <label>Managing Race Conditions</label>
+      <type>M-file</type>
+      <source>sedemo_race_condition_diagnostic_m</source>
+   </demoitem>
+   <demoitem>
+     <label>Debugging Discrete-Event Simulations: Basic Single Stepping and Querying (9 min, 44 sec)</label>
+     <type>video</type>
+     <callback>playbackdemo('simevents-debugger-tutorial-part1','toolbox/des/web/demos');</callback>
+   </demoitem>
+   <demoitem>
+     <label>Debugging Discrete-Event Simulations: Breakpoints and Advanced Querying (7 min, 20 sec)</label>
+     <type>video</type>
+     <callback>playbackdemo('simevents-debugger-tutorial-part2','toolbox/des/web/demos');</callback>
+   </demoitem>
+</demosection>
+<demosection>
+<label>Advanced Techniques</label>
+     <demoitem>
+      <label>Avoiding Identical Seeds for Random Number Generators</label>
+      <type>M-file</type>
+      <source>sedemo_identicalseeds_m</source>
+   </demoitem>
+   <demoitem>
+      <label>Asynchronous Clock Domains</label>
+      <type>model</type>
+      <source>sedemo_async_clocks</source>
+      <file>html/sedemo_async_clocks.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Asynchronous Execution of a Stateflow Chart</label>
+      <type>model</type>
+      <source>sedemo_async_stateflow</source>
+      <file>html/sedemo_async_stateflow.html</file>
+   </demoitem>       
+   <demoitem>
+       <label>Buffering for Variable-Size Messages</label>
+       <type>model</type>
+       <source>sedemo_variable_size_entity</source>
+      <file>html/sedemo_variable_size_entity.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Building an Arrival Rate Estimator</label>
+      <type>M-file</type>
+      <source>sedemo_rateestimator_m</source>
+   </demoitem>
+   <demoitem>
+       <label>Counting Instantaneous Events</label>
+       <type>model</type>
+       <source>sedemo_instantaneous_events</source>
+      <file>html/sedemo_instantaneous_events.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Delayed Function Calls in Pulse Width Modulation</label>
+       <type>model</type>
+       <source>sedemo_pulse_width_mod</source>
+      <file>html/sedemo_pulse_width_mod.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Distributed Processing for Multi-Class Jobs</label>
+       <type>model</type>
+       <source>sedemo_star_routing</source>
+      <file>html/sedemo_star_routing.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Interfacing with External File Formats</label>
+       <type>model</type>
+       <source>sedemo_interfacing_with_external_file_formats</source>
+       <file>html/sedemo_interfacing_with_external_file_formats.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Markov-Modulated Poisson Process</label>
+       <type>model</type>
+       <source>sedemo_mod_markov_poisson</source>
+      <file>html/sedemo_mod_markov_poisson.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Multitasking with Dependent Tasks</label>
+       <type>model</type>
+       <source>sedemo_rtos_dependent_tasks</source>
+      <file>html/sedemo_rtos_dependent_tasks.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Preload Queue with Entities</label>
+       <type>model</type>
+       <source>sedemo_preload_queue</source>
+      <file>html/sedemo_preload_queue.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Queue with Flushing Capability</label>
+       <type>model</type>
+       <source>sedemo_flushing_queue</source>
+      <file>html/sedemo_flushing_queue.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Resource Allocation from Multiple Pools</label>
+       <type>model</type>
+       <source>sedemo_resource_allocation</source>
+      <file>html/sedemo_resource_allocation.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Seed Management Workflow for Random Number Generators</label>
+      <type>M-file</type>
+      <source>sedemo_rngseeds_mgmt_m</source>
+   </demoitem>
+   <demoitem>
+       <label>Task Sharing with Two Levels of Priority and Preemption</label>
+       <type>model</type>
+       <source>sedemo_rtos_two_priorities</source>
+      <file>html/sedemo_rtos_two_priorities.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Variable Entity Replication</label>
+       <type>model</type>
+       <source>sedemo_variable_entity_replication</source>
+      <file>html/sedemo_variable_entity_replication.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Variable-Capacity Queue</label>
+       <type>model</type>
+       <source>sedemo_variable_capacity_queue</source>
+      <file>html/sedemo_variable_capacity_queue.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Batch Discrete-Event Simulations Using Rapid Simulation Target</label>
+       <type>M-file</type>
+       <source>sedemo_rsim_resource_alloc_m</source>
+       <dependency>Real-Time Workshop</dependency>
+   </demoitem>
+</demosection>
+<demosection>
+<label>Queuing Systems</label>
+   <demoitem>
+      <label>M/M/1 Queuing System</label>
+      <type>model</type>
+      <source>sedemo_mm1</source>
+      <file>html/sedemo_mm1.html</file>
+   </demoitem>
+   <demoitem>
+      <label>M/D/1 Queuing System</label>
+      <type>model</type>
+      <source>sedemo_md1</source>
+      <file>html/sedemo_md1.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Single Server Versus N-Server</label>
+       <type>model</type>
+       <source>sedemo_single_v_multi_server</source>
+       <file>html/sedemo_single_v_multi_server.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Single Queue Versus Multiple Queues</label>
+       <type>model</type>
+       <source>sedemo_single_v_multi_queue</source>
+       <file>html/sedemo_single_v_multi_queue.html</file>
+   </demoitem>
+   <demoitem>
+      <label>G/G/1 Queuing System and Little's Law</label>
+      <type>model</type>
+      <source>sedemo_gg1</source>
+      <file>html/sedemo_gg1.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Queuing System with Discouraged Arrivals</label>
+      <type>model</type>
+      <source>sedemo_discouragearrival</source>
+      <file>html/sedemo_discouragearrival.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Prioritized Queuing Policy Comparison</label>
+       <type>model</type>
+       <source>sedemo_priority_policies</source>
+       <file>html/sedemo_priority_policies.html</file>
+   </demoitem>
+   <demoitem>
+       <label>Preemption Policy Comparison</label>
+       <type>model</type>
+       <source>sedemo_preempt_policy</source>
+       <file>html/sedemo_preempt_policy.html</file>
+   </demoitem>
+   </demosection>
+<demosection>
+<label>アプリケーションデモ</label>
+   <demosection>
+   <label>Architectural Applications</label>
+      <demoitem>
+         <label>Distributed Video Processing</label>
+         <type>model</type>
+         <source>sedemo_videoframeprocessing</source>
+         <file>html/sedemo_videoframeprocessing.html</file>
+      </demoitem>
+      <demoitem>
+         <label>Distributed Processing Resource Modeling</label>
+         <type>model</type>
+         <source>sedemo_dist_processing_nominal</source>
+         <file>html/sedemo_dist_processing_nominal.html</file>
+      </demoitem>
+      <demoitem> 
+          <label>FIFO Buffer: Functional Model</label> 
+          <type>model</type> 
+          <source>sedemo_fifo_functional</source> 
+          <file>html/sedemo_fifo_functional.html</file> 
+      </demoitem>       
+      <demoitem> 
+          <label>FIFO Buffer: Architectural Model</label> 
+          <type>model</type> 
+          <source>sedemo_fifo_architectural</source> 
+          <file>html/sedemo_fifo_architectural.html</file> 
+      </demoitem>                 
+   </demosection>
+   <demosection>
+   <label>自動車アプリケーション</label>
+      <demoitem>
+        <label>Anti-Lock Braking System (ABS) Overview</label>
+        <type>M-file</type>
+        <source>sedemo_absbrake_overview_m</source>
+      </demoitem>    
+      <demoitem>
+         <label>Anti-Lock Braking System (ABS) Model</label>
+         <type>model</type>
+         <source>sedemo_absbrake_nodelay</source>
+         <file>html/sedemo_absbrake_nodelay.html</file>
+      </demoitem>
+      <demoitem>
+         <label>Anti-Lock Braking System (ABS) Model with Queuing Delay</label>
+         <type>model</type>
+         <source>sedemo_absbrake_delay</source>
+         <file>html/sedemo_absbrake_delay.html</file>
+      </demoitem>
+      <demoitem>
+         <label>Anti-Lock Braking System (ABS) Model Using CAN Communications</label>
+         <type>model</type>
+         <source>sedemo_absbrake_can</source>
+         <file>html/sedemo_absbrake_can.html</file>
+      </demoitem>
+   </demosection>
+   <demosection>
+   <label>Communications Applications</label>
+       <demoitem>
+          <label>Bit Timing Recovery Using Fixed-Rate Resampling and SimEvents</label>
+          <type>model</type>
+          <source>sedemo_timrecresample</source>
+          <file>html/sedemo_timrecresample.html</file>
+          <dependency>Communications Blockset</dependency>
+       </demoitem>
+       <demoitem>
+          <label>Comparison of Routing Policies</label>
+          <type>model</type>
+          <source>sedemo_routing_policies</source>
+          <file>html/sedemo_routing_policies.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Ethernet Local Area Network</label>
+          <type>model</type>
+          <source>sedemo_ethernet</source>
+          <file>html/sedemo_ethernet.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Go-Back-N Automatic Repeat Request</label>
+          <type>model</type>
+          <source>sedemo_arq_gobackn</source>
+          <file>html/sedemo_arq_gobackn.html</file>
+       </demoitem>
+        <demoitem>
+           <label>Packet Creation, Transmission and Error Analysis</label>
+           <type>model</type>
+           <source>sedemo_packet_creation</source>
+          <file>html/sedemo_packet_creation.html</file>
+       </demoitem>
+      <demoitem>
+          <label>Selective-Repeat Automatic Repeat Request</label>
+          <type>model</type>
+          <source>sedemo_arq_selective_repeat</source>
+          <file>html/sedemo_arq_selective_repeat.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Shared Access Communications Media</label>
+          <type>model</type>
+          <source>sedemo_shared_access_media</source>
+          <file>html/sedemo_shared_access_media.html</file>
+       </demoitem>
+        <demoitem>
+           <label>Shared Communication Buffer Management</label>
+           <type>model</type>
+           <source>sedemo_shared_buffer_mgmt</source>
+          <file>html/sedemo_shared_buffer_mgmt.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Video Streaming Over Bandwidth-Limited Communication Channel</label>
+          <type>model</type>
+          <source>sedemo_video_streaming</source>
+          <file>html/sedemo_video_streaming.html</file>
+          <dependency>Video and Image Processing Blockset</dependency>
+       </demoitem>
+   </demosection>
+   <demosection>
+   <label>Controls Applications</label>
+       <demoitem>
+          <label>Astable Multivibrator Circuit</label>
+          <type>model</type>
+          <source>sedemo_astable_multivibrator</source>
+          <file>html/sedemo_astable_multivibrator.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Dynamic Voltage Scaling Using Online Gradient Estimation</label>
+          <type>model</type>
+          <source>sedemo_DVS_model</source>
+          <file>html/sedemo_DVS_model.html</file>
+       </demoitem>
+       <demoitem>
+          <label>F-14 Flight Control Over a Network</label>
+          <type>model</type>
+          <source>sedemo_f14_control_over_network</source>
+          <file>html/sedemo_f14_control_over_network.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Tank Filling Station</label>
+          <type>model</type>
+          <source>sedemo_tank_filling_station</source>
+          <file>html/sedemo_tank_filling_station.html</file>
+       </demoitem>
+   </demosection>
+   <demosection>
+   <label>Manufacturing Applications</label>
+      <demoitem>
+         <label>Batch Production Process</label>
+         <type>model</type>
+         <source>sedemo_batch_production</source>
+         <file>html/sedemo_batch_production.html</file>
+      </demoitem>
+      <demoitem>
+         <label>Kanban Production System</label>
+         <type>model</type>
+         <source>sedemo_kanban_system</source>
+         <file>html/sedemo_kanban_system.html</file>
+       </demoitem>
+   </demosection>
+   <demosection>
+   <label>Task Management Applications</label>
+       <demoitem>
+          <label>Operating System with Prioritized Task Execution</label>
+          <type>model</type>
+          <source>sedemo_rtos_application</source>
+          <file>html/sedemo_rtos_application.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Processor Sharing Via Time Slicing</label>
+          <type>model</type>
+          <source>sedemo_shared_proc</source>
+          <file>html/sedemo_shared_proc.html</file>
+       </demoitem>
+       <demoitem>
+          <label>Rate-Based Shared Processor</label>
+          <type>model</type>
+          <source>sedemo_rate_based_proc</source>
+          <file>html/sedemo_rate_based_proc.html</file>
+       </demoitem>
+   </demosection>
+</demosection>
+</demos>

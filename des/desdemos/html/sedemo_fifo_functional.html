@@ -1,0 +1,205 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>FIFO Buffer: Functional Model</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_fifo_functional"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_fifo_functional.mdl</div><div class="right"><a href="matlab:sedemo_fifo_functional">Open this model</a></div></div><div class="content"><h1>FIFO Buffer: Functional Model</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Overview of FIFO Buffer Model</a></li><li><a href="#4">Detailed Description of Processors</a></li><li><a href="#7">Behavior of the FIFO Buffer Model Capacity Estimation for Drifting Clocks</a></li><li><a href="#10">Behavior of the FIFO Buffer Model for Different Clock Speeds</a></li><li><a href="#13">Related Demos</a></li></ul></div><h2>Introduction<a name="1"></a></h2><p>This demo shows how to build an asynchronous first in, first out (FIFO) buffer and use it to model data transfer between two processors.  The demo shows you to explore the effect of buffer space limitations on the data transfer.  The demo also shows how to use the buffer to regulate data passing between processors operating at different clock speeds.  This demo models the functional behavior at an abstract level which is useful in sizing the buffer before implementing in hardware.</p><p>The modeling of the buffer with more architectural details is shown in <a href="matlab:simeventsdemohelp('sedemo_fifo_architectural');">FIFO Buffer: Architectural Model</a>.</p><h2>Overview of FIFO Buffer Model<a name="2"></a></h2><p>A FIFO buffer is a hardware component that stores data as a part of data exchange between processors.  The FIFO Queue block enables simulation of such buffers in software.  Each processor is driven by a clock.  Because each clock synchronizes the processor hardware, the clock appears synchronous to that processor. However, the clocks of two or more processors are typically not synchronous with each other.</p><p>This model consists of two processor subsystems, Processor A and Processor B, with their corresponding clocks. The processor subsystems have entity connections to the FIFO Queue block. These entity connections and the entities that move along them implicitly enforce blocking between blocks. This allows the FIFO Queue block to buffer and regulate the movement of data between Processor A and Processor B.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_01.png" alt=""> <p>The processors' processing is limited to counting and data transfer to simplify the demo description. Processor A increments its state, state A, and forwards the new value to Processor B.  Processor B then copies the value to its state, state B.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_03.png" alt=""> <h2>Detailed Description of Processors<a name="4"></a></h2><p>The Processor A subsystem contains an Event-Based Entity Generator block clocked by the System A Clock.  As the entity is generated, it fires the Processor A State subsystem.  The subsystem increments state A and updates the attribute of the passing entity. The generated entity then advances to the FIFO Queue block.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_04.png" alt=""> <p>The FIFO Queue block is connected to the Processor B subsystem.  Inside this subsystem, the Release Gate block is clocked by the System B Clock.  When the Release Gate block is opens, the entity, if available, advances from the FIFO Queue block and fires the Processor B State subsystem, which updates state B with the attribute value from the entity.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_05.png" alt=""> <p>The clock generation technique is documented in <a href="sedemo_async_clocks.html">Asynchronous Clock Domains</a>.</p><h2>Behavior of the FIFO Buffer Model Capacity Estimation for Drifting Clocks<a name="7"></a></h2><p>Setting the <b>Capacity</b> parameter for the FIFO Queue block to 4 and the <b>Allow Blocking</b> parameter for the Event-Based Entity Generator in the Processor A subsystem to 'off' disallows blocking for Processor A and demonstrates whether the buffer size of 4 is sufficient to allow the processors to communicate without Processor A having to pause to permit Processor B to catch up.  A buffer capacity of 4 results in a run-time error because the FIFO Queue block is too small.  This error causes the simulation to terminate early which results in the incomplete plots.</p><pre class="codeoutput">ans =
+Error in 'sedemo_fifo_functional/Processor A
+Subsystem/Event-Based
+Entity Generator' block. Unable to send entity at time 7.75961 because OUT port is blocked.
+</pre><img vspace="5" hspace="5" src="sedemo_fifo_functional_06.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_07.png" alt=""> <p>However, setting the <b>Allow Blocking</b> parameter for the Event-Based Entity Generator in the Processor A subsystem to 'on' permits blocking for the entity generator. This allows processor A to respond to blocking by delaying the generation of entities until space is available in the FIFO Queue block.  Running the models shows how this setting enables the simulation to continue with delayed delivery of values to Processor B.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_08.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_09.png" alt=""> <p>With these settings, Processor A increments its state only if an entity can advance to the FIFO Queue block. The delay from Processor A to Processor B varies with the difference between the instantaneous frequency of the clocks used for each processor.   This delay is apparent in the plot of 'A' - 'B'.</p><p>Setting the capacity of the FIFO Queue block back to 8 and disallowing blocking for the Entity Generator for Processor A by returning the <b>Allow Blocking</b> parameter for the Event-Based Entity Generator in the Processor A Subsystem to 'off' allows the simulation to run to completion.  The maximum value in the Number in Buffer plot, 5, is the minimum buffer size required to support communications between the processors.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_10.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_11.png" alt=""> <h2>Behavior of the FIFO Buffer Model for Different Clock Speeds<a name="10"></a></h2><p>Changing the settings so the clock for Processor A runs faster than the clock for Processor B and so there is no variation in clock rate demonstrates that the FIFO Queue's blocking via the entity paths is regulating the rate at which Processor A sends updates to Processor B. The clock speed for Processor A is set to 100 by changing the Bias parameter for the Interval for Clock A block to 0.01 while the drift in the clock rate is eliminated by setting the Amplitude parameter to 0.  The clock speed and drifting of Processor B is adjusted similarly.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_12.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_13.png" alt=""> <p>The plots show that the number of entities in the FIFO Queue block rises quickly to the capacity of the buffer, 8, and then remains at that level until the end of the simulation.  This indicates that Processor A has filled the FIFO Queue block.  When the FIFO Queue block reaches capacity, Processor A cannot send a new entity to the FIFO Queue block until Processor B accepts an entity from the FIFO Queue block.</p><p>Changing the settings so the clock for Processor A is runs slower than the clock for Processor B demonstrates the FIFO Queue block's ability to fulfill requests from Processor B by either requesting an entity from the FIFO Queue block and, if necessary, waiting until an entity is available from Processor A.</p><img vspace="5" hspace="5" src="sedemo_fifo_functional_14.png" alt=""> <img vspace="5" hspace="5" src="sedemo_fifo_functional_15.png" alt=""> <p>The plots show that the number of entities in the FIFO Queue block alternates between 1 and 0 showing that each entity waits in the FIFO Queue block for a short period before advancing to Processor B.</p><h2>Related Demos<a name="13"></a></h2><div><ul><li><a href="matlab:simeventsdemohelp('sedemo_fifo_architectural');">FIFO Buffer: Architectural Model</a></li><li><a href="matlab:simeventsdemohelp('sedemo_async_clocks');">Asynchronous Clock Domains</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% FIFO Buffer: Functional Model
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.1 $ $Date: 2008/06/13 15:15:07 $
+
+%% Introduction
+% This demo shows how to build an asynchronous first in, first out 
+% (FIFO) buffer and use it to model data transfer between two
+% processors.  The demo shows you to explore the effect of buffer space
+% limitations on the data transfer.  The demo also shows how 
+% to use the buffer to regulate data passing between processors 
+% operating at different clock speeds.  This demo models the 
+% functional behavior at an abstract level which is useful in
+% sizing the buffer before implementing in hardware. 
+% 
+% The modeling of the buffer with more architectural
+% details is shown in 
+% <matlab:simeventsdemohelp('sedemo_fifo_architectural'); FIFO Buffer: Architectural Model>.
+
+%% Overview of FIFO Buffer Model
+% A FIFO buffer is a hardware component that stores data as a part of 
+% data exchange between processors.  The FIFO Queue block 
+% enables simulation of such buffers in software.  Each
+% processor is driven by a clock.  Because each clock synchronizes the
+% processor hardware, the clock appears synchronous to that processor.  
+% However, the clocks of two or more processors are typically not 
+% synchronous with each other. 
+%
+% This model consists of two processor subsystems, 
+% Processor A and Processor B, with their corresponding clocks.  
+% The processor subsystems have entity connections to the FIFO Queue
+% block. These entity connections and the entities that move along them 
+% implicitly enforce blocking between blocks. 
+% This allows the FIFO Queue block to buffer and regulate the 
+% movement of data between Processor A and Processor B. 
+
+modelname = 'sedemo_fifo_functional';
+open_system(modelname);
+sim(modelname);
+sedemo_helper([modelname '/Instrumentation/Buffer Size'],'CloseFig');
+sedemo_helper([modelname '/Instrumentation/Value of ''A'' - ''B'''],'CloseFig');
+
+%%
+% The processors' processing is limited to counting and data transfer
+% to simplify the demo description. 
+% Processor A increments its state, state A, and forwards the new value to
+% Processor B.  Processor B then copies the value to its state, state B. 
+
+sedemo_helper([modelname '/Instrumentation/Value of ''A'''],'OpenFig');
+sedemo_helper([modelname '/Instrumentation/Value of ''B'''],'OpenFig');
+
+%% Detailed Description of Processors
+% The Processor A subsystem contains an Event-Based Entity Generator
+% block clocked by the System A Clock.  As the entity is generated, it 
+% fires the Processor A State subsystem.  The subsystem increments 
+% state A and updates the attribute of the passing entity.  
+% The generated entity then advances to the FIFO Queue block.  
+
+open_system([modelname '/Processor A Subsystem']);
+
+%%
+% The FIFO Queue block is connected to the Processor B subsystem.  Inside this
+% subsystem, the Release Gate block is clocked by the System B Clock.  When 
+% the Release Gate block is opens, the entity, if available, advances from the 
+% FIFO Queue block and fires the Processor B State subsystem,
+% which updates state B with the attribute value from the entity. 
+
+open_system([modelname '/Processor B Subsystem']);
+
+%%
+% The clock generation technique is documented in 
+% <sedemo_async_clocks.html Asynchronous Clock Domains>.
+
+close_system([modelname '/Processor A Subsystem']);
+close_system([modelname '/Processor B Subsystem']);
+
+%% Behavior of the FIFO Buffer Model Capacity Estimation for Drifting Clocks
+% Setting the *Capacity* parameter for the FIFO Queue block 
+% to 4 and the *Allow Blocking* parameter for the Event-Based 
+% Entity Generator in the Processor A subsystem to 'off' disallows 
+% blocking for Processor A and demonstrates whether the 
+% buffer size of 4 is sufficient to allow the processors
+% to communicate without Processor A having to pause to 
+% permit Processor B to catch up.  A buffer capacity of 4 results in 
+% a run-time error because the FIFO Queue block is too small.  This error
+% causes the simulation to terminate early which results in 
+% the incomplete plots.
+
+set_param([modelname '/Processor A Subsystem/Event-Based Entity Generator'], ...
+					 'AllowBlocking', 'off');
+sedemo_helper([modelname '/Instrumentation/Value of ''A'''],'CloseFig');
+sedemo_helper([modelname '/Instrumentation/Value of ''B'''],'CloseFig');
+set_param([modelname '/FIFO Queue'], 'Capacity', '4');
+try
+	sim(modelname);
+catch E
+	E.message
+end
+
+%%
+% However, setting the *Allow Blocking* parameter for the Event-Based Entity Generator
+% in the Processor A subsystem to 'on' permits blocking for the entity generator. 
+% This allows processor A to respond to blocking by delaying the generation
+% of entities until space is available in the FIFO Queue block.  Running
+% the models shows how this setting enables the simulation to continue 
+% with delayed delivery of values to Processor B.  
+
+set_param([modelname '/Processor A Subsystem/Event-Based Entity Generator'], ...
+					 'AllowBlocking', 'on');
+sim(modelname);
+
+%%
+% With these settings, Processor A increments its state only if an entity 
+% can advance to the FIFO Queue block. The delay from Processor A to 
+% Processor B varies with the difference between the instantaneous
+% frequency of the clocks used for each processor.   This delay is 
+% apparent in the plot of 'A' - 'B'.
+%
+% Setting the capacity of the FIFO Queue block back to 8 and disallowing
+% blocking for the Entity Generator for Processor A by returning the 
+% *Allow Blocking* parameter for the Event-Based Entity Generator in the 
+% Processor A Subsystem to 'off' allows the
+% simulation to run to completion.  The maximum value in 
+% the Number in Buffer plot, 5, is the minimum buffer size required
+% to support communications between the processors. 
+
+set_param([modelname '/Processor A Subsystem/Event-Based Entity Generator'], ...
+					 'AllowBlocking', 'off');
+set_param([modelname '/FIFO Queue'], 'Capacity', '8');
+sim(modelname);
+
+
+%% Behavior of the FIFO Buffer Model for Different Clock Speeds
+% Changing the settings so the clock for Processor A runs faster than
+% the clock for Processor B and so there is no variation in clock rate
+% demonstrates that the FIFO Queue's blocking via the entity paths is
+% regulating the rate at which Processor A sends updates to Processor B.
+% The clock speed for Processor A is set to 100 by changing the 
+% Bias parameter for the Interval for Clock A block to 0.01 while the 
+% drift in the clock rate is eliminated by setting the Amplitude
+% parameter to 0.  The clock speed and drifting of Processor B is
+% adjusted similarly. 
+
+set_param([modelname '/Processor A Subsystem/Event-Based Entity Generator'], ...
+					 'AllowBlocking', 'on');
+set_param([modelname '/Interval For Clock A'], 'Bias', '0.01');
+set_param([modelname '/Interval For Clock A'], 'Amplitude', '0');
+set_param([modelname '/Interval For Clock B'], 'Bias', '0.015');
+set_param([modelname '/Interval For Clock B'], 'Amplitude', '0');
+sim(modelname);
+
+%%
+% The plots show that the number of entities in the FIFO Queue block
+% rises quickly to the capacity of the buffer, 8, and then remains at 
+% that level until the end of the simulation.  This indicates that 
+% Processor A has filled the FIFO Queue block.  When the FIFO Queue block
+% reaches capacity, Processor A cannot send a new entity to the
+% FIFO Queue block until Processor B accepts an entity from the FIFO Queue 
+% block.  
+%
+% Changing the settings so the clock for Processor A is runs slower than
+% the clock for Processor B demonstrates the FIFO Queue block's ability to 
+% fulfill requests from Processor B by either requesting an entity from 
+% the FIFO Queue block and, if necessary, waiting until an entity is  
+% available from Processor A. 
+
+set_param([modelname '/Interval For Clock A'], 'Bias', '0.01');
+set_param([modelname '/Interval For Clock B'], 'Bias', '0.007');
+sim(modelname);
+
+%%
+% The plots show that the number of entities in the FIFO Queue block
+% alternates between 1 and 0 showing that each entity waits in the
+% FIFO Queue block for a short period before advancing to Processor B. 
+
+%% Related Demos
+% * <matlab:simeventsdemohelp('sedemo_fifo_architectural'); FIFO Buffer: Architectural Model>
+% * <matlab:simeventsdemohelp('sedemo_async_clocks'); Asynchronous Clock Domains>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+
+
+
+##### SOURCE END #####
+--></body></html>

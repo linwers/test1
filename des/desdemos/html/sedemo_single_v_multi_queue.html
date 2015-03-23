@@ -1,0 +1,50 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Single Queue Versus Multiple Queues</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_single_v_multi_queue"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_single_v_multi_queue.mdl</div><div class="right"><a href="matlab:sedemo_single_v_multi_queue">Open this model</a></div></div><div class="content"><h1>Single Queue Versus Multiple Queues</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure</a></li><li><a href="#3">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model compares a single-queue, multiple-server system with a multiple-queue, multiple-server system.</p><img vspace="5" hspace="5" src="sedemo_single_v_multi_queue_01.png" alt=""> <h2>Structure<a name="2"></a></h2><p>In this model, both systems share the same average service time and achieve the same throughput. However, the single-queue system exhibits shorter delays than the multiple-queue system.</p><p>The comparison of these two systems is the classic &#8220;queuing for multiple bank tellers&#8221; problem and demonstrates that forming a single line for multiple tellers reduces the average delay, compared to forming one line for each teller.</p><h2>Related Demos<a name="3"></a></h2><div><ul><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1');">Building a Simple Discrete-Event Model</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo');">Example: Waiting Time in LIFO Queue</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5');">Example: M/M/5 Queuing System</a></li><li><a href="matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq');">Example: Serving Preferred Customers First</a></li><li><a href="matlab:showdemo('sedemo_priority_policies');">Prioritized Queuing Policy Comparison</a></li><li><a href="matlab:showdemo('sedemo_preempt_policy');">Preemption Policy Comparison</a></li></ul></div><p class="footer">Copyright 2008-2009 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Single Queue Versus Multiple Queues
+
+% Copyright 2008-2009 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:44 $
+
+%% Overview
+% This model compares a single-queue, multiple-server system with a
+% multiple-queue, multiple-server system.
+
+  modelname = 'sedemo_single_v_multi_queue';
+  open_system(modelname);
+
+%% Structure
+% In this model, both systems share the same average service time and
+% achieve the same throughput. However, the single-queue system exhibits
+% shorter delays than the multiple-queue system.
+%
+% The comparison of these two systems is the classic “queuing for multiple
+% bank tellers” problem and demonstrates that forming a single line for
+% multiple tellers reduces the average delay, compared to forming one line
+% for each teller.
+
+
+%% Related Demos
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_dd1'); Building a Simple Discrete-Event Model>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_lifo_vs_fifo'); Example: Waiting Time in LIFO Queue>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_mm5'); Example: M/M/5 Queuing System>
+% * <matlab:helpview(fullfile(docroot,'toolbox','simevents','helptargets.map'),'doc_priorityq'); Example: Serving Preferred Customers First>
+% * <matlab:showdemo('sedemo_priority_policies'); Prioritized Queuing Policy Comparison>
+% * <matlab:showdemo('sedemo_preempt_policy'); Preemption Policy Comparison>
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

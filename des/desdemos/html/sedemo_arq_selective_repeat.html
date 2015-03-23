@@ -1,0 +1,107 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Selective-Repeat Automatic Repeat Request</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_arq_selective_repeat"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_arq_selective_repeat.mdl</div><div class="right"><a href="matlab:sedemo_arq_selective_repeat">Open this model</a></div></div><div class="content"><h1>Selective-Repeat Automatic Repeat Request</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Structure of the Model</a></li><li><a href="#5">Frame Creation</a></li><li><a href="#6">Results and Displays</a></li><li><a href="#8">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model simulates a selective-repeat automatic repeat request (ARQ) system. Packets are created, transmitted over a channel and affected by errors with a probability determined by the Forward Channel. This model allows you to visualize the system's behavior and analyze its performance under different conditions.</p><h2>Structure of the Model<a name="2"></a></h2><img vspace="5" hspace="5" src="sedemo_arq_selective_repeat_01.png" alt=""> <p>The model simulates the following processes:</p><div><ul><li>Generating frames</li></ul></div><div><ul><li>Transmitting frames through the forward channel</li></ul></div><div><ul><li>Introducing errors to frames</li></ul></div><div><ul><li>Receiving frames and returning messages through the return channel</li></ul></div><p>For each received frame, the receiver sends an acknowledgement (ACK) or nonacknowledgement (NAK) message back to the transmitter based on a cyclic redundancy code (CRC) check. The transmitter retransmits only the frames corresponding to NAK messages.</p><h2>Frame Creation<a name="5"></a></h2><p>This subsystem generates data frames with an exponential intergeneration time. Each frame has a unique sequence number that identifies it. (This demo uses the term &#8220;frame&#8221; in an abstract sense that is unrelated to frame-based signals in Simulink&reg; software.)</p><h2>Results and Displays<a name="6"></a></h2><p>Scopes show the time and sequence number of four types of frames:</p><div><ul><li>   Transmitted frames</li></ul></div><div><ul><li>   Frames accepted by the receiver</li></ul></div><div><ul><li>   Frames rejected by the receiver</li></ul></div><div><ul><li>    Frames in the reconstructed sequence</li></ul></div><p>An additional scope displays the result of the CRC check for each received frame, where a value of 0 indicates an error.</p><h2>Related Demos<a name="8"></a></h2><p><a href="matlab:showdemo('sedemo_arq_gobackn');"> Go-Back-N Automatic Repeat Request</a></p><p class="footer">Copyright 2005-2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Selective-Repeat Automatic Repeat Request
+%Copyright 2005-2008 The MathWorks, Inc.
+
+%% Overview
+% 
+% This model simulates a selective-repeat automatic repeat request (ARQ)
+% system. Packets are created, transmitted over a channel and affected by
+% errors with a probability determined by the Forward Channel. This model
+% allows you to visualize the system's behavior and analyze its performance
+% under different conditions.
+
+%% Structure of the Model
+% 
+model_name = 'sedemo_arq_selective_repeat';
+open_system(model_name);
+%%
+% The model simulates the following processes: 
+%%
+% * Generating frames 
+%
+% * Transmitting frames through the forward channel 
+%
+% * Introducing errors to frames
+%
+% * Receiving frames and returning messages through the return channel
+%
+% For each received frame, the receiver sends an
+% acknowledgement (ACK) or nonacknowledgement (NAK) message back to the
+% transmitter based on a cyclic redundancy code (CRC) check. The transmitter retransmits only the frames corresponding to
+% NAK messages.
+
+%%% Frame Creation
+%
+% This subsystem generates data frames with an exponential intergeneration
+% time. Each frame has a unique sequence number that identifies it. (This
+% demo uses the term “frame” in an abstract sense that is unrelated to
+% frame-based signals in Simulink(R) software.)
+
+%%% Transmitter
+%
+% The transmitter transmits frames and also retransmits corrupted frames
+% based on ACK and NAK messages from the receiver. An entity whose ack
+% attribute is 1 corresponds to an ACK message, while 0 corresponds to a
+% NAK message. Logic inside a discrete event subsystem controls the
+% retransmission of frames. Flow control is handled through the
+% retransmission queue, which becomes full when the number of
+% unacknowledged frames equals the model's *Sliding window size* parameter.
+
+%%% Forward Channel and Reverse Channel
+%
+% The forward and reverse channels represent the propagation delay, assumed
+% to be longer than the delay associated with transmission. That is, the
+% transmitter finishes sending the complete frame before the receiver
+% begins receiving it. Packets are potentially corrupted, but not dropped,
+% during transmission. The reverse channel is assumed to be error-free.
+
+%%% Addition of Errors
+%
+% This subsystem corrupts packets with a given probability. The model
+% assumes that the receiver can detect an error via a CRC check but cannot
+% correct the error.
+
+%%% Receiver
+%
+% The receiver sends an ACK or NAK message back to the transmitter for each
+% frame and either accepts or rejects the frame according to the CRC check.
+% After rejecting a frame, the receiver buffers subsequent frames until it
+% correctly receives the rejected frame. At that point, the receiver
+% reconstructs the frame sequence using the sequence numbers. The logic for
+% the reconstruction is in the Embedded MATLAB(TM) Function block in the
+% Discrete Event Subsystem block in the Sort Frames subsystem.
+
+%% Results and Displays
+%
+% Scopes show the time and sequence number of four types of frames:
+%
+% *    Transmitted frames
+%
+% *    Frames accepted by the receiver
+%
+% *    Frames rejected by the receiver
+%
+% *     Frames in the reconstructed sequence
+%%
+% An additional scope displays the result of the CRC check for each received frame,
+% where a value of 0 indicates an error.
+
+%% Related Demos
+% <matlab:showdemo('sedemo_arq_gobackn');  Go-Back-N Automatic Repeat Request>
+% 
+%%
+clear(model_name);
+bdclose all;
+displayEndOfDemoMessage(mfilename)
+##### SOURCE END #####
+--></body></html>

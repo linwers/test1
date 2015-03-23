@@ -1,0 +1,791 @@
+Library {
+  Name			  "simeventsuserdefined1"
+  Version		  7.0
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-1252"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  off
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Tue Jan 09 11:46:17 2007"
+  Creator		  "aapte"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "Liw"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Thu Sep 13 12:51:26 2007"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:108>"
+  ConfigurationManager	  "None"
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Actuator
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      From
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Goto
+      IconDisplay	      "Tag"
+    }
+    Block {
+      BlockType		      Ground
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      PMComponent
+      SubClassName	      "unknown"
+    }
+    Block {
+      BlockType		      Sensor
+      SubClassName	      "unknown"
+      PortType		      "blob"
+    }
+    Block {
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      TriggerPort
+      TriggerType	      "rising"
+      StatesWhenEnabling      "inherit"
+      ShowOutputPort	      off
+      OutputDataType	      "auto"
+      SampleTimeType	      "triggered"
+      SampleTime	      "1"
+      ZeroCross		      on
+    }
+    Block {
+      BlockType		      PMIOPort
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Arial"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "simeventsuserdefined1"
+    Location		    [292, 274, 660, 424]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "Attribute Function"
+      Ports		      [0, 0, 0, 0, 0, 1, 1]
+      Position		      [120, 68, 205, 122]
+      CopyFcn		      "des_attributefunction_support(gcb,'CopyFcn');"
+      LoadFcn		      "des_attributefunction_support(gcb,'LoadFcn');"
+      StartFcn		      "des_attributefunction_support(gcb,'StartFcn');"
+      OpenFcn		      "des_attributefunction_support(gcb,'OpenFcn');"
+      ErrorFcn		      "des_error_redirect"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      on
+      MaskType		      "Attribute Function"
+      MaskHelp		      "helpview(simeventsbhelp('attributefunction'))"
+      MaskPromptString	      "Prefix name"
+      MaskStyleString	      "edit"
+      MaskTunableValueString  "off"
+      MaskEnableString	      "off"
+      MaskVisibilityString    "off"
+      MaskToolTipString	      "on"
+      MaskVariables	      "OutputNamePrefix=&1;"
+      MaskDisplay	      "image(des_iconLoad('attribFunction.jpg'),'center');"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "out_"
+      System {
+	Name			"Attribute Function"
+	Location		[193, 207, 842, 524]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "Embedded MATLAB Function"
+	  Ports			  [1, 2, 0, 1]
+	  Position		  [280, 60, 350, 120]
+	  PermitHierarchicalResolution "ExplicitOnly"
+	  MinAlgLoopOccurrences	  off
+	  PropExecContextOutsideSubsystem on
+	  RTWSystemCode		  "Auto"
+	  FunctionWithSeparateData off
+	  Opaque		  off
+	  RequestExecContextInheritance	off
+	  MaskHideContents	  off
+	  MaskType		  "Stateflow"
+	  MaskDescription	  "Embedded MATLAB block"
+	  MaskDisplay		  "disp('fcn');"
+	  MaskSelfModifiable	  on
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  off
+	  MaskIconRotate	  "none"
+	  MaskIconUnits		  "autoscale"
+	  System {
+	    Name		    "Embedded MATLAB Function"
+	    Location		    [257, 457, 812, 717]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "usletter"
+	    PaperUnits		    "inches"
+	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    Block {
+	      BlockType		      Inport
+	      Name		      "Attribute1"
+	      Position		      [20, 101, 40, 119]
+	      IconDisplay	      "Port number"
+	      OutDataType	      "sfix(16)"
+	      OutScaling	      "2^0"
+	    }
+	    Block {
+	      BlockType		      TriggerPort
+	      Name		      "trigger"
+	      Ports		      [0, 1]
+	      Position		      [20, 136, 40, 154]
+	      TriggerType	      "function-call"
+	      ShowOutputPort	      on
+	    }
+	    Block {
+	      BlockType		      Demux
+	      Name		      " Demux "
+	      Ports		      [1, 1]
+	      Position		      [270, 180, 320, 220]
+	      Outputs		      "1"
+	    }
+	    Block {
+	      BlockType		      "S-Function"
+	      Name		      " SFunction "
+	      Tag		      "Stateflow S-Function simeventsuserdefined1 1"
+	      Ports		      [2, 3]
+	      Position		      [180, 100, 230, 180]
+	      FunctionName	      "sf_sfun"
+	      PortCounts	      "[2 3]"
+	      EnableBusSupport	      off
+	      Port {
+		PortNumber		2
+		Name			"out_Attribute1"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	      Port {
+		PortNumber		3
+		Name			"out_Attribute2"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	    }
+	    Block {
+	      BlockType		      Terminator
+	      Name		      " Terminator "
+	      Position		      [460, 191, 480, 209]
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "out_Attribute1"
+	      Position		      [460, 101, 480, 119]
+	      IconDisplay	      "Port number"
+	      OutDataType	      "sfix(16)"
+	      OutScaling	      "2^0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "out_Attribute2"
+	      Position		      [460, 136, 480, 154]
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	      OutDataType	      "sfix(16)"
+	      OutScaling	      "2^0"
+	    }
+	    Line {
+	      SrcBlock		      " SFunction "
+	      SrcPort		      1
+	      Points		      [0, 85]
+	      DstBlock		      " Demux "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      " Demux "
+	      SrcPort		      1
+	      DstBlock		      " Terminator "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Attribute1"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "trigger"
+	      SrcPort		      1
+	      Points		      [120, 0]
+	      DstBlock		      " SFunction "
+	      DstPort		      2
+	    }
+	    Line {
+	      Name		      "out_Attribute1"
+	      Labels		      [0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      2
+	      DstBlock		      "out_Attribute1"
+	      DstPort		      1
+	    }
+	    Line {
+	      Name		      "out_Attribute2"
+	      Labels		      [0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      3
+	      DstBlock		      "out_Attribute2"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "__DEML__EDE2FCE__"
+	  Ports			  [0, 1, 0, 0, 0, 1, 1]
+	  Position		  [255, 172, 340, 228]
+	  Priority		  "1"
+	  UserDataPersistent	  on
+	  UserData		  "DataTag0"
+	  SourceBlock		  "simeventstranslate1/Entity Departure Event to\nFunction-Call Event"
+	  SourceType		  "Entity Departure Event to Function-Call Event"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  TimingFunctionCallF1	  "Before entity departure"
+	  EnableE1Port		  off
+	  EnableF2Port		  off
+	  TimingFunctionCallF2	  "Before entity departure"
+	  EnableE2Port		  off
+	  StatNumberDeparted	  "Off"
+	  StatNumberF1Calls	  "Off"
+	  StatNumberF2Calls	  "Off"
+	  IsInsideAFB		  on
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "__DEML__GA__"
+	  Ports			  [0, 1, 0, 0, 0, 1, 1]
+	  Position		  [80, 162, 165, 238]
+	  Priority		  "1"
+	  UserDataPersistent	  on
+	  UserData		  "DataTag1"
+	  DialogController	  "des_ddg_create"
+	  DialogControllerArgs	  "DataTag2"
+	  SourceBlock		  "simeventsattributes2/Get Attribute"
+	  SourceType		  "Get Attribute"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  AttributeName		  "Attribute1"
+	  AttributeMissing	  "Error"
+	  AttributeDefaultValue	  "1"
+	  AttributeSendTiming	  "Before entity departure"
+	  AttributeTreatAsVector  "1"
+	  StatNumberDeparted	  "Off"
+	  EvaluatedDefaultAttributeValue "0"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "__DEML__SA__"
+	  Ports			  [2, 0, 0, 0, 0, 1, 1]
+	  Position		  [440, 145, 525, 205]
+	  Priority		  "1"
+	  UserDataPersistent	  on
+	  UserData		  "DataTag3"
+	  DialogController	  "des_ddg_create"
+	  DialogControllerArgs	  "DataTag4"
+	  SourceBlock		  "simeventsattributes2/Set Attribute"
+	  SourceType		  "Set Attribute"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData off
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  AttributeFrom		  "Signal port|Signal port"
+	  AttributeName		  "Attribute1|Attribute2"
+	  AttributeTreatAsVector  "1|1"
+	  AttributeValue	  "1|1"
+	  AttributeCreate	  on
+	  StatNumberDeparted	  "Off"
+	  EvaluatedAttributeValue "0"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "IN"
+	  Position		  [15, 178, 45, 192]
+	  Port			  "1"
+	  Side			  "Left"
+	}
+	Block {
+	  BlockType		  PMIOPort
+	  Name			  "OUT"
+	  Position		  [565, 168, 595, 182]
+	  Orientation		  "left"
+	  Port			  "2"
+	  Side			  "Right"
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__DEML__EDE2FCE__"
+	  SrcPort		  RConn1
+	  Points		  [40, 0; 0, -20]
+	  DstBlock		  "__DEML__SA__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__DEML__GA__"
+	  SrcPort		  RConn1
+	  Points		  [0, -20]
+	  DstBlock		  "__DEML__EDE2FCE__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "IN"
+	  SrcPort		  RConn1
+	  Points		  [5, 0]
+	  DstBlock		  "__DEML__GA__"
+	  DstPort		  LConn1
+	}
+	Line {
+	  SrcBlock		  "__DEML__EDE2FCE__"
+	  SrcPort		  1
+	  Points		  [35, 0; 0, -140]
+	  DstBlock		  "Embedded MATLAB Function"
+	  DstPort		  trigger
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "__DEML__SA__"
+	  SrcPort		  RConn1
+	  DstBlock		  "OUT"
+	  DstPort		  RConn1
+	}
+	Line {
+	  SrcBlock		  "__DEML__GA__"
+	  SrcPort		  1
+	  DstBlock		  "Embedded MATLAB Function"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Embedded MATLAB Function"
+	  SrcPort		  1
+	  DstBlock		  "__DEML__SA__"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Embedded MATLAB Function"
+	  SrcPort		  2
+	  DstBlock		  "__DEML__SA__"
+	  DstPort		  2
+	}
+      }
+    }
+    Annotation {
+      Name		      "SimEvents User-Defined Functions Library"
+      Position		      [185, 27]
+      FontSize		      16
+      FontWeight	      "bold"
+    }
+  }
+}
+MatData {
+  NumRecords		  5
+  DataRecord {
+    Tag			    DataTag4
+    Data		    "  %)30     .    0     8    (    !          %    \"     $    ,     0         0    #    %-E=$%T=')I8G5T90     "
+  }
+  DataRecord {
+    Tag			    DataTag3
+    Data		    "  %)30     .    ( T   8    (     @         %    \"     $    !     0         %  0 $@    $   !L    8VAI;&1.86UE            :6Y?:6YI=               :6Y?8FQO8VMU<&1A=&4     ;6%S:W9A;'5E<P          ;6%S:VYA;65S            :6Y?9&1G8FQO8VMU<&1A=&4       X   !(    !@    @    $          4    (     0   !$    !         !     1    7U]3970@071T<FEB=71E7U\\         #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               X    X    !@    @    &          4    (     0    $    !          D    (               .    2 4   8    (     0         %    \"    !4    !     0         .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4Q        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4R        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4S        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   $     &    \"     0         !0    @    !    \"@    $         $     H   !!='1R:6)U=&4T        #@   #@    &    \"     0         !0    @    !    !@    $         $     8   !$;W5B;&4   X    P    !@    @    $          4    (     0    $    !         !   0 P    #@   #     &    \"     0         !0    @    !     @    $         $  \" &]N   .    .     8    (    !          %    \"     $    (     0         0    \"    $1I<V%B;&5D#@   ! &   &    \"     $         !0    @    5     0    $         #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,0      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,0      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93$ #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93$     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4Q    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,@      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,@      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93( #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93(     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4R    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M,P      #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE,P      #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP93, #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU93,     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4S    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6)&<F]M-       #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !A='1R:6).86UE-       #@   $     &    \"     0         !0    @    !    #P    $         $     \\   !A='1R:6)$871A5'EP930 #@   $     &    \"     0         !0    @    !    #     $         $     P   !A='1R:6)686QU930     #@   $     &    \"     0         !0    @    !    #0    $         $     T   !A='1R:6)#<F5A=&4T    #@   $     &    \"     0         !0    @    !    \"P    $         $     L   !C;W5N=%-E<G9E9       #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               "
+  }
+  DataRecord {
+    Tag			    DataTag2
+    Data		    "  %)30     .    0     8    (    !          %    \"     $    ,     0         0    #    $=E=$%T=')I8G5T90     "
+  }
+  DataRecord {
+    Tag			    DataTag1
+    Data		    "  %)30     .    . $   8    (     @         %    \"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI=           :6Y?8FQO8VMU<&1A=&4     #@   $@    &    \"     0         !0    @    !    $0    $         $    !$   !?7T=E=\"!!='1R:6)U=&5?7P         .    .     8    (    !@         %    \"     $    !     0         )    \"               #@   #@    &    \"     8         !0    @    !     0    $         \"0    @               "
+  }
+  DataRecord {
+    Tag			    DataTag0
+    Data		    "  %)30     .    6 $   8    (     @         %    \"     $    !     0         %  0 #P    $    M    8VAI;&1.86UE        :6Y?:6YI=           :6Y?8FQO8VMU<&1A=&4     #@   &@    &    \"     0         !0    @    !    ,0    $         $    #$   !?7T5N=&ET>2!$97!A<G1U<F4@179E;G0@=&\\*1G5N8W1I;VXM0V%L;\"!%=F5N=%]?          X    X    !@    @    &          4    (     0    $    !          D    (               .    .     8    (    !@         %    \"     $    !     0         )    \"               "
+  }
+}
+# Finite State Machines
+#
+#    Stateflow Version 7.1 (R2008a) dated Sep 10 2007, 14:45:10
+#
+#
+
+
+Stateflow {
+  machine {
+    id			    1
+    name		    "simeventsuserdefined1"
+    created		    "09-Jan-2007 11:46:19"
+    isLibrary		    1
+    firstTarget		    11
+    sfVersion		    71014000
+  }
+  chart {
+    id			    2
+    name		    "Attribute Function/Embedded MATLAB Function"
+    windowPosition	    [465.75 113.25 200.25 189.75]
+    viewLimits		    [0 156.75 0 153.75]
+    screen		    [1 1 1920 1200 1.333333333333333]
+    treeNode		    [0 3 0 0]
+    firstTransition	    5
+    firstJunction	    4
+    viewObj		    2
+    machine		    1
+    toolbarMode		    LIBRARY_TOOLBAR
+    decomposition	    CLUSTER_CHART
+    type		    EML_CHART
+    firstEvent		    6
+    firstData		    7
+    chartFileNumber	    1
+    disableImplicitCasting  1
+    eml {
+      name		      "fcn"
+      noDebugging	      1
+    }
+  }
+  state {
+    id			    3
+    labelString		    "eML_blk_kernel()"
+    position		    [18 64.5 118 66]
+    fontSize		    12
+    chart		    2
+    treeNode		    [2 0 0 0]
+    superState		    SUBCHART
+    subviewer		    2
+    type		    FUNC_STATE
+    decomposition	    CLUSTER_STATE
+    eml {
+      isEML		      1
+      isDESVariant	      1
+      script		      "function [out_Attribute1, out_Attribute2] = fcn(Attribute1)\n%FCN    Access and modify attributes with Embedded MATLAB Function \n% \n% Input arguments must match the attribute names.\n% Output arguments must be out_<AttributeName>,\n% e.g., out_ServiceTime where ServiceTime is the attribute name.\n% \n% The output attribute will be created if it is not present.\n%\n\nout_Attribute1 = Attribute1 + 1;\nout_Attribute2 = Attribute1*2;\n "
+      editorLayout	      "100 M4x1[145 145 648 476]"
+    }
+  }
+  junction {
+    id			    4
+    position		    [23.5747 49.5747 7]
+    chart		    2
+    linkNode		    [2 0 0]
+    subviewer		    2
+    type		    CONNECTIVE_JUNCTION
+  }
+  transition {
+    id			    5
+    labelString		    "{eML_blk_kernel();}"
+    labelPosition	    [32.125 19.875 102.544 14.964]
+    fontSize		    12
+    src {
+      intersection	      [0 0 1 0 23.5747 14.625 0 0]
+    }
+    dst {
+      id		      4
+      intersection	      [7 0 -1 -1 23.5747 42.5747 0 0]
+    }
+    midPoint		    [23.5747 24.9468]
+    chart		    2
+    linkNode		    [2 0 0]
+    dataLimits		    [23.575 23.575 14.625 34.575]
+    subviewer		    2
+    drawStyle		    SMART
+    executionOrder	    1
+  }
+  event {
+    id			    6
+    name		    "trigger"
+    linkNode		    [2 0 0]
+    scope		    INPUT_EVENT
+    trigger		    FUNCTION_CALL_EVENT
+    machine		    1
+  }
+  data {
+    id			    7
+    name		    "Attribute1"
+    linkNode		    [2 0 8]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "inherited"
+    complexity		    SF_COMPLEX_INHERITED
+  }
+  data {
+    id			    8
+    name		    "out_Attribute1"
+    linkNode		    [2 7 9]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "inherited"
+    fixptType {
+      slope		      1
+      baseType		      SF_INT16_TYPE
+    }
+    complexity		    SF_COMPLEX_INHERITED
+  }
+  data {
+    id			    9
+    name		    "out_Attribute2"
+    linkNode		    [2 8 0]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "inherited"
+    complexity		    SF_COMPLEX_INHERITED
+  }
+  instance {
+    id			    10
+    name		    "Attribute Function/Embedded MATLAB Function"
+    machine		    1
+    chart		    2
+  }
+  target {
+    id			    11
+    name		    "sfun"
+    description		    "Default Simulink S-Function Target."
+    machine		    1
+    linkNode		    [1 0 0]
+  }
+}

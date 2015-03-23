@@ -1,0 +1,342 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Kanban Production System</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_kanban_system"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_kanban_system.mdl</div><div class="right"><a href="matlab:sedemo_kanban_system">Open this model</a></div></div><div class="content"><h1>Kanban Production System</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Structure of the Model</a></li><li><a href="#5">Kanban Circulation</a></li><li><a href="#9">Dropped Orders</a></li><li><a href="#10">Results and Displays</a></li><li><a href="#12">Experimenting with the Model</a></li><li><a href="#13">Using the Model for Performance Analysis</a></li><li><a href="#36">Related Demos</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model simulates a production system that uses kanbans to manage production activities. Analysis of simulation results highlights problems of the system and suggests ways to improve its performance.</p><h2>Structure of the Model<a name="3"></a></h2><p>The modeled production system includes two part suppliers and an assembly line. The part suppliers use raw materials to manufacture parts. Finished parts are transported to the assembly line to fabricate final products. Completed products are shipped to distributors to fill production orders.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_01.png" alt=""> <p>At the top level of the model:</p><div><ul><li>The Generate Production Orders subsystem simulates the generation of production orders.</li><li>The Assembly Line subsystem fills a production order by assembling two types of parts (referred to as part A and part B) into final products.</li><li>The Part A Supplier subsystem and Part B Supplier subsystem manufacture the parts needed for final assembly.</li><li>The Material A Supplier subsystem and Material B Supplier subsystem replenish the raw materials consumed during parts production.</li></ul></div><h2>Kanban Circulation<a name="5"></a></h2><p>"Kanban" comes from the Japanese word for "signboard". A kanban production system is a pull system that determines its production according to the actual demand of the customers. In a such system, kanbans are used as demand signals that propagate through the production system to trigger and regulate production activities, such as processing and storage.</p><p>This model simulates the circulation of two types of kanbans: withdrawal kanbans and work-in-process kanbans.</p><div><ul><li>Withdrawal kanbans manage inventory. Withdrawal kanbans grant the right to withdraw parts from part suppliers to replenish inventory. Factory workers cannot remove the withdrawal kanban from a part in the existing inventory until the part is consumed. During production, the number of withdrawal kanbans issued for a type of parts is fixed. This limits the inventory size for that type of parts.</li><li>Work-in-process kanbans manage production. Work-in-process kanbans grant the right to manufacture parts in type and quantity as specified. After a part is produced, factory workers cannot remove the work-in-process kanban from the part until the part is withdrawn for final assembly. During production, the number of work-in-process kanbans issued for a type of parts is fixed. This limits the number of parts being processed by a part supplier.</li></ul></div><p>Circulation of withdrawal kanbans for part A is modeled by the following blocks and subsystems:</p><div><ul><li>Entity Combiner block labeled Obtain Withdrawal Kanban in Part A Supplier subsystem</li><li>Entity Splitter block labeled Release Withdrawal Kanban A in Assembly Line subsystem</li><li>Withdrawal Kanban A subsystem</li></ul></div><p>The figures below show the Part A Supplier subsystem and Assembly Line subsystem.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_kanban_system_03.png" alt=""> <p>During simulation, the block labeled Obtain Withdrawal Kanban in the Part A Supplier subsystem must obtain a withdrawal kanban before a part A is transported and stored for final assembly. When a part A in storage is consumed in final assembly, the block labeled Release Withdrawal Kanban A in the Assembly Line subsystem releases the withdrawal kanban. The kanban then returns to the block labeled Obtain Withdrawal Kanban to allow replenishment of part A inventory.</p><p>Circulation of work-in-process kanbans is modeled in the same fashion as withdrawal kanbans. For example, in the Part A Supplier subsystem, the block labeled Obtain Work-in-process Kanban requests a work-in-process kanban upon producing a part A. After the part is completed and withdrawn, the block labeled Release Work-in-process Kanban releases the work-in-process kanban. The kanban then returns to the block labeled Obtain Work-in-process Kanban to allow the production of more part A.</p><p>The model uses a preloaded queue technique to model the group of kanbans. To learn about this technique, see <a href="matlab:showdemo('sedemo_preload_queue');">Preload Queue with Entities</a>. To learn about the kanban request and release technique in this model, see <a href="matlab:simeventsdemohelp('sedemo_resource_allocation');">Resource Allocation from Multiple Pools</a>.</p><h2>Dropped Orders<a name="9"></a></h2><p>A kanban production system reduces cost and waste by limiting inventories of work-in-process stock and finished products. However, when product demand fluctuates, lack of inventory may cause dropped orders.</p><p>This model simulates dropped orders caused by seasonal demand fluctuations. In the Generate Production Orders subsystem, the Output Switch block labeled Place Orders uses <tt>First port that is not blocked</tt> as its switching criterion. During simulation, the block tries to send an order to the Assembly Line subsystem. If the inventory of finished product is empty, the block labeled Fill Production Order in the Assembly Line subsystem does not accept this order. The block labeled Place Orders then drops this order by forwarding it to the Entity Sink block labeled Dropped Orders in the Generate Production Orders subsystem.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_04.png" alt=""> <h2>Results and Displays<a name="10"></a></h2><p>During simulation, the Data Display subsystem displays these scopes to demonstrate the performance of the production system:</p><div><ul><li>Part A Withdrawal Kanban Backlog</li><li>Part B Withdrawal Kanban Backlog</li><li>Number of Part A in Process</li><li>Number of Part B in Process</li><li>Number of Products in Final Assembly</li><li>Number of Part A in Storage</li><li>Number of Part B in Storage</li><li>Product Demand</li><li>Number of Dropped Orders</li><li>Number of Completed Orders</li></ul></div><p>A Display block at the root level of the model provides a numeric view of the number of orders completed as well as the number of orders dropped.</p><h2>Experimenting with the Model<a name="12"></a></h2><p>(<i>For use with live model only</i>)</p><div><ul><li>Open the configuration dialog for product demand by double-clicking a configuration block in the colored region labeled Distributor. Change product demand by changing the <b>Daily product demand in each month of the year</b> parameter in this dialog.</li><li>Open the configuration dialog for the kanban system by double-clicking a configuration block in the colored region labeled Production System. Change the number of withdrawal kanbans and work-in-process kanbans issued for the production system by changing the parameters in this dialog.</li><li>Open the configuration dialog for production capability by double-clicking a configuration block in the colored region labeled Production System. Change the time it takes to manufacture, transport and assemble parts or final products by changing the parameters in this dialog.</li><li>Open the configuration dialog for the material suppliers by double-clicking a configuration block in the colored region labeled Material Supplier. Change the time it takes to produce and deliver raw materials by changing the parameters in this dialog.</li></ul></div><h2>Using the Model for Performance Analysis<a name="13"></a></h2><p>The model with the original configuration represents a kanban production system with significant lost sales in months when demand is at a peak. Analysis of simulation results suggests solutions to address this issue.</p><p>The following steps demonstrate how the solutions are developed.</p><p><b>Step 1:</b> Run the simulation using the original configuration. As shown in the figures below, the scope labeled Number of Dropped Orders indicates that the production system suffers significant lost sales between day 90 and day 150 of the year. Comparing this result with the scope labeled Product Demand indicates that lost sales happen when product demand is at a peak.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_05.png" alt=""> <img vspace="5" hspace="5" src="sedemo_kanban_system_06.png" alt=""> <p><b>Step 2:</b> Comparing the demand in peak season with product supply indicates the assembly line does not provide sufficient production capability. According to the scope labeled Product Demand (see the figure above), 10 products are needed daily between day 90 and day 150. In contrast, as illustrated by the scope labeled Number of Products in Final Assembly (see the figure below), in the same period of time, only about 5 are in production every day ? much less than the quantity in demand.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_07.png" alt=""> <p><b>Step 3:</b> Further observation of simulation results indicates that the inventory of part B is insufficient in the peak season. As illustrated by the scope labeled Number of Part B in Storage (see the figure below), inventory is empty in the peak season. This explains the inadequacy in the production capability during final assembly ? the assembly line is not provided with sufficient part B.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_08.png" alt=""> <p><b>Step 4:</b> Simulation results related to part B indicate that the withdrawal kanban backlog for part B has a high volume in the peak season. This is displayed by the scope labeled Part B Withdrawal Kanban Backlog shown in the figure below.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_09.png" alt=""> <p>Backlog of withdrawal kanbans is developed when the assembly line requests a replenishment but the part supplier fails to respond to this request in time. This leads to an analysis of the production capability of part B in the peak season of the year.</p><p><b>Step 5:</b> The visual observations in the earlier steps suggest this quantitative analysis:</p><div><ul><li>According to the scope labeled Product Demand, 10 final products are required daily in the peak season.</li><li>Since 1 final product is assembled from 1 Part B and 1 Part A, to fully satisfy demand, 10 Part B are needed for final assembly per day. That is:</li></ul></div><pre>       Part B demand = 10 /day</pre><div><ul><li>According to production capability configurations, it takes the part supplier 1.5 days to produce 1 part B. According to kanban system configurations, 12 work-in-process kanbans are issued for part B. This limits the maximal number of parts produced in parallel to 12. Thus, the maximal production rate of part B is:</li></ul></div><pre>       Maximal part B production rate = 12/1.5 = 8 /day</pre><p><b>Step 6:</b> Comparing demand and maximal production rate of part B indicates the inadequacy in production capacity. Two possible solutions are:</p><div><ol><li>Issue more work-in-process kanbans for part B to allow more parts to be produced in parallel. In order to increase the maximal production rate of part B to above 10, at least 3 more work-in-process kanbans must be issued.</li><li>Reduce production cycle of part B to increase production rate. Production cycle needs to be shorten by at least 0.3 day to meet required production rate.</li></ol></div><p><b>Step 7:</b> To verify solution 1, reconfigure the kanban system by increasing the <b>Number of work-in-process kanbans for part B</b> parameter to <tt>15</tt>. Simulation results indicate that with such update, 15 part B are produced in parallel (see the scope labeled Number of Part B in Process below). As indicated by the scope labeled Number of Dropped Orders, the increase in part B supply eliminates the occurrence of dropped orders.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_10.png" alt=""> <img vspace="5" hspace="5" src="sedemo_kanban_system_11.png" alt=""> <p>To verify solution 2, starting from the original configuration, reconfigure production capability by reducing the <b>Time it takes to produce a part B</b> parameter to <tt>1.2</tt> day. With the increase in production capability, 10 final products are in assembly daily (see the scope labeled Number of Products in Final Assembly below). As illustrated in the scope labeled Number of Dropped Orders below, such production capability can fully satisfy product demand, resulting in no lost of sales over the year.</p><img vspace="5" hspace="5" src="sedemo_kanban_system_12.png" alt=""> <img vspace="5" hspace="5" src="sedemo_kanban_system_13.png" alt=""> <p>The above steps explore the root cause of lost sales due to seasonal fluctuation in product demand. Quantitative analysis suggests two solutions to respond to such demand fluctuations. Simulation verifies that both solutions can indeed help the production system avoid seasonal lost sales.</p><h2>Related Demos<a name="36"></a></h2><div><ul><li><a href="matlab:simeventsdemohelp('sedemo_resource_allocation');">Resource Allocation from Multiple Pools</a></li></ul></div><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Kanban Production System
+% Copyright 2008 The MathWorks, Inc.
+
+%% Overview
+%
+% This model simulates a production system that uses kanbans to manage
+% production activities. Analysis of simulation results highlights problems
+% of the system and suggests ways to improve its performance.
+%
+%%
+model = 'sedemo_kanban_system';
+
+subsystem1 = [model '/Assembly Line'];
+subsystem2 = [model '/Part A Supplier'];
+subsystem3 = [model '/Data Analysis'];
+subsystem4 = [model '/Generate Production Orders'];
+
+configkanban = [model '/ConfigKanban'];
+configproduction = [model '/ConfigProduction'];
+
+scope_len_wdr_A = [subsystem3 '/Part A Withdrawal Kanban Backlog'];
+scope_len_wdr_B = [subsystem3 '/Part B Withdrawal Kanban Backlog'];
+scope_wip_A = [subsystem3 '/Number of Part A in Process'];
+scope_wip_B = [subsystem3 '/Number of Part B in Process'];
+scope_wip_P = [subsystem3 '/Number of Products in Final Assembly'];
+scope_inv_A = [subsystem3 '/Number of Part A in Storage'];
+scope_inv_B = [subsystem3 '/Number of Part B in Storage'];
+scope_demand = [subsystem3 '/Product Demand' sprintf('\n') '(number of orders per day)'];
+scope_ord_drop = [subsystem3 '/Number of Dropped Orders' sprintf('\n') '(year to date)'];
+scope_ord_cmpl = [subsystem3 '/Number of Completed Orders' sprintf('\n') '(year to date)'];
+
+%% Structure of the Model
+% The modeled production system includes two part suppliers and an assembly
+% line. The part suppliers use raw materials to manufacture parts. Finished
+% parts are transported to the assembly line to fabricate final products.
+% Completed products are shipped to distributors to fill production orders.
+open_system(model);
+
+set_param(scope_len_wdr_A,'OpenScopeAtSimStart','off');
+set_param(scope_len_wdr_B,'OpenScopeAtSimStart','off');
+set_param(scope_wip_A,'OpenScopeAtSimStart','off');
+set_param(scope_wip_B,'OpenScopeAtSimStart','off');
+set_param(scope_wip_P,'OpenScopeAtSimStart','off');
+set_param(scope_inv_A,'OpenScopeAtSimStart','off');
+set_param(scope_inv_B,'OpenScopeAtSimStart','off');
+set_param(scope_demand,'OpenScopeAtSimStart','off');
+set_param(scope_ord_drop,'OpenScopeAtSimStart','off');
+set_param(scope_ord_cmpl,'OpenScopeAtSimStart','off');
+%%
+% At the top level of the model: 
+% 
+% * The Generate Production Orders subsystem simulates the generation of
+% production orders.
+% * The Assembly Line subsystem fills a production order by assembling two
+% types of parts (referred to as part A and part B) into final products.
+% * The Part A Supplier subsystem and Part B Supplier subsystem manufacture
+% the parts needed for final assembly.
+% * The Material A Supplier subsystem and Material B Supplier subsystem
+% replenish the raw materials consumed during parts production.
+%
+%% Kanban Circulation
+% "Kanban" comes from the Japanese word for "signboard". A kanban
+% production system is a pull system that determines its production
+% according to the actual demand of the customers. In a such system,
+% kanbans are used as demand signals that propagate through the production
+% system to trigger and regulate production activities, such as processing
+% and storage.
+%
+% This model simulates the circulation of two types of kanbans: withdrawal
+% kanbans and work-in-process kanbans.
+%
+% * Withdrawal kanbans manage inventory. Withdrawal kanbans grant the right
+% to withdraw parts from part suppliers to replenish inventory. Factory
+% workers cannot remove the withdrawal kanban from a part in the existing
+% inventory until the part is consumed. During production, the number of
+% withdrawal kanbans issued for a type of parts is fixed. This limits the
+% inventory size for that type of parts. 
+% * Work-in-process kanbans manage production. Work-in-process kanbans
+% grant the right to manufacture parts in type and quantity as specified.
+% After a part is produced, factory workers cannot remove the
+% work-in-process kanban from the part until the part is withdrawn for
+% final assembly. During production, the number of work-in-process kanbans
+% issued for a type of parts is fixed. This limits the number of parts
+% being processed by a part supplier.
+% 
+% Circulation of withdrawal kanbans for part A is modeled by the following
+% blocks and subsystems:
+%
+% * Entity Combiner block labeled Obtain Withdrawal Kanban in Part A
+% Supplier subsystem
+% * Entity Splitter block labeled Release Withdrawal Kanban A in Assembly
+% Line subsystem
+% * Withdrawal Kanban A subsystem
+%
+% The figures below show the Part A Supplier subsystem and Assembly Line
+% subsystem.
+%
+open_system(subsystem2);
+%%
+close_system(subsystem2);
+open_system(subsystem1);
+%%
+close_system(subsystem1);
+%%
+% During simulation, the block labeled Obtain Withdrawal Kanban in the Part
+% A Supplier subsystem must obtain a withdrawal kanban before a part A is
+% transported and stored for final assembly. When a part A in storage is
+% consumed in final assembly, the block labeled Release Withdrawal Kanban A
+% in the Assembly Line subsystem releases the withdrawal kanban. The kanban
+% then returns to the block labeled Obtain Withdrawal Kanban to allow
+% replenishment of part A inventory.
+%
+% Circulation of work-in-process kanbans is modeled in the same fashion as
+% withdrawal kanbans. For example, in the Part A Supplier subsystem, the
+% block labeled Obtain Work-in-process Kanban requests a work-in-process
+% kanban upon producing a part A. After the part is completed and
+% withdrawn, the block labeled Release Work-in-process Kanban releases the
+% work-in-process kanban. The kanban then returns to the block labeled
+% Obtain Work-in-process Kanban to allow the production of more part A.
+%
+% The model uses a preloaded queue technique to model the group of kanbans.
+% To learn about this technique, see 
+% <matlab:showdemo('sedemo_preload_queue'); Preload Queue with Entities>.
+% To learn about the kanban request and release technique in this model,
+% see 
+% <matlab:simeventsdemohelp('sedemo_resource_allocation'); Resource Allocation from Multiple Pools>.
+%
+%% Dropped Orders
+%
+% A kanban production system reduces cost and waste by limiting inventories
+% of work-in-process stock and finished products. However, when product
+% demand fluctuates, lack of inventory may cause dropped orders.
+%
+% This model simulates dropped orders caused by seasonal demand
+% fluctuations. In the Generate Production Orders subsystem, the Output
+% Switch block labeled Place Orders uses |First port that is not blocked|
+% as its switching criterion. During simulation, the block tries to send an
+% order to the Assembly Line subsystem. If the inventory of finished
+% product is empty, the block labeled Fill Production Order in the Assembly
+% Line subsystem does not accept this order. The block labeled Place Orders
+% then drops this order by forwarding it to the Entity Sink block labeled
+% Dropped Orders in the Generate Production Orders subsystem.
+open_system(subsystem4);
+%% Results and Displays
+close_system(subsystem4);
+%%
+% During simulation, the Data Display subsystem displays these scopes to
+% demonstrate the performance of the production system:
+%
+% * Part A Withdrawal Kanban Backlog
+% * Part B Withdrawal Kanban Backlog
+% * Number of Part A in Process
+% * Number of Part B in Process
+% * Number of Products in Final Assembly
+% * Number of Part A in Storage
+% * Number of Part B in Storage
+% * Product Demand
+% * Number of Dropped Orders
+% * Number of Completed Orders
+%
+% A Display block at the root level of the model provides a numeric view of
+% the number of orders completed as well as the number of orders dropped.
+%
+%% Experimenting with the Model
+% (_For use with live model only_)
+%
+% * Open the configuration dialog for product demand by double-clicking a
+% configuration block in the colored region labeled Distributor. Change
+% product demand by changing the *Daily product demand in each month of the
+% year* parameter in this dialog.
+% * Open the configuration dialog for the kanban system by double-clicking
+% a configuration block in the colored region labeled Production System.
+% Change the number of withdrawal kanbans and work-in-process kanbans
+% issued for the production system by changing the parameters in this
+% dialog.
+% * Open the configuration dialog for production capability by
+% double-clicking a configuration block in the colored region labeled
+% Production System. Change the time it takes to manufacture, transport and
+% assemble parts or final products by changing the parameters in this
+% dialog.
+% * Open the configuration dialog for the material suppliers by
+% double-clicking a configuration block in the colored region labeled
+% Material Supplier. Change the time it takes to produce and deliver raw
+% materials by changing the parameters in this dialog.
+%
+%% Using the Model for Performance Analysis
+% The model with the original configuration represents a kanban production
+% system with significant lost sales in months when demand is at a peak.
+% Analysis of simulation results suggests solutions to address this issue.
+%
+% The following steps demonstrate how the solutions are developed.
+%
+% *Step 1:* Run the simulation using the original configuration. As shown
+% in the figures below, the scope labeled Number of Dropped Orders
+% indicates that the production system suffers significant lost sales
+% between day 90 and day 150 of the year. Comparing this result with the
+% scope labeled Product Demand indicates that lost sales happen when
+% product demand is at a peak.
+%%
+sim(model);
+sedemo_helper(scope_demand,'OpenFig');
+%%
+sedemo_helper(scope_demand,'CloseFig');
+sedemo_helper(scope_ord_drop,'OpenFig');
+%%
+sedemo_helper(scope_ord_drop,'CloseFig');
+%%
+% *Step 2:* Comparing the demand in peak season with product supply
+% indicates the assembly line does not provide sufficient production
+% capability. According to the scope labeled Product Demand (see the figure
+% above), 10 products are needed daily between day 90 and day 150. In
+% contrast, as illustrated by the scope labeled Number of Products in Final
+% Assembly (see the figure below), in the same period of time, only about 5
+% are in production every day ? much less than the quantity in demand.
+sedemo_helper(scope_wip_P,'OpenFig');
+%%
+sedemo_helper(scope_wip_P,'CloseFig');
+%%
+% *Step 3:* Further observation of simulation results indicates that the
+% inventory of part B is insufficient in the peak season. As illustrated by
+% the scope labeled Number of Part B in Storage (see the figure below),
+% inventory is empty in the peak season. This explains the inadequacy in
+% the production capability during final assembly ? the assembly line is
+% not provided with sufficient part B.
+sedemo_helper(scope_inv_B,'OpenFig');
+%%
+sedemo_helper(scope_inv_B,'CloseFig');
+%%
+% *Step 4:* Simulation results related to part B indicate that the
+% withdrawal kanban backlog for part B has a high volume in the peak
+% season. This is displayed by the scope labeled Part B Withdrawal Kanban
+% Backlog shown in the figure below.
+sedemo_helper(scope_len_wdr_B,'OpenFig');
+%%
+sedemo_helper(scope_len_wdr_B,'CloseFig');
+%%
+% Backlog of withdrawal kanbans is developed when the assembly line
+% requests a replenishment but the part supplier fails to respond to this
+% request in time. This leads to an analysis of the production capability
+% of part B in the peak season of the year.
+%
+%%
+% *Step 5:* The visual observations in the earlier steps suggest this
+% quantitative analysis:
+%
+% * According to the scope labeled Product Demand, 10 final products are
+% required daily in the peak season.
+% * Since 1 final product is assembled from 1 Part B and 1 Part A, to fully
+% satisfy demand, 10 Part B are needed for final assembly per day. That is:
+% 
+%         Part B demand = 10 /day
+% 
+% * According to production capability configurations, it takes the part
+% supplier 1.5 days to produce 1 part B. According to kanban system
+% configurations, 12 work-in-process kanbans are issued for part B. This
+% limits the maximal number of parts produced in parallel to 12. Thus, the
+% maximal production rate of part B is:
+%
+%         Maximal part B production rate = 12/1.5 = 8 /day
+%
+%%
+% *Step 6:* Comparing demand and maximal production rate of part B
+% indicates the inadequacy in production capacity. Two possible solutions
+% are:
+%%
+% # Issue more work-in-process kanbans for part B to allow more parts to be
+% produced in parallel. In order to increase the maximal production rate of
+% part B to above 10, at least 3 more work-in-process kanbans must be
+% issued.
+% # Reduce production cycle of part B to increase production rate.
+% Production cycle needs to be shorten by at least 0.3 day to meet required
+% production rate.
+%
+%%
+% *Step 7:* To verify solution 1, reconfigure the kanban system by
+% increasing the *Number of work-in-process kanbans for part B* parameter
+% to |15|. Simulation results indicate that with such update, 15 part B are
+% produced in parallel (see the scope labeled Number of Part B in Process
+% below). As indicated by the scope labeled Number of Dropped Orders, the
+% increase in part B supply eliminates the occurrence of dropped orders.
+set_param(configkanban,'NumWIPKanbanB','15');
+sim(model);
+sedemo_helper(scope_wip_B,'OpenFig');
+%%
+sedemo_helper(scope_wip_B,'CloseFig');
+%%
+sedemo_helper(scope_ord_drop,'OpenFig');
+%%
+sedemo_helper(scope_ord_drop,'CloseFig');
+%%
+% To verify solution 2, starting from the original configuration,
+% reconfigure production capability by reducing the *Time it takes to
+% produce a part B* parameter to |1.2| day. With the increase in production
+% capability, 10 final products are in assembly daily (see the scope
+% labeled Number of Products in Final Assembly below). As illustrated in
+% the scope labeled Number of Dropped Orders below, such production
+% capability can fully satisfy product demand, resulting in no lost of
+% sales over the year.
+set_param(configkanban,'NumWIPKanbanB','10');
+set_param(configproduction,'DelayProduceB','1');
+sim(model);
+sedemo_helper(scope_wip_P,'OpenFig');
+%%
+sedemo_helper(scope_wip_P,'CloseFig');
+%%
+sedemo_helper(scope_ord_drop,'OpenFig');
+%%
+sedemo_helper(scope_ord_drop,'CloseFig');
+%%
+% The above steps explore the root cause of lost sales due to seasonal
+% fluctuation in product demand. Quantitative analysis suggests two
+% solutions to respond to such demand fluctuations. Simulation verifies
+% that both solutions can indeed help the production system avoid seasonal
+% lost sales.
+%
+%% Related Demos
+% 
+% * <matlab:simeventsdemohelp('sedemo_resource_allocation'); Resource Allocation from Multiple Pools>
+%%
+bdclose(model);
+clear model subsystem1 subsystem2 subsystem3 subsystem4 ...
+    configkanban configproduction ...
+    scope_len_wdr_A scope_len_wdr_B ...
+    scope_wip_A scope_wip_B scope_wip_P ...
+    scope_inv_A scope_inv_B ...
+    scope_demand scope_ord_drop scope_ord_cmpl;
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

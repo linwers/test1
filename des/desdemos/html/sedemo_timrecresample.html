@@ -1,0 +1,130 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Bit Timing Recovery Using Fixed-Rate Resampling and SimEvents</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="sedemo_timrecresample"><link rel="stylesheet" type="text/css" href="../../../matlab/demos/private/style.css"></head><body><div class="header"><div class="left">sedemo_timrecresample.mdl</div><div class="right"><a href="matlab:sedemo_timrecresample">Open this model</a></div></div><div class="content"><h1>Bit Timing Recovery Using Fixed-Rate Resampling and SimEvents</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Comparison with Original Demo</a></li><li><a href="#3">Calling a Subsystem at Arbitrary Times</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>This model, which is based on the Timing Recovery Using Fixed-Rate Resampling demo in the Communications Blockset&#8482; product, illustrates how to model the time-varying drifting of clocks at a transmitter and receiver in a communication system. Furthermore, the technique in this model exploits asynchronous behavior, which is more efficient during the simulation than the original demo's technique of tracking zero crossings of a voltage-controlled oscillator (VCO) in continuous time.</p><p>To learn about the underlying communication system, ways to explore the demo, and what the plots mean, see the description of the <a href="matlab:showdemo('commtimrecresample');">original Timing Recovery Using Fixed-Rate Resampling</a>  demo. The rest of this section describes how this demo differs from the original and how this demo implements time-varying drifting of clocks.</p><h2>Comparison with Original Demo<a name="2"></a></h2><p>Unlike the original demo, this demo</p><div><ul><li>Uses a discrete-event function-call generator instead of a   continuous-time VCO within the QPSK Transmitter subsystem.</li></ul></div><div><ul><li>Omits a carrier offset, instead focusing more on the timing recovery   process. You can see the difference in the QPSK Transmitter subsystem's   Carrier Offset and Conversion to Continuous Time subsystem and also in the absence of the   Enable carrier recovery option in the block labeled Adjust Demo   Settings.</li></ul></div><div><ul><li>Enhances the ability to model clock drift between the transmitter and   receiver. This demo adds a sinusoidally varying error in symbol timing   to the original demo's constant error.</li></ul></div><p>The sinusoidal error causes an error in symbol timing that varies smoothly and assumes positive and negative values. The drift in the transmitter's symbol clock causes the timing recovery component in the receiver to continually change the rate at which it drifts in response.</p><p>If you run the original demo with a carrier offset of 0 and run this demo with a sinusoidal error of 0, you get equivalent results.</p><img vspace="5" hspace="5" src="sedemo_timrecresample_01.png" alt=""> <img vspace="5" hspace="5" src="sedemo_timrecresample_02.png" alt=""> <img vspace="5" hspace="5" src="sedemo_timrecresample_03.png" alt=""> <h2>Calling a Subsystem at Arbitrary Times<a name="3"></a></h2><p>The figure below, which shows part of the QPSK Transmitter subsystem's DES Voltage Controlled Sample Rate subsystem, illustrates how this demo calls a function-call subsystem at arbitrary times during the simulation. The arbitrary times do not need to be multiples of a fundamental sample time.</p><p><img vspace="5" hspace="5" src="timrecresample_fcncalls.png" alt=""> </p><p>During the simulation, blocks in the figure behave as follows:</p><p>1. At time T0=0, the Function-Call Generator block generates a function    call.</p><p>2. The function call at time T0 causes the Signal-Based Event to    Function-Call Event block to read the current value, t0, of the t    input signal. The block then schedules an event for time T1=T0+t0.</p><pre>    In this model, the t signal is the reciprocal of the sum of the
+    reference frequency, constant frequency error, and sinusoidal
+    frequency error.</pre><p>3. When the scheduled event is processed at time Ti (i=1,2,3,...), the    Signal-Based Event to Function-Call Event block issues two function    calls:</p><pre>    a. The function call at the f1 output port connects to a Mux block,
+       which in turn connects to the same Signal-Based Event to
+       Function-Call Event block. In other words, the Signal-Based Event
+       to Function-Call Event calls itself. (The purpose of this Mux
+       block is to create a union of function calls from more than one
+       source.)</pre><pre>       This function call causes the block to read the current value,
+       ti, of the t input signal. The block then schedules an event for
+       time Ti+1=Ti+ti.</pre><pre>    b. The function call at the f2 output port calls the function-call
+       subsystem that connects to the outport. The function-call
+       subsystem does not appear because it is in the upper level of the
+       block diagram.</pre><p>4. The process in step 3 repeats throughout the simulation. In effect,    the Signal-Based Event to Function-Call Event block uses the t input    signal as an intergeneration time for generating function calls, uses    the f1 output port to iterate, and uses the f2 output port to call the    function-call subsystem at the desired times.</p><p class="footer">Copyright 2008 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Bit Timing Recovery Using Fixed-Rate Resampling and SimEvents
+
+% Copyright 2008 The MathWorks, Inc.
+% $Revision: 1.1.6.2 $ $Date: 2009/11/13 04:15:46 $
+
+%% Overview
+% This model, which is based on the Timing Recovery Using Fixed-Rate
+% Resampling demo in the Communications Blockset™ product, illustrates how
+% to model the time-varying drifting of clocks at a transmitter and
+% receiver in a communication system. Furthermore, the technique in this
+% model exploits asynchronous behavior, which is more efficient during the
+% simulation than the original demo's technique of tracking zero crossings
+% of a voltage-controlled oscillator (VCO) in continuous time.
+%
+% To learn about the underlying communication system, ways to explore the
+% demo, and what the plots mean, see the description of the
+% <matlab:showdemo('commtimrecresample'); original Timing Recovery Using
+% Fixed-Rate Resampling>  demo. The rest of this section describes how this
+% demo differs from the original and how this demo implements time-varying
+% drifting of clocks.
+
+%% Comparison with Original Demo
+% Unlike the original demo, this demo
+%
+% * Uses a discrete-event function-call generator instead of a
+%   continuous-time VCO within the QPSK Transmitter subsystem.
+%
+% * Omits a carrier offset, instead focusing more on the timing recovery
+%   process.  
+% You can see the difference in the QPSK Transmitter subsystem's
+%   Carrier Offset and Conversion to Continuous Time subsystem and also in the absence of the
+%   Enable carrier recovery option in the block labeled Adjust Demo
+%   Settings.
+%
+% * Enhances the ability to model clock drift between the transmitter and
+%   receiver. This demo adds a sinusoidally varying error in symbol timing
+%   to the original demo's constant error.
+% 
+% The sinusoidal error causes an error in symbol timing that varies
+% smoothly and assumes positive and negative values. The drift in the
+% transmitter's symbol clock causes the timing recovery component in the
+% receiver to continually change the rate at which it drifts in response.
+% 
+% If you run the original demo with a carrier offset of 0 and run this demo
+% with a sinusoidal error of 0, you get equivalent results.
+
+modelname = 'sedemo_timrecresample';
+open_system(modelname);
+
+%% Calling a Subsystem at Arbitrary Times
+% The figure below, which shows part of the QPSK Transmitter subsystem's
+% DES Voltage Controlled Sample Rate subsystem, illustrates how this demo
+% calls a function-call subsystem at arbitrary times during the simulation.
+% The arbitrary times do not need to be multiples of a fundamental sample
+% time.
+%
+% <<timrecresample_fcncalls.png>>
+%
+% During the simulation, blocks in the figure behave as follows:
+%
+% 1. At time T0=0, the Function-Call Generator block generates a function
+%    call.
+%
+% 2. The function call at time T0 causes the Signal-Based Event to
+%    Function-Call Event block to read the current value, t0, of the t
+%    input signal. The block then schedules an event for time T1=T0+t0.
+%
+%      In this model, the t signal is the reciprocal of the sum of the
+%      reference frequency, constant frequency error, and sinusoidal
+%      frequency error.
+% 
+% 3. When the scheduled event is processed at time Ti (i=1,2,3,...), the
+%    Signal-Based Event to Function-Call Event block issues two function
+%    calls:
+%
+%      a. The function call at the f1 output port connects to a Mux block,
+%         which in turn connects to the same Signal-Based Event to
+%         Function-Call Event block. In other words, the Signal-Based Event
+%         to Function-Call Event calls itself. (The purpose of this Mux
+%         block is to create a union of function calls from more than one
+%         source.) 
+%
+%         This function call causes the block to read the current value,
+%         ti, of the t input signal. The block then schedules an event for
+%         time Ti+1=Ti+ti.
+%
+%      b. The function call at the f2 output port calls the function-call
+%         subsystem that connects to the outport. The function-call
+%         subsystem does not appear because it is in the upper level of the
+%         block diagram. 
+%   
+%      
+%
+% 4. The process in step 3 repeats throughout the simulation. In effect,
+%    the Signal-Based Event to Function-Call Event block uses the t input
+%    signal as an intergeneration time for generating function calls, uses
+%    the f1 output port to iterate, and uses the f2 output port to call the
+%    function-call subsystem at the desired times.
+
+%% 
+%cleanup
+bdclose(modelname);
+clear modelname;
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--></body></html>

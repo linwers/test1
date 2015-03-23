@@ -1,0 +1,126 @@
+%% $RCSfile: des_init_value.tlc,v $
+%% $Revision: 1.1.6.5 $  $Date: 2009/05/23 07:54:16 $
+%%
+%% Copyright 2005-2006 The MathWorks, Inc.
+%%
+%% Abstract: TLC for Discrete Event Initial Conditions Block
+
+
+%implements des_init_value "C"
+
+%% Function: BlockInstanceSetup ===========================================
+%% Abstract:
+%%        Setup the S-function parameters
+%function BlockInstanceSetup (block, system) void
+
+    %addtorecord block OUTPORT 0
+    %addtorecord block INPORT 0   
+          
+    %if !Accelerator
+	%addtorecord block outIndex SFcnParamSettings.index
+	%addtorecord block computeFlag SFcnParamSettings.seMdlFlag
+    %endif
+          
+%endfunction
+
+%% Function: Start ===========================================
+%% Abstract:
+%%        Write code for IC stage
+%function Start(block,system) Output
+{
+  %if !Accelerator
+   %if block.SFcnParamSettings.genCodeOpt == 1
+
+    %openfile funcbuf
+      void seicblk_ic%<outIndex>(boolean_T compute)
+      { 
+        if(compute)
+        {
+	    %<SLibFcnComputeOutput(block, 0)>;
+        }
+		else
+		{
+			boolean_T * status = %<LibBlockDWorkAddr(dwIsDesInit,"","",0)>;
+			*status = false;
+		}	
+	  }
+      %closefile funcbuf
+      %assign srcFile = LibGetModelDotCFile()
+            %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)> 
+		{
+            %<LibBlockOutputSignalDataTypeName(OUTPORT, "")> * y;
+            boolean_T * status = %<LibBlockDWorkAddr(dwIsDesInit,"","",0)>;
+            *status = true;
+            simevents_setIVCallBackFcn("%<LibGetModelName()>",seicblk_ic%<outIndex>);
+   
+            y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;
+            %if LibBlockOutputSignalIsComplex(OUTPORT)
+                %roll sigIdx = RollRegions, lcv = RollThreshold, block, "Roller", ["Y"]
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)>.re = \
+                    %<block.SFcnParamSettings.Value[2*sigIdx]>;
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)>.im = \
+                    %<block.SFcnParamSettings.Value[2*sigIdx+1]>;        
+                %endroll
+            %else
+                %roll sigIdx = RollRegions, lcv = RollThreshold, block, "Roller", ["Y"]
+                    %<LibBlockOutputSignal(OUTPORT, "", lcv, sigIdx)> = \
+                    %<block.SFcnParamSettings.Value[sigIdx]>;
+                %endroll
+            %endif
+          }
+  
+	%endif
+ %endif 
+}
+%endfunction
+ 
+%% Function: InitializeConditions ===========================================================
+%% Abstract: Register index and  monitor only status. 
+%%           In the prototype version, this is not done.
+%% 
+
+%function InitializeConditions(block,system) Output
+ {
+    %if !Accelerator
+       %if block.SFcnParamSettings.genCodeOpt == 1
+  	       %if(%<computeFlag> == 1)
+		       boolean_T * status;
+		       %<SLibFcnComputeOutput(block, 0)> 
+		       status  = %<LibBlockDWorkAddr(dwIsDesInit,"","",0)>;
+		       *status = false;
+	       %endif
+       %endif
+    %endif 
+ }
+ 
+%endfunction %% InitializeConditions
+
+
+%% Function: Outputs                                                                 
+%% Abstract                                                                          
+%% Access the in/output data vectors and do the functions.                      
+                                                                                     
+%function Outputs(block, system) Output                                   
+{  
+    %if block.SFcnParamSettings.genCodeOpt == 1
+
+        %assign dataTypeName = LibBlockOutputSignalDataTypeName(OUTPORT, "")
+        %<dataTypeName> *    u;
+        %<dataTypeName> *    y;
+
+        int_T       dataSize;
+        boolean_T * isInitializing = %<LibBlockDWorkAddr(dwIsDesInit,"","",0)>;
+    
+        if(*isInitializing) return;
+
+        u = %<LibBlockInputSignalAddr(INPORT,"","",0)>;
+        y = %<LibBlockOutputSignalAddr(OUTPORT, "", "", 0)>;   
+        dataSize = (%<LibBlockOutputSignalWidth(OUTPORT)>) * sizeof(%<dataTypeName>);		
+    
+        memcpy(y,u,dataSize);
+        %<SLibFcnComputeOutput(block, 0)>;
+    
+    %endif
+}
+
+%endfunction
